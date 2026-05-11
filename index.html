@@ -139,6 +139,97 @@
       font-size: 17px;
       line-height: 1.9;
     }
+    .hero-visual {
+      position: relative;
+      margin-top: 30px;
+      width: min(620px, 72%);
+      margin-left: auto;
+      padding: 24px 24px 18px;
+      border-radius: 30px;
+      border: 1px solid rgba(201,164,93,.16);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
+      box-shadow: 0 18px 50px rgba(0,0,0,.22);
+    }
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 30px;
+      background: radial-gradient(circle at 30% 24%, rgba(201,164,93,.12), transparent 30%);
+      pointer-events: none;
+    }
+    .visual-copy,
+    .visual-stack {
+      position: relative;
+      z-index: 1;
+    }
+    .visual-copy strong {
+      display: block;
+      color: var(--gold-bright);
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .visual-copy h2 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 4vw, 44px);
+      line-height: .96;
+      letter-spacing: -.07em;
+    }
+    .visual-copy p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.78;
+      max-width: 420px;
+    }
+    .visual-stack {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: end;
+    }
+    .visual-shot {
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(201,164,93,.18);
+      background: rgba(255,255,255,.03);
+    }
+    .visual-shot img {
+      display: block;
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      object-position: center;
+      background: #111;
+    }
+    .visual-shot.apple img {
+      background: #fff;
+    }
+    .visual-shot figcaption {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      background: rgba(10,10,10,.92);
+      border-top: 1px solid rgba(201,164,93,.12);
+    }
+    .visual-shot strong {
+      display: block;
+      font-size: 18px;
+      line-height: 1;
+      letter-spacing: -.04em;
+      color: var(--gold-bright);
+    }
+    .visual-shot span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.55;
+      text-align: right;
+    }
     .hero-bottom {
       display: grid;
       grid-template-columns: minmax(0, 1fr) 280px;
@@ -274,14 +365,7 @@
       line-height: 1.75;
     }
     .product-stage {
-      position: relative;
-      overflow: hidden;
-      min-height: 560px;
-      padding: 26px;
-      background:
-        radial-gradient(circle at 18% 20%, rgba(201,164,93,.22), transparent 24%),
-        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0)),
-        rgba(13,13,13,.96);
+      display: none;
     }
     .stage-copy,
     .stage-badges,
@@ -637,10 +721,20 @@
       .hero {
         grid-template-columns: 1fr;
       }
+      .hero-visual {
+        width: 100%;
+        margin-left: 0;
+      }
       .hero-bottom,
       .stat-row,
       .branches {
         grid-template-columns: 1fr;
+      }
+      .visual-stack {
+        grid-template-columns: 1fr;
+      }
+      .visual-shot img {
+        height: auto;
       }
       .branch::before { font-size: 72px; }
       .hero-left { min-height: auto; }
@@ -671,6 +765,29 @@
             휴대폰성지 휴대폰광장은 매장을 단순히 보여주는 브랜드가 아니라,
             처음 보는 사람도 “여긴 좀 다르다”는 인상을 받도록 설계된 통합 매장 랜딩입니다.
           </p>
+          <div class="hero-visual">
+            <div class="visual-copy">
+              <strong>Flagship Focus</strong>
+              <h2>갤럭시 S26 / 아이폰 17</h2>
+              <p>모델명이 어색하게 꺾여 보이지 않도록 한 줄 축으로 정리하고, 실제 이미지가 히어로 중앙에서 바로 보이게 배치했습니다.</p>
+            </div>
+            <div class="visual-stack">
+              <figure class="visual-shot samsung">
+                <img src="https://img.global.news.samsung.com/global/wp-content/uploads/2026/02/26031312/Samsung-Mobile-Galaxy-Unpacked-2026-Galaxy-S26-Series-Launch_dl1-728x410.jpg" alt="갤럭시 S26 시리즈 공식 이미지">
+                <figcaption>
+                  <strong>Galaxy S26</strong>
+                  <span>Samsung Global Newsroom</span>
+                </figcaption>
+              </figure>
+              <figure class="visual-shot apple">
+                <img src="https://www.apple.com/v/iphone-17/f/images/overview/welcome/hero_startframe__e9e7pcnguyqi_xlarge.jpg" alt="아이폰 17 공식 이미지">
+                <figcaption>
+                  <strong>iPhone 17</strong>
+                  <span>Apple Official</span>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
         </div>
 
         <div class="hero-bottom">
@@ -722,35 +839,6 @@
             </div>
           </div>
         </aside>
-        <div class="product-stage">
-          <div class="stage-copy">
-            <strong>Flagship Focus</strong>
-            <h3>갤럭시 S26 · 아이폰17</h3>
-            <p>시안용으로 실제 공식 이미지를 직접 붙였습니다. 지금은 추상 연출이 아니라, 누구나 봐도 바로 모델이 보이는 쪽으로 맞췄습니다.</p>
-          </div>
-          <div class="stage-badges">
-            <span>Galaxy S26</span>
-            <span>iPhone 17</span>
-            <span>Premium Line</span>
-            <span>Family Picks</span>
-          </div>
-          <div class="product-gallery">
-            <div class="product-shot">
-              <img src="https://img.global.news.samsung.com/global/wp-content/uploads/2026/02/26031312/Samsung-Mobile-Galaxy-Unpacked-2026-Galaxy-S26-Series-Launch_dl1-728x410.jpg" alt="갤럭시 S26 시리즈 공식 이미지">
-              <div class="product-label">
-                <strong>Galaxy S26</strong>
-                <span>Samsung Global Newsroom 공식 이미지</span>
-              </div>
-            </div>
-            <div class="product-shot">
-              <img src="https://www.apple.com/v/iphone-17/f/images/overview/welcome/hero_startframe__e9e7pcnguyqi_xlarge.jpg" alt="아이폰17 공식 이미지">
-              <div class="product-label">
-                <strong>iPhone 17</strong>
-                <span>Apple 공식 이미지</span>
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="aside-band">
           <strong>휴대폰성지 휴대폰광장</strong>
           <span>미장점, 미룡점, 나운점, 서천점까지 전지점 주소와 상담 번호를 한 번에 확인할 수 있는 프리미엄 통합 랜딩페이지.</span>
