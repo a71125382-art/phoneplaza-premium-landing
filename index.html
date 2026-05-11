@@ -145,6 +145,31 @@
       font-size: 13px;
       font-weight: 700;
     }
+    .trust-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 26px;
+    }
+    .trust-strip div {
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(214, 177, 84, 0.12);
+    }
+    .trust-strip strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--gold);
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .trust-strip span {
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
     .actions {
       display: flex;
       flex-wrap: wrap;
@@ -295,6 +320,13 @@
       font-size: 14px;
       line-height: 1.7;
     }
+    .branch-summary {
+      margin: 0 0 16px;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.8;
+      letter-spacing: -0.01em;
+    }
     .meta {
       display: grid;
       gap: 10px;
@@ -379,6 +411,9 @@
       .footer-cta {
         grid-template-columns: 1fr;
       }
+      .trust-strip {
+        grid-template-columns: 1fr;
+      }
       .footer-cta {
         display: grid;
       }
@@ -426,9 +461,9 @@
         <div class="eyebrow">Premium Store Guide</div>
         <h1>전국 상담 가능한 <span>프리미엄 휴대폰 매장</span></h1>
         <p class="lead">
-          휴대폰성지 휴대폰광장은 아이폰, 갤럭시, 효도폰, 키즈폰, 인터넷·TV 결합까지
-          한 번에 연결되는 통합 상담 브랜드입니다. 군산과 서천의 4개 지점 정보를 한 화면에
-          정리해 두고, 필요한 지점을 바로 찾을 수 있게 구성했습니다.
+          휴대폰성지 휴대폰광장은 단순히 매장 목록을 보여주는 브랜드가 아니라,
+          어디로 문의해야 할지 망설이는 고객에게 가장 먼저 떠오르는 상담 창구가 되도록
+          설계된 통합 매장 브랜드입니다.
         </p>
         <div class="chips">
           <span>아이폰 · 갤럭시 상담</span>
@@ -436,19 +471,33 @@
           <span>효도폰 · 키즈폰 제안</span>
           <span>인터넷 · TV 결합</span>
         </div>
+        <div class="trust-strip">
+          <div>
+            <strong>Store Network</strong>
+            <span>군산과 서천의 4개 지점을 한 브랜드 아래에서 안내합니다.</span>
+          </div>
+          <div>
+            <strong>Consulting</strong>
+            <span>모델 추천부터 가족폰 구성까지 설명형 상담을 지향합니다.</span>
+          </div>
+          <div>
+            <strong>Convenience</strong>
+            <span>공유 링크 하나로 주소와 상담 번호를 바로 확인할 수 있습니다.</span>
+          </div>
+        </div>
         <div class="actions">
           <a class="primary" href="#branches">지점 찾기</a>
-          <a class="secondary" href="#service">상담 분야 보기</a>
+          <a class="secondary" href="#service">브랜드 보기</a>
         </div>
       </article>
 
       <aside class="hero-side">
         <div>
-          <h2 class="side-title">한 번에 보고, 바로 고를 수 있게.</h2>
+          <h2 class="side-title">브랜드 신뢰와 현장 상담을 한 화면에.</h2>
           <p class="side-copy">
-            각 지점의 주소와 상담 번호를 분리해서 정리하고, 모바일에서도 보기 쉽도록
-            카드형으로 구성했습니다. 과한 전단지 느낌보다 고급스럽고 믿음직한 인상을
-            우선하도록 디자인했습니다.
+            군더더기 많은 광고 페이지보다, 브랜드의 결을 먼저 보여주고 필요한 순간
+            바로 지점으로 이어질 수 있도록 구성했습니다. 블랙과 골드 중심의 조용한
+            긴장감으로 프리미엄 매장 인상을 살렸습니다.
           </p>
         </div>
         <div class="statbox">
@@ -470,27 +519,27 @@
 
     <section id="service">
       <div class="section-head">
-        <h2>브랜드가 다루는 상담 범위</h2>
+        <h2>왜 휴대폰광장인가</h2>
         <p>
-          단순히 매장 주소만 보여주는 페이지가 아니라, 어떤 상담을 받을 수 있는지까지 함께 정리해
-          방문 전 기대감을 높이도록 구성했습니다.
+          좋은 랜딩은 지점을 나열하는 데서 끝나지 않습니다. 어떤 고객이, 어떤 이유로,
+          이 브랜드를 선택해야 하는지까지 자연스럽게 전달돼야 합니다.
         </p>
       </div>
       <div class="services">
         <article class="service-card">
           <div class="tag">Flagship</div>
-          <h3>아이폰 · 갤럭시</h3>
-          <p>최신 모델 상담부터 실사용 기준 추천까지, 구매 전 비교가 필요한 고객에게 맞춘 설명형 상담을 지향합니다.</p>
+          <h3>프리미엄 모델 상담</h3>
+          <p>아이폰과 갤럭시를 중심으로 최신 모델 비교와 사용 패턴에 맞는 방향을 정리해드립니다.</p>
         </article>
         <article class="service-card">
           <div class="tag">Family</div>
-          <h3>효도폰 · 키즈폰</h3>
-          <p>부모님용 단말기와 자녀용 키즈폰처럼 목적이 분명한 고객에게 보기 쉬운 선택지를 정리해드립니다.</p>
+          <h3>가족폰 구성 제안</h3>
+          <p>효도폰, 키즈폰처럼 용도가 분명한 고객에게는 복잡한 정보보다 이해하기 쉬운 선택지를 우선합니다.</p>
         </article>
         <article class="service-card">
           <div class="tag">Bundle</div>
-          <h3>번호이동 · 결합 상담</h3>
-          <p>번호이동, 기기변경, 인터넷·TV 결합까지 함께 고려해야 하는 고객을 위해 한 화면에서 브랜드 범위를 소개합니다.</p>
+          <h3>이동 · 변경 · 결합</h3>
+          <p>번호이동, 기기변경, 인터넷·TV 결합까지 이어지는 상담 흐름을 한 브랜드 안에서 정돈해 보여줍니다.</p>
         </article>
       </div>
     </section>
@@ -508,6 +557,7 @@
           <div class="tag">Gunsan</div>
           <h3>미장점</h3>
           <p class="name">군산 휴대폰성지 휴대폰광장 미장점</p>
+          <p class="branch-summary">휴대폰광장의 메인 무드를 가장 또렷하게 보여주는 지점으로, 브랜드 중심 상담과 방문 흐름이 안정적인 매장입니다.</p>
           <div class="meta">
             <div>
               <span>Address</span>
@@ -523,6 +573,7 @@
           <div class="tag">Gunsan</div>
           <h3>미룡점</h3>
           <p class="name">군산휴대폰성지 휴대폰광장 미룡점</p>
+          <p class="branch-summary">군산대학교 인근 흐름과 생활권 상담에 가까운 지점으로, 가볍게 문의하고 빠르게 연결되기 좋은 매장입니다.</p>
           <div class="meta">
             <div>
               <span>Address</span>
@@ -538,6 +589,7 @@
           <div class="tag">Gunsan</div>
           <h3>나운점</h3>
           <p class="name">군산휴대폰성지 휴대폰광장 나운점</p>
+          <p class="branch-summary">상권 접근성이 좋아 직접 상담과 재방문 흐름을 만들기 좋은 지점으로, 브랜드 신뢰를 현장에서 이어주는 매장입니다.</p>
           <div class="meta">
             <div>
               <span>Address</span>
@@ -554,6 +606,7 @@
           <div class="tag">Seocheon</div>
           <h3>서천점</h3>
           <p class="name">서천휴대폰성지 휴대폰광장서천점</p>
+          <p class="branch-summary">서천 생활권 고객을 가장 편하게 받는 지점으로, 군산권과 다른 지역 흐름을 부드럽게 이어주는 통합 상담 거점입니다.</p>
           <div class="meta">
             <div>
               <span>Address</span>
@@ -570,10 +623,11 @@
 
     <section class="footer-cta">
       <div>
-        <h2>지금 필요한 건, 딱 맞는 지점을 찾는 일입니다.</h2>
+        <h2>한 번의 방문이 아니라, 오래 기억되는 매장처럼.</h2>
         <p>
-          휴대폰성지 휴대폰광장은 지점별 위치와 상담 채널을 명확하게 보여주는 방식으로
-          브랜드 신뢰를 먼저 전달하도록 구성했습니다. 공유용 링크로도 바로 쓰기 좋은 독립 랜딩입니다.
+          휴대폰성지 휴대폰광장은 지점별 정보만 모아둔 페이지보다, 브랜드의 분위기와
+          신뢰가 먼저 전달되는 랜딩을 목표로 했습니다. 공유해도 촌스럽지 않고,
+          처음 보는 사람에게도 매장 인상이 남도록 구성했습니다.
         </p>
         <div class="notice">버튼을 누르면 전화가 바로 걸리지 않도록 번호 복사 중심으로 설계했습니다.</div>
       </div>
