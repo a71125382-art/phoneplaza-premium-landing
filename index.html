@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>휴대폰성지 휴대폰광장 | 전국 상담 가능한 프리미엄 휴대폰 매장</title>
+  <meta name="description" content="휴대폰성지 휴대폰광장. 미장점, 미룡점, 나운점, 서천점까지 전지점 주소와 상담 번호를 한 번에 확인할 수 있는 프리미엄 통합 랜딩페이지.">
+  <style>
+    :root {
+      --bg: #090909;
+      --panel: rgba(22, 22, 22, 0.88);
+      --panel-2: rgba(16, 16, 16, 0.78);
+      --line: rgba(214, 177, 84, 0.22);
+      --line-strong: rgba(214, 177, 84, 0.5);
+      --text: #f7f2e8;
+      --muted: #b9ab92;
+      --gold: #d6b154;
+      --gold-soft: #9e7b32;
+      --shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+      --max: 1180px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "SUIT Variable", "Pretendard Variable", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(214, 177, 84, 0.18), transparent 26%),
+        radial-gradient(circle at 90% 18%, rgba(214, 177, 84, 0.1), transparent 22%),
+        linear-gradient(180deg, #0a0a0a 0%, #11100d 48%, #090909 100%);
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .wrap { width: min(calc(100% - 36px), var(--max)); margin: 0 auto; }
+    .topbar {
+      padding: 22px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .brand strong {
+      font-size: 18px;
+      letter-spacing: -0.03em;
+    }
+    .brand span {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .toplink {
+      display: inline-flex;
+      min-height: 44px;
+      padding: 0 18px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .hero {
+      padding: 28px 0 26px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+    .hero-main,
+    .hero-side,
+    .service-card,
+    .branch-card,
+    .footer-cta {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+    .hero-main {
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: auto -80px -100px auto;
+      width: 260px;
+      height: 260px;
+      border-radius: 38px;
+      background: linear-gradient(135deg, rgba(214, 177, 84, 0.14), rgba(214, 177, 84, 0.02));
+      transform: rotate(24deg);
+    }
+    .eyebrow {
+      display: inline-flex;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(214, 177, 84, 0.18);
+      background: rgba(214, 177, 84, 0.08);
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 18px 0 14px;
+      font-size: clamp(42px, 7vw, 82px);
+      line-height: 0.94;
+      letter-spacing: -0.065em;
+      max-width: 700px;
+    }
+    h1 span {
+      display: block;
+      color: var(--gold);
+    }
+    .lead {
+      margin: 0;
+      max-width: 640px;
+      font-size: 17px;
+      line-height: 1.9;
+      color: var(--muted);
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+    .chips span {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(214, 177, 84, 0.14);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .actions a,
+    .footer-cta a {
+      display: inline-flex;
+      min-height: 54px;
+      padding: 0 22px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .primary {
+      background: linear-gradient(135deg, #d7b660, #8b6624);
+      color: #130f08;
+      box-shadow: 0 12px 34px rgba(214, 177, 84, 0.2);
+    }
+    .secondary {
+      border: 1px solid rgba(214, 177, 84, 0.22);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text);
+    }
+    .hero-side {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .side-title {
+      margin: 0;
+      font-size: 31px;
+      letter-spacing: -0.05em;
+      line-height: 1.06;
+    }
+    .side-copy {
+      margin: 12px 0 0;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 14px;
+    }
+    .statbox {
+      display: grid;
+      gap: 12px;
+    }
+    .statbox div {
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(214, 177, 84, 0.13);
+    }
+    .statbox strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+    section {
+      padding: 18px 0;
+    }
+    .section-head {
+      margin-bottom: 18px;
+    }
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 46px);
+      letter-spacing: -0.05em;
+    }
+    .section-head p {
+      margin: 10px 0 0;
+      max-width: 700px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+    .services {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .service-card {
+      padding: 22px;
+      min-height: 210px;
+      background: var(--panel-2);
+    }
+    .service-card .tag {
+      display: inline-flex;
+      margin-bottom: 14px;
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .service-card h3 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      letter-spacing: -0.04em;
+    }
+    .service-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 14px;
+    }
+    .branch-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .branch-card {
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .branch-card::after {
+      content: "";
+      position: absolute;
+      right: -48px;
+      top: -52px;
+      width: 140px;
+      height: 140px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(214, 177, 84, 0.16), rgba(214, 177, 84, 0));
+      transform: rotate(16deg);
+    }
+    .branch-card .tag {
+      display: inline-flex;
+      margin-bottom: 12px;
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .branch-card h3 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      letter-spacing: -0.05em;
+    }
+    .branch-card .name {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .meta {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .meta div {
+      display: grid;
+      gap: 4px;
+    }
+    .meta span {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .meta strong {
+      font-size: 15px;
+      line-height: 1.6;
+      letter-spacing: -0.02em;
+    }
+    .phone-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .phone-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(214, 177, 84, 0.16);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .phone-chip button {
+      border: 0;
+      background: transparent;
+      color: var(--gold);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 0;
+    }
+    .footer-cta {
+      margin: 24px 0 44px;
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .footer-cta h2 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 4vw, 40px);
+      letter-spacing: -0.05em;
+    }
+    .footer-cta p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 640px;
+    }
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    .notice {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    @media (max-width: 980px) {
+      .hero,
+      .services,
+      .branch-grid,
+      .footer-cta {
+        grid-template-columns: 1fr;
+      }
+      .footer-cta {
+        display: grid;
+      }
+      .footer-actions {
+        justify-content: flex-start;
+      }
+    }
+    @media (max-width: 640px) {
+      .wrap { width: min(calc(100% - 24px), var(--max)); }
+      .topbar { padding: 16px 0; }
+      .hero-main,
+      .hero-side,
+      .service-card,
+      .branch-card,
+      .footer-cta { border-radius: 24px; }
+      .hero-main,
+      .hero-side,
+      .footer-cta { padding: 24px; }
+      .service-card,
+      .branch-card { padding: 20px; }
+      .actions,
+      .footer-actions { display: grid; }
+      .actions a,
+      .footer-cta a { width: 100%; }
+      h1 { font-size: 40px; line-height: 1.02; }
+      .side-title { font-size: 26px; }
+      .branch-card h3 { font-size: 25px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <span>Premium Mobile Store Network</span>
+        <strong>휴대폰성지 휴대폰광장</strong>
+      </div>
+      <a class="toplink" href="#branches">지점 찾기</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <article class="hero-main">
+        <div class="eyebrow">Premium Store Guide</div>
+        <h1>전국 상담 가능한 <span>프리미엄 휴대폰 매장</span></h1>
+        <p class="lead">
+          휴대폰성지 휴대폰광장은 아이폰, 갤럭시, 효도폰, 키즈폰, 인터넷·TV 결합까지
+          한 번에 연결되는 통합 상담 브랜드입니다. 군산과 서천의 4개 지점 정보를 한 화면에
+          정리해 두고, 필요한 지점을 바로 찾을 수 있게 구성했습니다.
+        </p>
+        <div class="chips">
+          <span>아이폰 · 갤럭시 상담</span>
+          <span>번호이동 · 기기변경 안내</span>
+          <span>효도폰 · 키즈폰 제안</span>
+          <span>인터넷 · TV 결합</span>
+        </div>
+        <div class="actions">
+          <a class="primary" href="#branches">지점 찾기</a>
+          <a class="secondary" href="#service">상담 분야 보기</a>
+        </div>
+      </article>
+
+      <aside class="hero-side">
+        <div>
+          <h2 class="side-title">한 번에 보고, 바로 고를 수 있게.</h2>
+          <p class="side-copy">
+            각 지점의 주소와 상담 번호를 분리해서 정리하고, 모바일에서도 보기 쉽도록
+            카드형으로 구성했습니다. 과한 전단지 느낌보다 고급스럽고 믿음직한 인상을
+            우선하도록 디자인했습니다.
+          </p>
+        </div>
+        <div class="statbox">
+          <div>
+            <strong>4개 지점 통합 안내</strong>
+            <span>미장점 · 미룡점 · 나운점 · 서천점</span>
+          </div>
+          <div>
+            <strong>브랜드 중심 구성</strong>
+            <span>지점별 안내보다 전체 인상과 신뢰를 먼저 전달</span>
+          </div>
+          <div>
+            <strong>모바일 우선 레이아웃</strong>
+            <span>휴대폰 화면에서도 버튼과 번호를 바로 확인 가능</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="service">
+      <div class="section-head">
+        <h2>브랜드가 다루는 상담 범위</h2>
+        <p>
+          단순히 매장 주소만 보여주는 페이지가 아니라, 어떤 상담을 받을 수 있는지까지 함께 정리해
+          방문 전 기대감을 높이도록 구성했습니다.
+        </p>
+      </div>
+      <div class="services">
+        <article class="service-card">
+          <div class="tag">Flagship</div>
+          <h3>아이폰 · 갤럭시</h3>
+          <p>최신 모델 상담부터 실사용 기준 추천까지, 구매 전 비교가 필요한 고객에게 맞춘 설명형 상담을 지향합니다.</p>
+        </article>
+        <article class="service-card">
+          <div class="tag">Family</div>
+          <h3>효도폰 · 키즈폰</h3>
+          <p>부모님용 단말기와 자녀용 키즈폰처럼 목적이 분명한 고객에게 보기 쉬운 선택지를 정리해드립니다.</p>
+        </article>
+        <article class="service-card">
+          <div class="tag">Bundle</div>
+          <h3>번호이동 · 결합 상담</h3>
+          <p>번호이동, 기기변경, 인터넷·TV 결합까지 함께 고려해야 하는 고객을 위해 한 화면에서 브랜드 범위를 소개합니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="branches">
+      <div class="section-head">
+        <h2>전지점 안내</h2>
+        <p>
+          필요한 지점을 빠르게 찾을 수 있도록 주소와 상담 번호를 카드별로 분리했습니다.
+          데스크톱에서는 비교가 쉽고, 모바일에서는 바로 복사해 문의하기 좋게 정리했습니다.
+        </p>
+      </div>
+      <div class="branch-grid">
+        <article class="branch-card">
+          <div class="tag">Gunsan</div>
+          <h3>미장점</h3>
+          <p class="name">군산 휴대폰성지 휴대폰광장 미장점</p>
+          <div class="meta">
+            <div>
+              <span>Address</span>
+              <strong>전북특별자치도 군산시 공단대로 131</strong>
+            </div>
+          </div>
+          <div class="phone-list">
+            <div class="phone-chip">0507-1358-4288 <button type="button" data-copy="0507-1358-4288">복사</button></div>
+          </div>
+        </article>
+
+        <article class="branch-card">
+          <div class="tag">Gunsan</div>
+          <h3>미룡점</h3>
+          <p class="name">군산휴대폰성지 휴대폰광장 미룡점</p>
+          <div class="meta">
+            <div>
+              <span>Address</span>
+              <strong>전북특별자치도 군산시 미제2길 19</strong>
+            </div>
+          </div>
+          <div class="phone-list">
+            <div class="phone-chip">0504-4649-6728 <button type="button" data-copy="0504-4649-6728">복사</button></div>
+          </div>
+        </article>
+
+        <article class="branch-card">
+          <div class="tag">Gunsan</div>
+          <h3>나운점</h3>
+          <p class="name">군산휴대폰성지 휴대폰광장 나운점</p>
+          <div class="meta">
+            <div>
+              <span>Address</span>
+              <strong>전북특별자치도 군산시 문화로 47 2동 103호</strong>
+            </div>
+          </div>
+          <div class="phone-list">
+            <div class="phone-chip">0507-1344-4288 <button type="button" data-copy="0507-1344-4288">복사</button></div>
+            <div class="phone-chip">063-466-4288 <button type="button" data-copy="063-466-4288">복사</button></div>
+          </div>
+        </article>
+
+        <article class="branch-card">
+          <div class="tag">Seocheon</div>
+          <h3>서천점</h3>
+          <p class="name">서천휴대폰성지 휴대폰광장서천점</p>
+          <div class="meta">
+            <div>
+              <span>Address</span>
+              <strong>충청남도 서천군 서천읍 서천로 182</strong>
+            </div>
+          </div>
+          <div class="phone-list">
+            <div class="phone-chip">041-951-5288 <button type="button" data-copy="041-951-5288">복사</button></div>
+            <div class="phone-chip">010-3003-4288 <button type="button" data-copy="010-3003-4288">복사</button></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="footer-cta">
+      <div>
+        <h2>지금 필요한 건, 딱 맞는 지점을 찾는 일입니다.</h2>
+        <p>
+          휴대폰성지 휴대폰광장은 지점별 위치와 상담 채널을 명확하게 보여주는 방식으로
+          브랜드 신뢰를 먼저 전달하도록 구성했습니다. 공유용 링크로도 바로 쓰기 좋은 독립 랜딩입니다.
+        </p>
+        <div class="notice">버튼을 누르면 전화가 바로 걸리지 않도록 번호 복사 중심으로 설계했습니다.</div>
+      </div>
+      <div class="footer-actions">
+        <a class="primary" href="#branches">지점 찾기</a>
+        <a class="secondary" href="#top" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;">맨 위로</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll("[data-copy]");
+    buttons.forEach((button) => {
+      button.addEventListener("click", async () => {
+        const value = button.getAttribute("data-copy");
+        if (!value) return;
+        try {
+          await navigator.clipboard.writeText(value);
+          const old = button.textContent;
+          button.textContent = "복사됨";
+          setTimeout(() => {
+            button.textContent = old;
+          }, 1200);
+        } catch (error) {
+          button.textContent = "실패";
+          setTimeout(() => {
+            button.textContent = "복사";
+          }, 1200);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
