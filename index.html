@@ -208,7 +208,8 @@
       gap: 18px;
     }
     .aside-card,
-    .aside-band {
+    .aside-band,
+    .product-stage {
       border-radius: 30px;
       border: 1px solid var(--line);
       box-shadow: var(--shadow);
@@ -271,6 +272,86 @@
       color: var(--text);
       font-size: 15px;
       line-height: 1.75;
+    }
+    .product-stage {
+      position: relative;
+      overflow: hidden;
+      min-height: 310px;
+      padding: 26px;
+      background:
+        radial-gradient(circle at 18% 20%, rgba(201,164,93,.22), transparent 24%),
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0)),
+        rgba(13,13,13,.96);
+    }
+    .product-stage::before,
+    .product-stage::after {
+      content: "";
+      position: absolute;
+      border-radius: 28px;
+      border: 1px solid rgba(201,164,93,.16);
+      background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.02));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .product-stage::before {
+      width: 160px;
+      height: 250px;
+      right: 34px;
+      top: 28px;
+      transform: rotate(8deg);
+    }
+    .product-stage::after {
+      width: 145px;
+      height: 228px;
+      right: 138px;
+      top: 56px;
+      transform: rotate(-8deg);
+      background: linear-gradient(180deg, rgba(201,164,93,.18), rgba(255,255,255,.02));
+    }
+    .stage-copy,
+    .stage-badges {
+      position: relative;
+      z-index: 1;
+    }
+    .stage-copy strong {
+      display: block;
+      color: var(--gold-bright);
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .stage-copy h3 {
+      margin: 0 0 10px;
+      max-width: 220px;
+      font-size: 32px;
+      line-height: .98;
+      letter-spacing: -.06em;
+    }
+    .stage-copy p {
+      margin: 0;
+      max-width: 220px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+    .stage-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 22px;
+      max-width: 220px;
+    }
+    .stage-badges span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(201,164,93,.18);
+      background: rgba(255,255,255,.04);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--cream);
     }
     section { padding: 18px 0; }
     .section-head {
@@ -517,6 +598,7 @@
       .page { width: min(calc(100% - 20px), var(--max)); }
       .hero-left,
       .aside-card,
+      .product-stage,
       .aside-band,
       .reason-main,
       .reason-side,
@@ -526,6 +608,7 @@
       }
       .hero-left,
       .aside-card,
+      .product-stage,
       .reason-main,
       .reason-side,
       .cta {
@@ -623,6 +706,19 @@
             </div>
           </div>
         </aside>
+        <div class="product-stage">
+          <div class="stage-copy">
+            <strong>Flagship Focus</strong>
+            <h3>갤럭시 S26 · 아이폰17</h3>
+            <p>공식 사진 없이도 대표 모델이 전면에 있는 것처럼 보이도록, 추상 디바이스 실루엣과 모델 태그를 함께 배치했습니다.</p>
+          </div>
+          <div class="stage-badges">
+            <span>Galaxy S26</span>
+            <span>iPhone 17</span>
+            <span>Premium Line</span>
+            <span>Family Picks</span>
+          </div>
+        </div>
         <div class="aside-band">
           <strong>휴대폰성지 휴대폰광장</strong>
           <span>미장점, 미룡점, 나운점, 서천점까지 전지점 주소와 상담 번호를 한 번에 확인할 수 있는 프리미엄 통합 랜딩페이지.</span>
