@@ -324,31 +324,38 @@
       line-height: 1.76;
     }
     section { padding: 20px 0; }
-    #blog { padding: 60px 0; }
+    #blog { padding: 70px 0; background: linear-gradient(180deg,#0a0a0a 0%,#0a0a0a 100%); }
+    #blog .section-head h2 { color: #fff; }
+    #blog .section-head p  { color: var(--muted); }
     .blog-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
       max-width: 1100px;
       margin: 0 auto;
       padding: 0 1rem;
     }
     .blog-card {
-      background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 12px;
-      padding: 1.5rem;
-      transition: border-color .2s;
+      background: radial-gradient(ellipse at 20% 30%, #fffff8 0%, #ffffff 55%, #fdf9f3 100%);
+      border-radius: 14px;
+      padding: 0;
+      overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
       display: flex;
       flex-direction: column;
-      gap: .5rem;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.18);
     }
-    .blog-card:hover { border-color: var(--gold); }
-    .blog-card-date { font-size: .75rem; color: var(--muted); }
-    .blog-card-title { font-weight: 600; color: #fff; line-height: 1.45; flex: 1; }
-    .blog-card a { color: var(--gold); font-size: .85rem; text-decoration: none; }
-    .blog-card a:hover { color: var(--gold-bright); }
-    .blog-more { text-align: center; margin-top: 2rem; }
+    .blog-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.22); }
+    .blog-card-top { height: 4px; background: #0071e3; }
+    .blog-card-body { padding: 1.4rem 1.5rem 1rem; flex: 1; display: flex; flex-direction: column; gap: .5rem; }
+    .blog-card-date { font-size: .72rem; color: #86868b; letter-spacing: .5px; }
+    .blog-card-title { font-weight: 700; color: #1d1d1f; line-height: 1.4; flex: 1; font-size: .95rem; }
+    .blog-card-footer { padding: .9rem 1.5rem; border-top: 1px solid rgba(0,0,0,0.07);
+      display: flex; justify-content: space-between; align-items: center; }
+    .blog-card a { color: #0071e3; font-size: .82rem; text-decoration: none; letter-spacing: .3px; }
+    .blog-card a:hover { color: #0077ed; }
+    .blog-card-arrow { color: #86868b; font-size: 1rem; }
+    .blog-more { text-align: center; margin-top: 2.5rem; }
     .section-head {
       display: grid;
       grid-template-columns: minmax(0, 1fr) 420px;
@@ -1026,9 +1033,15 @@
           const title = item.title || '(제목 없음)';
           const link = item.link || '#';
           return `<div class="blog-card">
-            <div class="blog-card-date">${date}</div>
-            <div class="blog-card-title">${title}</div>
-            <a href="${link}" target="_blank" rel="noopener">포스트 보기 →</a>
+            <div class="blog-card-top"></div>
+            <div class="blog-card-body">
+              <div class="blog-card-date">${date}</div>
+              <div class="blog-card-title">${title}</div>
+            </div>
+            <div class="blog-card-footer">
+              <a href="${link}" target="_blank" rel="noopener">포스트 보기</a>
+              <span class="blog-card-arrow">→</span>
+            </div>
           </div>`;
         }).join('');
       } catch (e) {
