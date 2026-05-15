@@ -324,6 +324,31 @@
       line-height: 1.76;
     }
     section { padding: 20px 0; }
+    #blog { padding: 60px 0; }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    .blog-card {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color .2s;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+    .blog-card:hover { border-color: var(--gold); }
+    .blog-card-date { font-size: .75rem; color: var(--muted); }
+    .blog-card-title { font-weight: 600; color: #fff; line-height: 1.45; flex: 1; }
+    .blog-card a { color: var(--gold); font-size: .85rem; text-decoration: none; }
+    .blog-card a:hover { color: var(--gold-bright); }
+    .blog-more { text-align: center; margin-top: 2rem; }
     .section-head {
       display: grid;
       grid-template-columns: minmax(0, 1fr) 420px;
@@ -683,6 +708,7 @@
         <strong>휴대폰성지 휴대폰광장</strong>
       </div>
       <a class="nav-link" href="#stores">지점 찾기</a>
+      <a class="nav-link" href="#blog">최신소식</a>
     </div>
   </header>
 
@@ -954,6 +980,22 @@
       </div>
     </section>
 
+    <section id="blog">
+      <div class="section-head">
+        <h2>최신 소식</h2>
+        <p>휴대폰광장 네이버 블로그에서 최신 폰 정보와 매장 소식을 확인하세요.</p>
+      </div>
+      <div class="blog-grid" id="blog-cards">
+        <div class="blog-card" style="opacity:.4">
+          <div class="blog-card-date">불러오는 중...</div>
+          <div class="blog-card-title">최신 포스트를 가져오고 있습니다</div>
+        </div>
+      </div>
+      <div class="blog-more">
+        <a class="btn" href="https://blog.naver.com/sw112_" target="_blank" rel="noopener">블로그 더보기 →</a>
+      </div>
+    </section>
+
     <section class="cta">
       <div>
         <h2>한 장짜리 무드 페이지가 아니라, 읽을거리 있는 브랜드 랜딩으로.</h2>
@@ -971,6 +1013,29 @@
   </main>
 
   <script>
+    (async () => {
+      const RSS = 'https://rss.blog.naver.com/sw112_.xml';
+      const API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS)}`;
+      const grid = document.getElementById('blog-cards');
+      try {
+        const data = await fetch(API).then(r => r.json());
+        const items = (data.items || []).slice(0, 3);
+        if (!items.length) throw new Error('empty');
+        grid.innerHTML = items.map(item => {
+          const date = (item.pubDate || '').slice(0, 10);
+          const title = item.title || '(제목 없음)';
+          const link = item.link || '#';
+          return `<div class="blog-card">
+            <div class="blog-card-date">${date}</div>
+            <div class="blog-card-title">${title}</div>
+            <a href="${link}" target="_blank" rel="noopener">포스트 보기 →</a>
+          </div>`;
+        }).join('');
+      } catch (e) {
+        grid.innerHTML = '<p style="color:var(--muted);text-align:center;padding:2rem 0">블로그 포스트를 불러올 수 없습니다. <a href="https://blog.naver.com/sw112_" target="_blank" style="color:var(--gold)">블로그 바로가기 →</a></p>';
+      }
+    })();
+
     const buttons = document.querySelectorAll("[data-copy]");
     buttons.forEach((button) => {
       button.addEventListener("click", async () => {
