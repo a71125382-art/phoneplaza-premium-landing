@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>사전승낙서 | 휴대폰광장 TechNote</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #050507; --surface: #1c1c1e; --text: #f5f5f7;
+      --blue: #2997ff; --muted: #86868b; --border: rgba(255,255,255,0.08);
+    }
+    body {
+      background: var(--bg);
+      font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+      color: var(--text); min-height: 100dvh; display: flex; flex-direction: column;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed; top: 0; left: 0; right: 0; height: 45vh;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 50%, transparent 100%);
+      pointer-events: none; z-index: 0;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 44px;
+      background: rgba(5,5,7,0.8);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .back { display: flex; align-items: center; gap: 6px; font-size: 14px; color: rgba(255,255,255,0.5); font-weight: 500; transition: color .2s; }
+    .back:hover { color: rgba(255,255,255,0.85); }
+    .brand { display: flex; align-items: baseline; gap: 7px; }
+    .brand-ko { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+    .brand-en { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 13px; color: rgba(255,255,255,0.45); letter-spacing: 0.8px; }
+
+    main { position: relative; z-index: 1; flex: 1; max-width: 860px; margin: 0 auto; width: 100%; padding: 52px 24px 60px; }
+
+    .page-title { font-size: 36px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; color: #fff; }
+    .page-sub { font-size: 15px; color: var(--muted); margin-bottom: 44px; }
+
+    .branch-section { margin-bottom: 28px; }
+
+    .branch-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+
+    .branch-label {
+      font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.07);
+      padding: 4px 10px; border-radius: 20px;
+    }
+
+    .branch-title { font-size: 18px; font-weight: 700; color: #fff; }
+
+    .approval-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .approval-card {
+      background: var(--surface);
+      border-radius: 24px; padding: 20px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .approval-card:hover {
+      border-color: rgba(255,255,255,0.14);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .approval-type { display: flex; align-items: center; gap: 10px; }
+    .approval-icon { font-size: 22px; }
+    .approval-label { font-size: 14px; font-weight: 600; color: #fff; }
+    .approval-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    .approval-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 12px; font-weight: 600;
+      padding: 8px 14px; border-radius: 10px;
+      white-space: nowrap; flex-shrink: 0; transition: background .2s;
+    }
+    .approval-btn:hover { background: rgba(255,255,255,0.16); }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+    .notice {
+      background: rgba(255,214,10,0.06);
+      border: 1px solid rgba(255,214,10,0.2);
+      border-radius: 14px; padding: 16px 20px;
+      font-size: 13px; color: #ffd60a;
+      line-height: 1.7; margin-top: 36px;
+    }
+
+    footer {
+      text-align: center; padding: 16px 20px 22px;
+      font-size: 11px; color: rgba(255,255,255,0.2); line-height: 1.8;
+      background: rgba(0,0,0,0.4); border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 16px 20px; }
+      .approval-row { grid-template-columns: 1fr; }
+      .page-title { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="back" href="index.html">← 홈으로</a>
+  <div class="brand">
+    <span class="brand-ko">휴대폰광장</span>
+    <span class="brand-en">TechNote</span>
+  </div>
+</header>
+
+<main>
+  <div class="page-title">📋 사전승낙서</div>
+  <div class="page-sub">지점별 무선·유선 사전승낙서를 확인하세요.</div>
+
+  <!-- 나운점 -->
+  <div class="branch-section">
+    <div class="branch-header">
+      <span class="branch-label">전북 군산</span>
+      <span class="branch-title">나운점</span>
+    </div>
+    <div class="approval-row">
+      <div class="approval-card">
+        <div class="approval-type">
+          <span class="approval-icon">📶</span>
+          <div>
+            <div class="approval-label">무선 사전승낙서</div>
+            <div class="approval-sub">이동통신 서비스</div>
+          </div>
+        </div>
+        <a class="approval-btn" href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000179608&seq=1&yn=1" target="_blank">열기 →</a>
+      </div>
+      <div class="approval-card">
+        <div class="approval-type">
+          <span class="approval-icon">🔌</span>
+          <div>
+            <div class="approval-label">유선 사전승낙서</div>
+            <div class="approval-sub">인터넷·TV 서비스</div>
+          </div>
+        </div>
+        <a class="approval-btn" href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000179639&seq=1&yn=1" target="_blank">열기 →</a>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 미룡점 -->
+  <div class="branch-section">
+    <div class="branch-header">
+      <span class="branch-label">전북 군산</span>
+      <span class="branch-title">미룡점</span>
+    </div>
+    <div class="approval-row">
+      <div class="approval-card">
+        <div class="approval-type">
+          <span class="approval-icon">📶</span>
+          <div>
+            <div class="approval-label">무선 사전승낙서</div>
+            <div class="approval-sub">이동통신 서비스</div>
+          </div>
+        </div>
+        <a class="approval-btn" href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000053595&seq=1&yn=1" target="_blank">열기 →</a>
+      </div>
+      <div class="approval-card">
+        <div class="approval-type">
+          <span class="approval-icon">🔌</span>
+          <div>
+            <div class="approval-label">유선 사전승낙서</div>
+            <div class="approval-sub">인터넷·TV 서비스</div>
+          </div>
+        </div>
+        <a class="approval-btn" href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000054720&seq=1&yn=1" target="_blank">열기 →</a>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 미장점 -->
+  <div class="branch-section">
+    <div class="branch-header">
+      <span class="branch-label">전북 군산</span>
+      <span class="branch-title">미장점</span>
+    </div>
+    <div class="approval-row">
+      <div class="approval-card">
+        <div class="approval-type">
+          <span class="approval-icon">📶</span>
+          <div>
+            <div class="approval-label">무선 사전승낙서</div>
+            <div class="approval-sub">이동통신 서비스</div>
+          </div>
+        </div>
+        <a class="approval-btn" href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000165400&seq=1&yn=1" target="_blank">열기 →</a>
+      </div>
+      <div class="approval-card">
+        <div class="approval-type">
+          <span class="approval-icon">🔌</span>
+          <div>
+            <div class="approval-label">유선 사전승낙서</div>
+            <div class="approval-sub">인터넷·TV 서비스</div>
+          </div>
+        </div>
+        <a class="approval-btn" href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000165401&seq=1&yn=1" target="_blank">열기 →</a>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 서천점 -->
+  <div class="branch-section">
+    <div class="branch-header">
+      <span class="branch-label">충남 서천</span>
+      <span class="branch-title">서천점</span>
+    </div>
+    <div class="approval-row">
+      <div class="approval-card">
+        <div class="approval-type">
+          <span class="approval-icon">📶</span>
+          <div>
+            <div class="approval-label">무선 사전승낙서</div>
+            <div class="approval-sub">이동통신 서비스</div>
+          </div>
+        </div>
+        <a class="approval-btn" href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000114646&seq=1&yn=1" target="_blank">열기 →</a>
+      </div>
+      <div class="approval-card">
+        <div class="approval-type">
+          <span class="approval-icon">🔌</span>
+          <div>
+            <div class="approval-label">유선 사전승낙서</div>
+            <div class="approval-sub">인터넷·TV 서비스</div>
+          </div>
+        </div>
+        <a class="approval-btn" href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000114627&seq=1&yn=1" target="_blank">열기 →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice">
+    ⚠️ 사전승낙서는 통신 서비스 가입 시 필수 확인 서류입니다. 링크를 눌러 내용을 확인한 후 서명하세요.
+  </div>
+</main>
+
+<footer>
+  대표 이성완 &nbsp;|&nbsp; 사업자등록번호 176-10-01227<br>
+  충청남도 서천군 서천읍 서천로 182
+</footer>
+
+</body>
+</html>

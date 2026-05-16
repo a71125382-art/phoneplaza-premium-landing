@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>지점 안내 | 휴대폰광장 TechNote</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #050507;
+      --text: #f5f5f7;
+      --muted: #86868b;
+      --border: rgba(255,255,255,0.07);
+    }
+
+    body {
+      background: var(--bg);
+      font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+      color: var(--text);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* 상단 화이트 그라데이션 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 45vh;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 50%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    header {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 44px;
+      background: rgba(5,5,7,0.8);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .back {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 14px; color: rgba(255,255,255,0.5); font-weight: 500;
+      transition: color .2s;
+    }
+    .back:hover { color: rgba(255,255,255,0.85); }
+
+    .brand { display: flex; align-items: baseline; gap: 7px; }
+    .brand-ko { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+    .brand-en {
+      font-family: 'Inter', sans-serif; font-weight: 800;
+      font-size: 13px; color: rgba(255,255,255,0.45); letter-spacing: 0.8px;
+    }
+
+    main {
+      position: relative; z-index: 1;
+      flex: 1; max-width: 880px; margin: 0 auto;
+      width: 100%; padding: 52px 24px 60px;
+    }
+
+    .page-title {
+      font-size: 36px; font-weight: 700; letter-spacing: -0.5px;
+      color: #fff; margin-bottom: 8px;
+    }
+    .page-sub { font-size: 15px; color: var(--muted); margin-bottom: 44px; }
+
+    /* ── Branch Grid ── */
+    .branch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .branch-card {
+      background: linear-gradient(
+        145deg,
+        rgba(255,255,255,0.05) 0%,
+        rgba(255,255,255,0.01) 50%,
+        rgba(10,10,14,0.9) 100%
+      );
+      border-radius: 28px;
+      padding: 28px 24px;
+      border: none;
+      position: relative;
+      box-shadow:
+        0 0 24px rgba(255,255,255,0.02),
+        0 8px 32px rgba(0,0,0,0.4);
+      transition: box-shadow .25s, transform .25s;
+    }
+
+    /* 그라데이션 테두리 */
+    .branch-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      padding: 1px;
+      background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.22) 0%,
+        rgba(255,255,255,0.05) 40%,
+        rgba(255,255,255,0.01) 65%,
+        rgba(255,255,255,0.10) 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      transition: opacity .25s;
+    }
+
+    .branch-card:hover {
+      box-shadow: 0 0 40px rgba(255,255,255,0.05), 0 16px 48px rgba(0,0,0,0.5);
+      transform: translateY(-3px);
+    }
+
+    .branch-card:hover::before {
+      background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.35) 0%,
+        rgba(255,255,255,0.08) 40%,
+        rgba(255,255,255,0.02) 65%,
+        rgba(255,255,255,0.16) 100%
+      );
+    }
+
+    /* Tag */
+    .branch-tag {
+      display: inline-flex;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 100%);
+      border: 1px solid rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.55);
+      font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 20px;
+      margin-bottom: 14px; letter-spacing: 0.3px;
+    }
+
+    .branch-name {
+      font-size: 22px; font-weight: 700;
+      letter-spacing: -0.5px; color: #fff;
+      margin-bottom: 18px;
+    }
+
+    .branch-info { display: flex; flex-direction: column; gap: 11px; }
+
+    .branch-row {
+      display: flex; align-items: flex-start;
+      gap: 10px; font-size: 14px; line-height: 1.5;
+    }
+    .branch-row-icon { font-size: 15px; margin-top: 1px; flex-shrink: 0; opacity: 0.7; }
+    .branch-row-text { color: rgba(255,255,255,0.75); }
+    .branch-row-text.muted { color: var(--muted); font-size: 13px; }
+
+    /* Actions */
+    .branch-actions { display: flex; gap: 8px; margin-top: 22px; }
+
+    .btn-call {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 100%);
+      border: none;
+      position: relative;
+      color: rgba(255,255,255,0.85);
+      border-radius: 14px; padding: 12px 0;
+      font-size: 13px; font-weight: 600;
+      transition: box-shadow .2s, transform .15s;
+    }
+
+    /* 버튼 그라데이션 테두리 */
+    .btn-call::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      padding: 1px;
+      background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.20) 0%,
+        rgba(255,255,255,0.04) 50%,
+        rgba(255,255,255,0.08) 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .btn-call:hover {
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.07) 100%);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-call.secondary {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* Footer */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center; padding: 16px 20px 22px;
+      font-size: 11px; color: rgba(255,255,255,0.18); line-height: 1.8;
+      background: rgba(0,0,0,0.4);
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 16px 20px; }
+      .branch-grid { grid-template-columns: 1fr; }
+      .page-title { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="back" href="index.html">← 홈으로</a>
+  <div class="brand">
+    <span class="brand-ko">휴대폰광장</span>
+    <span class="brand-en">TechNote</span>
+  </div>
+</header>
+
+<main>
+  <div class="page-title">📍 지점 안내</div>
+  <div class="page-sub">휴대폰광장 4개 지점의 위치와 연락처입니다.</div>
+
+  <div class="branch-grid">
+
+    <div class="branch-card">
+      <div class="branch-tag">전북 군산</div>
+      <div class="branch-name">나운점</div>
+      <div class="branch-info">
+        <div class="branch-row">
+          <span class="branch-row-icon">🏢</span>
+          <span class="branch-row-text">전북특별자치도 군산시 문화로 47 2동 103호</span>
+        </div>
+        <div class="branch-row">
+          <span class="branch-row-icon">📞</span>
+          <div>
+            <div class="branch-row-text">0507-1344-4288</div>
+            <div class="branch-row-text muted">063-466-4288</div>
+          </div>
+        </div>
+      </div>
+      <div class="branch-actions">
+        <a class="btn-call" href="tel:0507-1344-4288">📞 전화하기</a>
+        <a class="btn-call secondary" href="tel:063-466-4288">063 번호</a>
+      </div>
+    </div>
+
+    <div class="branch-card">
+      <div class="branch-tag">전북 군산</div>
+      <div class="branch-name">미룡점</div>
+      <div class="branch-info">
+        <div class="branch-row">
+          <span class="branch-row-icon">🏢</span>
+          <span class="branch-row-text">전북특별자치도 군산시 미제2길 19</span>
+        </div>
+        <div class="branch-row">
+          <span class="branch-row-icon">📞</span>
+          <span class="branch-row-text">0504-4649-6728</span>
+        </div>
+      </div>
+      <div class="branch-actions">
+        <a class="btn-call" href="tel:0504-4649-6728">📞 전화하기</a>
+      </div>
+    </div>
+
+    <div class="branch-card">
+      <div class="branch-tag">전북 군산</div>
+      <div class="branch-name">미장점</div>
+      <div class="branch-info">
+        <div class="branch-row">
+          <span class="branch-row-icon">🏢</span>
+          <span class="branch-row-text">전북특별자치도 군산시 공단대로 131</span>
+        </div>
+        <div class="branch-row">
+          <span class="branch-row-icon">📞</span>
+          <span class="branch-row-text">0507-1358-4288</span>
+        </div>
+      </div>
+      <div class="branch-actions">
+        <a class="btn-call" href="tel:0507-1358-4288">📞 전화하기</a>
+      </div>
+    </div>
+
+    <div class="branch-card">
+      <div class="branch-tag">충남 서천</div>
+      <div class="branch-name">서천점</div>
+      <div class="branch-info">
+        <div class="branch-row">
+          <span class="branch-row-icon">🏢</span>
+          <span class="branch-row-text">충청남도 서천군 서천읍 서천로 182</span>
+        </div>
+        <div class="branch-row">
+          <span class="branch-row-icon">📞</span>
+          <div>
+            <div class="branch-row-text">041-951-5288</div>
+            <div class="branch-row-text muted">010-3003-4288</div>
+          </div>
+        </div>
+      </div>
+      <div class="branch-actions">
+        <a class="btn-call" href="tel:041-951-5288">📞 전화하기</a>
+        <a class="btn-call secondary" href="tel:010-3003-4288">휴대폰</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  대표 이성완 &nbsp;|&nbsp; 사업자등록번호 176-10-01227 &nbsp;|&nbsp; 충청남도 서천군 서천읍 서천로 182
+</footer>
+
+</body>
+</html>

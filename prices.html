@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>이달의 혜택 | 휴대폰광장 TechNote</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #050507; --surface: #1c1c1e; --text: #f5f5f7;
+      --blue: #2997ff; --muted: #86868b; --border: rgba(255,255,255,0.08);
+    }
+    body {
+      background: var(--bg);
+      font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+      color: var(--text); min-height: 100dvh; display: flex; flex-direction: column;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed; top: 0; left: 0; right: 0; height: 45vh;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 50%, transparent 100%);
+      pointer-events: none; z-index: 0;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 44px;
+      background: rgba(5,5,7,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100;
+    }
+    .back { display: flex; align-items: center; gap: 6px; font-size: 14px; color: rgba(255,255,255,0.5); font-weight: 500; transition: color .2s; }
+    .back:hover { color: rgba(255,255,255,0.85); }
+    .brand { display: flex; align-items: baseline; gap: 7px; }
+    .brand-ko { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+    .brand-en { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 13px; color: rgba(255,255,255,0.45); letter-spacing: 0.8px; }
+
+    main { position: relative; z-index: 1; flex: 1; max-width: 860px; margin: 0 auto; width: 100%; padding: 52px 24px 60px; }
+
+    .page-title { font-size: 36px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; color: #fff; }
+    .page-sub { font-size: 15px; color: var(--muted); margin-bottom: 44px; }
+
+    .cta-card {
+      background: var(--surface); border-radius: 24px; padding: 48px 40px;
+      text-align: center; border: 1px solid var(--border); margin-bottom: 28px;
+    }
+
+    .cta-emoji { font-size: 48px; margin-bottom: 20px; }
+
+    .cta-heading { font-size: 26px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 12px; color: #fff; }
+
+    .cta-body { font-size: 15px; color: var(--muted); line-height: 1.7; max-width: 400px; margin: 0 auto 28px; }
+
+    .cta-buttons { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.95);
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 15px; font-weight: 600; padding: 13px 26px; border-radius: 40px; transition: background .2s;
+    }
+    .btn-primary:hover { background: rgba(255,255,255,0.18); }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 15px; font-weight: 600; padding: 13px 26px; border-radius: 40px; transition: background .2s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+    .branch-phones { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .phone-card {
+      background: var(--surface); border-radius: 16px; padding: 20px;
+      display: flex; align-items: center; gap: 14px;
+      border: 1px solid var(--border); transition: border-color .2s;
+    }
+    .phone-card:hover { border-color: rgba(41,151,255,0.35); }
+
+    .phone-icon { font-size: 28px; }
+    .phone-branch { font-size: 13px; color: var(--muted); }
+    .phone-number { font-size: 16px; font-weight: 700; margin-top: 2px; color: #fff; }
+
+    footer {
+      text-align: center; padding: 16px 20px 22px;
+      font-size: 11px; color: rgba(255,255,255,0.2); line-height: 1.8;
+      background: rgba(0,0,0,0.4); border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 16px 20px; }
+      .page-title { font-size: 28px; }
+      .cta-card { padding: 36px 24px; }
+      .branch-phones { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="back" href="index.html">← 홈으로</a>
+  <div class="brand">
+    <span class="brand-ko">휴대폰광장</span>
+    <span class="brand-en">TechNote</span>
+  </div>
+</header>
+
+<main>
+  <div class="page-title">💎 이달의 혜택</div>
+  <div class="page-sub">최신 단가표와 이달의 특가 혜택을 안내해 드립니다.</div>
+
+  <div class="cta-card">
+    <div class="cta-emoji">📲</div>
+    <div class="cta-heading">최적 요금제 & 특가 혜택<br>전문가 상담 받아보세요</div>
+    <div class="cta-body">
+      단가표는 매일 변동됩니다. 정확한 가격과 프로모션은<br>
+      전화 상담을 통해 실시간으로 확인해 드립니다.<br>
+      번호이동·기기변경·신규가입 모두 최대 혜택으로!
+    </div>
+    <div class="cta-buttons">
+      <a class="btn-primary" href="tel:0507-1344-4288">📞 바로 전화 상담</a>
+      <a class="btn-secondary" href="https://blog.naver.com/sw112_" target="_blank">📰 블로그 단가 확인</a>
+    </div>
+  </div>
+
+  <div class="branch-phones">
+    <a class="phone-card" href="tel:0507-1344-4288">
+      <div class="phone-icon">📍</div>
+      <div>
+        <div class="phone-branch">나운점</div>
+        <div class="phone-number">0507-1344-4288</div>
+      </div>
+    </a>
+    <a class="phone-card" href="tel:0504-4649-6728">
+      <div class="phone-icon">📍</div>
+      <div>
+        <div class="phone-branch">미룡점</div>
+        <div class="phone-number">0504-4649-6728</div>
+      </div>
+    </a>
+    <a class="phone-card" href="tel:0507-1358-4288">
+      <div class="phone-icon">📍</div>
+      <div>
+        <div class="phone-branch">미장점</div>
+        <div class="phone-number">0507-1358-4288</div>
+      </div>
+    </a>
+    <a class="phone-card" href="tel:041-951-5288">
+      <div class="phone-icon">📍</div>
+      <div>
+        <div class="phone-branch">서천점</div>
+        <div class="phone-number">041-951-5288</div>
+      </div>
+    </a>
+  </div>
+</main>
+
+<footer>
+  대표 이성완 &nbsp;|&nbsp; 사업자등록번호 176-10-01227<br>
+  충청남도 서천군 서천읍 서천로 182
+</footer>
+
+</body>
+</html>

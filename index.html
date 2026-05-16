@@ -3,1216 +3,526 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>휴대폰성지 휴대폰광장 | 전국 상담 가능한 프리미엄 휴대폰 매장</title>
-  <meta name="description" content="휴대폰성지 휴대폰광장. 미장점, 미룡점, 나운점, 서천점까지 전지점 주소와 상담 번호를 한 번에 확인할 수 있는 프리미엄 통합 랜딩페이지.">
+  <title>휴대폰광장 TechNote | 군산·서천 프리미엄 휴대폰</title>
+  <meta name="description" content="군산·서천 프리미엄 휴대폰 전문점 휴대폰광장.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg: #f5f5f7;
-      --bg-2: #ffffff;
-      --panel: rgba(255, 255, 255, 0.92);
-      --panel-soft: rgba(0, 0, 0, 0.03);
-      --gold: #0071e3;
-      --gold-bright: #0077ed;
-      --text: #1d1d1f;
-      --muted: #6e6e73;
-      --line: #d2d2d7;
-      --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-      --max: 1280px;
+      --bg: #050507;
+      --text: #f5f5f7;
+      --muted: #86868b;
+      --blue: #2997ff;
+      --border: rgba(255,255,255,0.08);
+      --card: rgba(28,28,32,0.85);
     }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+
+    html, body {
+      height: 100%;
+    }
+
     body {
-      margin: 0;
-      color: var(--text);
-      font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", -apple-system, sans-serif;
-      font-weight: 400;
       background: var(--bg);
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      color: var(--text);
+      overflow-x: hidden;
     }
-    a { color: inherit; text-decoration: none; }
-    button { font: inherit; }
-    img { display: block; max-width: 100%; }
-    .page { width: min(calc(100% - 28px), var(--max)); margin: 0 auto; }
-    /* ── 스티키 nav ── */
-    .site-header {
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── 배경 글로우 ── */
+    .bg-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.01) 30%, transparent 55%),
+        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,255,255,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 65%);
+    }
+
+    /* ── Header ── */
+    header {
       position: sticky;
       top: 0;
       z-index: 100;
-      transition: background .25s, box-shadow .25s, backdrop-filter .25s;
-    }
-    .site-header.scrolled {
-      background: rgba(245,245,247,.88);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      box-shadow: 0 1px 0 rgba(0,0,0,.08);
-    }
-    .nav {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 16px;
-      padding: 18px 0;
+      justify-content: space-between;
+      padding: 18px 44px;
+      background: rgba(5,5,7,0.75);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
     }
-    .brand {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .brand span {
-      color: #0071e3;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-    }
-    .brand strong {
-      font-size: 17px;
-      font-weight: 500;
-      letter-spacing: -.02em;
-      color: #1d1d1f;
+
+    .brand { display: flex; align-items: baseline; gap: 8px; }
+    .brand-ko {
+      font-size: 16px; font-weight: 700; letter-spacing: -0.3px;
+      color: #ffffff;
     }
     .brand-en {
-      font-family: "Inter", sans-serif;
-      font-style: normal;
-      font-weight: 800;
-      letter-spacing: -.05em;
+      font-family: 'Inter', sans-serif; font-weight: 800;
+      font-size: 13px; color: rgba(255,255,255,0.5); letter-spacing: 0.8px;
     }
-    .nav-link,
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 0 20px;
-      border-radius: 980px;
-      border: 1px solid var(--line);
-      background: #fff;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text);
-      transition: background .15s;
+
+    .header-contact {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 13px; color: var(--muted);
+      transition: color .2s;
     }
-    .btn:hover { background: #f5f5f7; }
-    .btn.primary {
-      color: #fff;
-      border: 0;
-      background: #1d1d1f;
-      box-shadow: none;
-    }
-    .btn.primary:hover { background: #3d3d3f; }
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) 370px;
-      gap: 18px;
-      padding: 14px 0 28px;
-    }
-    .hero-main,
-    .hero-side,
-    .panel,
-    .model-card,
-    .store-card,
-    .review-card,
-    .cta {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-    }
-    /* ── 카드 호버 리프트 ── */
-    .panel,
-    .model-card,
-    .store-card,
-    .review-card,
-    .side-box,
-    .stat {
-      transition: transform .22s ease, box-shadow .22s ease;
-    }
-    .panel:hover,
-    .model-card:hover,
-    .store-card:hover,
-    .review-card:hover,
-    .side-box:hover,
-    .stat:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 16px 48px rgba(0,0,0,.1);
-    }
-    .hero-main {
-      position: relative;
-      overflow: hidden;
-      border-radius: 24px;
-      padding: 42px;
-      min-height: 760px;
-      background: #ffffff;
-    }
-    .hero-main::after { display: none; }
-    .hero-copy,
-    .hero-visual,
-    .hero-stats {
+    .header-contact:hover { color: rgba(255,255,255,0.85); }
+
+    /* ── Main ── */
+    main {
       position: relative;
       z-index: 1;
-    }
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      padding: 4px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: transparent;
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 16px 0 14px;
-      max-width: 640px;
-      font-size: clamp(40px, 5vw, 72px);
-      line-height: 1.0;
-      letter-spacing: -.03em;
-      font-weight: 600;
-      color: #1d1d1f;
-    }
-    h1 span {
-      display: block;
-      font-weight: 700;
-      color: #1d1d1f;
-    }
-    .lead {
-      margin: 0;
-      max-width: 620px;
-      color: var(--muted);
-      font-size: 18px;
-      line-height: 1.9;
-    }
-    .hero-visual {
-      margin-top: 28px;
-      padding: 24px;
-      border-radius: 16px;
-      border: 1px solid var(--line);
-      background: #f5f5f7;
-    }
-    .hero-visual-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-    .hero-visual-top strong {
-      display: block;
-      color: #0071e3;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .hero-visual-top h2 {
-      font-weight: 500;
-      margin: 0;
-      font-size: clamp(28px, 4vw, 46px);
-      line-height: .96;
-      letter-spacing: -.07em;
-    }
-    .hero-visual-top p {
-      margin: 10px 0 0;
-      max-width: 520px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.8;
-    }
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: flex-end;
-    }
-    .chip-row span {
-      display: inline-flex;
-      align-items: center;
-      min-height: 34px;
-      padding: 0 12px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: #f5f5f7;
-      font-size: 12px;
-      font-weight: 700;
-    }
-    .visual-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .visual-card {
-      overflow: hidden;
-      border-radius: 22px;
-      border: 1px solid var(--line);
-      background: #f5f5f7;
-    }
-    .visual-card img {
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-      object-position: center;
-    }
-    .visual-card.apple img {
-      background: #fff;
-      object-fit: contain;
-      padding: 10px;
-    }
-    .visual-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 16px;
-      border-top: 1px solid var(--line);
-      background: #fff;
-    }
-    .visual-meta strong {
-      display: block;
-      font-size: 22px;
-      line-height: 1;
-      letter-spacing: -.05em;
-      color: var(--gold-bright);
-    }
-    .visual-meta span {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.55;
-      text-align: right;
-    }
-    .hero-stats {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 16px;
-    }
-    .stat {
-      padding: 18px;
-      border-radius: 22px;
-      border: 1px solid var(--line);
-      background: #f5f5f7;
-    }
-    .stat strong {
-      display: block;
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .stat em {
-      display: block;
-      font-style: normal;
-      font-size: 28px;
-      font-weight: 600;
-      line-height: 1;
-      letter-spacing: -.03em;
-      color: #1d1d1f;
-      margin-bottom: 8px;
-    }
-    .stat span {
-      display: block;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.72;
-    }
-    .hero-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 18px;
-    }
-    .hero-side {
-      border-radius: 34px;
-      padding: 28px;
-      display: grid;
-      gap: 14px;
-      align-content: start;
-    }
-    .hero-side h2 {
-      margin: 0;
-      font-size: 26px;
-      line-height: 1.2;
-      letter-spacing: -.025em;
-      font-weight: 600;
-      color: #1d1d1f;
-    }
-    .hero-side p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.84;
-    }
-    .side-box {
-      padding: 18px;
-      border-radius: 20px;
-      border: 1px solid var(--line);
-      background: #f5f5f7;
-    }
-    .side-box strong {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 16px;
-    }
-    .side-box span {
-      display: block;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.76;
-    }
-    section { padding: 20px 0; }
-    #blog { padding: 70px 0; background: #f5f5f7; }
-    #blog .section-head h2 { color: #1d1d1f; }
-    #blog .section-head p  { color: var(--muted); }
-    .blog-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.25rem;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-    .blog-card {
-      background: #ffffff;
-      border-radius: 14px;
-      padding: 0;
-      overflow: hidden;
-      transition: transform .2s, box-shadow .2s;
+      flex: 1;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.18);
-    }
-    .blog-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.22); }
-    .blog-card-top { height: 4px; background: #0071e3; }
-    .blog-card-body { padding: 1.4rem 1.5rem 1rem; flex: 1; display: flex; flex-direction: column; gap: .5rem; }
-    .blog-card-date { font-size: .72rem; color: #86868b; letter-spacing: .5px; }
-    .blog-card-title { font-weight: 700; color: #1d1d1f; line-height: 1.4; flex: 1; font-size: .95rem; }
-    .blog-card-footer { padding: .9rem 1.5rem; border-top: 1px solid rgba(0,0,0,0.07);
-      display: flex; justify-content: space-between; align-items: center; }
-    .blog-card a { color: #0071e3; font-size: .82rem; text-decoration: none; letter-spacing: .3px; }
-    .blog-card a:hover { color: #0077ed; }
-    .blog-card-arrow { color: #86868b; font-size: 1rem; }
-    .blog-more { text-align: center; margin-top: 2.5rem; }
-    .section-head {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 420px;
-      gap: 18px;
-      align-items: end;
-      margin-bottom: 18px;
-    }
-    .section-head h2 {
-      margin: 0;
-      font-size: clamp(30px, 3.5vw, 48px);
-      line-height: 1.05;
-      letter-spacing: -.03em;
-      font-weight: 600;
-      color: #1d1d1f;
-    }
-    .section-head p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.82;
-    }
-    .why-grid {
-      display: grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 18px;
-    }
-    .panel {
-      border-radius: 34px;
-      padding: 32px;
-    }
-    .why-main p {
-      margin: 0;
-      color: var(--text);
-      font-size: 22px;
-      line-height: 1.78;
-      letter-spacing: -.03em;
-    }
-    .why-list {
-      display: grid;
-      gap: 12px;
-    }
-    .why-item {
-      padding: 18px;
-      border-radius: 20px;
-      border: 1px solid var(--line);
-      background: #f5f5f7;
-    }
-    .why-item strong {
-      display: block;
-      color: var(--gold);
-      font-size: 12px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .why-item span {
-      display: block;
-      font-size: 15px;
-      line-height: 1.76;
-      color: var(--text);
-    }
-    .models {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 16px;
-    }
-    .model-card {
-      border-radius: 28px;
-      overflow: hidden;
-      display: grid;
-      grid-template-rows: 220px 1fr;
-    }
-    .model-card img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-    }
-    .model-card.apple img {
-      background: #fff;
-      object-fit: contain;
-      padding: 8px;
-    }
-    .model-copy {
-      padding: 22px;
-    }
-    .model-copy strong {
-      display: block;
-      color: var(--gold);
-      font-size: 12px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-    .model-copy h3 {
-      margin: 0 0 10px;
-      font-size: 34px;
-      line-height: .96;
-      letter-spacing: -.06em;
-    }
-    .model-copy p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.8;
-    }
-    .stores {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
-    .store-card {
-      border-radius: 30px;
-      overflow: hidden;
-    }
-    .store-photo {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      background: #e8e8ed;
-    }
-    .store-body {
-      padding: 24px;
-      display: grid;
-      gap: 14px;
-    }
-    .store-body .tag {
-      display: inline-flex;
-      color: var(--gold-bright);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .store-body h3 {
-      margin: 0;
-      font-size: 34px;
-      line-height: .96;
-      letter-spacing: -.06em;
-    }
-    .store-name {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.72;
-      margin: 0;
-    }
-    .store-desc {
-      margin: 0;
-      font-size: 15px;
-      line-height: 1.82;
-      color: var(--text);
-    }
-    .info-row {
-      display: grid;
-      gap: 10px;
-    }
-    .info-box {
-      padding: 14px 16px;
-      border-radius: 18px;
-      border: 1px solid var(--line);
-      background: #fff;
-    }
-    .info-box span {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-    .info-box strong {
-      display: block;
-      font-size: 15px;
-      line-height: 1.68;
-      letter-spacing: -.02em;
-    }
-    .phone-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .phone-chip {
-      display: inline-flex;
       align-items: center;
-      gap: 8px;
-      min-height: 42px;
-      padding: 0 14px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: #fff;
-      font-size: 13px;
-      font-weight: 700;
+      justify-content: center;
+      padding: 20px 16px 12px;
     }
-    .phone-chip button {
-      border: 0;
-      background: transparent;
-      color: var(--gold);
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      padding: 0;
+
+    /* ── Hub ── */
+    .hub {
+      position: relative;
+      width: 640px;
+      height: 640px;
+      flex-shrink: 0;
     }
-    .reviews {
-      display: grid;
-      grid-template-columns: 320px minmax(0, 1fr);
-      gap: 16px;
+
+    .hub-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
     }
-    .review-card {
-      border-radius: 30px;
-      padding: 26px;
+
+    /* Orbit rings */
+    .orbit-outer {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 540px; height: 540px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.04);
+      pointer-events: none;
+      animation: spin-cw 80s linear infinite;
     }
-    .review-score strong {
-      display: block;
-      color: var(--gold);
-      font-size: 12px;
-      letter-spacing: .14em;
+
+    .orbit-inner {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 270px; height: 270px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.07);
+      pointer-events: none;
+      animation: spin-ccw 45s linear infinite;
+    }
+
+    @keyframes spin-cw  { to { transform: translate(-50%,-50%) rotate(360deg);  } }
+    @keyframes spin-ccw { to { transform: translate(-50%,-50%) rotate(-360deg); } }
+
+    /* ── Center ── */
+    .hub-center {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px; height: 200px;
+      background: #111113;
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      border-radius: 50%;
+      border: none;
+      box-shadow:
+        0 0 80px rgba(255,255,255,0.05),
+        0 24px 64px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      z-index: 10;
+      animation: center-breathe 5s ease-in-out infinite;
+    }
+
+    /* 중앙 원 그라데이션 테두리 */
+    .hub-center::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      padding: 1px;
+      background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.28) 0%,
+        rgba(255,255,255,0.06) 40%,
+        rgba(255,255,255,0.02) 65%,
+        rgba(255,255,255,0.14) 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    @keyframes center-breathe {
+      0%,100% { box-shadow: 0 0 60px rgba(255,255,255,0.05), 0 20px 60px rgba(0,0,0,0.5); }
+      50%      { box-shadow: 0 0 100px rgba(255,255,255,0.10), 0 20px 60px rgba(0,0,0,0.5); }
+    }
+
+    .hub-center-ko {
+      font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: #ffffff;
+    }
+    .hub-center-en {
+      font-family: 'Inter', sans-serif; font-weight: 800;
+      font-size: 15px; color: rgba(255,255,255,0.55); letter-spacing: 1px; margin-top: 3px;
+    }
+    .hub-center-sub {
+      font-size: 10px; color: var(--muted);
+      margin-top: 10px; line-height: 1.7;
+    }
+
+    /* ── Nodes ── */
+    .hub-node {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      width: 114px;
+      text-align: center;
+      z-index: 10;
+    }
+
+    @keyframes card-in {
+      from { opacity: 0; transform: scale(0.78); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .hub-node-card {
+      background: #111113;
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-radius: 32px;
+      padding: 22px 10px 16px;
+      border: none;
+      position: relative;
+      box-shadow:
+        0 0 28px rgba(255,255,255,0.04),
+        0 10px 40px rgba(0,0,0,0.5);
+      transition:
+        transform .3s cubic-bezier(.34,1.56,.64,1),
+        box-shadow .25s ease;
+    }
+
+    /* 그라데이션 테두리 */
+    .hub-node-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 32px;
+      padding: 1px;
+      background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.22) 0%,
+        rgba(255,255,255,0.06) 35%,
+        rgba(255,255,255,0.02) 60%,
+        rgba(255,255,255,0.10) 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      transition: opacity .25s ease;
+    }
+
+    .hub-node:hover .hub-node-card {
+      transform: scale(1.1) translateY(-5px);
+      box-shadow:
+        0 0 40px rgba(255,255,255,0.07),
+        0 28px 70px rgba(0,0,0,0.55);
+    }
+
+    .hub-node:hover .hub-node-card::before {
+      background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.35) 0%,
+        rgba(255,255,255,0.08) 35%,
+        rgba(255,255,255,0.03) 60%,
+        rgba(255,255,255,0.16) 100%
+      );
+    }
+
+    .hub-node-icon-wrap {
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 10px;
+      font-size: 22px;
+    }
+
+    .hub-node-name {
+      font-size: 12px; font-weight: 700; letter-spacing: -0.2px;
+      color: #f5f5f7; line-height: 1.3;
+    }
+
+    .hub-node-desc {
+      font-size: 9.5px; color: var(--muted);
+      margin-top: 4px; line-height: 1.4;
+    }
+
+    /* ── Tagline ── */
+    .hub-tagline {
+      margin-top: 24px;
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 2px;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
     }
-    .review-score em {
+
+    /* ── Mobile ── */
+    .mobile-hub { display: none; width: 100%; max-width: 390px; }
+
+    .mobile-center {
+      text-align: center;
+      padding: 8px 0 30px;
+    }
+
+    .mobile-center-ko {
+      font-size: 34px; font-weight: 700; letter-spacing: -0.5px; color: #ffffff;
+    }
+    .mobile-center-en {
+      font-family: 'Inter', sans-serif; font-weight: 800;
+      font-size: 20px; color: rgba(255,255,255,0.5); letter-spacing: 1px; margin-top: 3px;
+    }
+    .mobile-center-sub {
+      font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.5;
+    }
+
+    .mobile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+
+    .mobile-card {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 26px;
+      padding: 22px 10px 18px;
+      text-align: center;
+      border: none;
+      position: relative;
+      box-shadow:
+        0 0 20px rgba(255,255,255,0.03),
+        0 4px 20px rgba(0,0,0,0.4);
+      transition: transform .15s;
       display: block;
-      font-style: normal;
-      font-size: 80px;
-      line-height: .92;
-      letter-spacing: -.08em;
-      color: var(--gold-bright);
     }
-    .review-score p,
-    .review-grid p {
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-size: 14px;
+
+    .mobile-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      padding: 1px;
+      background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.20) 0%,
+        rgba(255,255,255,0.05) 40%,
+        rgba(255,255,255,0.01) 60%,
+        rgba(255,255,255,0.09) 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .mobile-card:active {
+      transform: scale(0.96);
+    }
+
+    .mobile-card-icon-wrap {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 9px;
+      font-size: 22px;
+    }
+
+    .mobile-card-name { font-size: 13px; font-weight: 700; color: #f5f5f7; }
+    .mobile-card-desc { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+    /* ── Footer ── */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 16px 20px 22px;
+      font-size: 11px; color: rgba(255,255,255,0.2);
       line-height: 1.8;
+      background: rgba(0,0,0,0.4);
+      border-top: 1px solid var(--border);
     }
-    .review-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-    }
-    .review-item {
-      padding: 20px;
-      border-radius: 22px;
-      border: 1px solid var(--line);
-      background: #fff;
-    }
-    .review-item strong {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 15px;
-      color: var(--text);
-    }
-    .review-item p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.78;
-    }
-    .cta {
-      border-radius: 38px;
-      padding: 34px;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 290px;
-      gap: 18px;
-      align-items: end;
-      margin: 34px 0 44px;
-      background: #1d1d1f;
-    }
-    .cta h2 {
-      margin: 0 0 10px;
-      font-size: clamp(40px, 4vw, 64px);
-      line-height: .94;
-      letter-spacing: -.08em;
-      max-width: 780px;
-      color: #fff;
-    }
-    .cta p {
-      margin: 0;
-      max-width: 760px;
-      color: #86868b;
-      font-size: 16px;
-      line-height: 1.86;
-    }
-    .cta-actions {
-      display: grid;
-      gap: 10px;
-    }
-    .notice {
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.76;
-    }
-    @media (max-width: 1180px) {
-      .hero,
-      .why-grid,
-      .reviews,
-      .cta {
-        grid-template-columns: 1fr;
-      }
-      .section-head {
-        grid-template-columns: 1fr;
-      }
-      .models {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-    @media (max-width: 860px) {
-      .hero-stats,
-      .visual-grid,
-      .stores,
-      .review-grid,
-      .models {
-        grid-template-columns: 1fr;
-      }
-      .hero-actions {
-        flex-direction: column;
-      }
-    }
-    @media (max-width: 640px) {
-      .page { width: min(calc(100% - 20px), var(--max)); }
-      .hero-main,
-      .hero-side,
-      .panel,
-      .model-card,
-      .store-card,
-      .review-card,
-      .cta {
-        border-radius: 24px;
-      }
-      .hero-main,
-      .hero-side,
-      .panel,
-      .review-card,
-      .cta {
-        padding: 24px;
-      }
-      .store-body,
-      .model-copy {
-        padding: 20px;
-      }
-      h1 { font-size: 44px; line-height: .96; }
-      .lead { font-size: 16px; }
-      .hero-main { min-height: auto; }
-      .hero-visual-top {
-        flex-direction: column;
-        align-items: start;
-      }
-      .chip-row {
-        justify-content: flex-start;
-      }
+
+    /* ── Responsive ── */
+    @media (max-width: 680px) {
+      header { padding: 16px 20px; }
+      .hub, .hub-tagline, .bg-glow { display: none; }
+      .mobile-hub { display: block; }
     }
   </style>
 </head>
 <body>
-  <header class="site-header" id="site-header">
-    <div class="page">
-    <div class="nav">
-      <div class="brand">
-        <span>Mobile Tech &nbsp;·&nbsp; 군산 / 서천</span>
-        <strong>휴대폰광장 <em class="brand-en">TechNote</em></strong>
-      </div>
-      <a class="nav-link" href="#stores">지점 찾기</a>
-      <a class="nav-link" href="#approval">사전승낙서</a>
-      <a class="nav-link" href="#blog">최신소식</a>
+
+<div class="bg-glow"></div>
+
+<header>
+  <div class="brand">
+    <span class="brand-ko">휴대폰광장</span>
+    <span class="brand-en">TechNote</span>
+  </div>
+  <a class="header-contact" href="tel:0507-1344-4288">
+    <span>📞</span> 0507-1344-4288
+  </a>
+</header>
+
+<main>
+  <!-- Desktop Hub -->
+  <div class="hub" id="hub">
+    <div class="orbit-outer"></div>
+    <div class="orbit-inner"></div>
+    <svg class="hub-svg" id="hub-svg"></svg>
+    <div class="hub-center">
+      <div class="hub-center-ko">휴대폰광장</div>
+      <div class="hub-center-en">TechNote</div>
+      <div class="hub-center-sub">군산·서천<br>프리미엄 전문점</div>
     </div>
   </div>
-  </header>
 
-  <main class="page">
-    <section class="hero">
-      <article class="hero-main">
-        <div class="hero-copy">
-          <div class="eyebrow">Mobile Tech · 군산/서천</div>
-          <h1>전국 상담 가능한 <span>프리미엄 휴대폰 매장</span></h1>
-          <p class="lead">
-            군산·서천 4개 지점 운영. 갤럭시 S26·아이폰 17부터 효도폰·키즈폰까지,
-            번호이동·기기변경 조건을 현장에서 바로 비교해 드립니다.
-          </p>
-        </div>
+  <div class="hub-tagline">Select a category</div>
 
-        <div class="hero-visual">
-          <div class="hero-visual-top">
-            <div>
-              <strong>대표 모델</strong>
-              <h2>갤럭시 S26 / 아이폰 17</h2>
-              <p>2026년 현재 가장 많이 찾는 두 모델. 번호이동·기기변경 조건 바로 상담 가능합니다.</p>
-            </div>
-            <div class="chip-row">
-              <span>Galaxy S26</span>
-              <span>iPhone 17</span>
-              <span>Premium Line</span>
-              <span>Family Picks</span>
-            </div>
-          </div>
-          <div class="visual-grid">
-            <figure class="visual-card">
-              <img src="https://img.global.news.samsung.com/global/wp-content/uploads/2026/02/26031312/Samsung-Mobile-Galaxy-Unpacked-2026-Galaxy-S26-Series-Launch_dl1-728x410.jpg" alt="갤럭시 S26 시리즈 공식 이미지">
-              <figcaption class="visual-meta">
-                <strong>Galaxy S26</strong>
-                <span>Samsung Global Newsroom</span>
-              </figcaption>
-            </figure>
-            <figure class="visual-card apple">
-              <img src="https://www.apple.com/v/iphone-17/f/images/overview/welcome/hero_startframe__e9e7pcnguyqi_xlarge.jpg" alt="아이폰 17 공식 이미지">
-              <figcaption class="visual-meta">
-                <strong>iPhone 17</strong>
-                <span>Apple Official</span>
-              </figcaption>
-            </figure>
-          </div>
-        </div>
-
-        <div class="hero-stats">
-          <div class="stat">
-            <strong>Branches</strong>
-            <em>4</em>
-            <span>미장점 · 미룡점 · 나운점 · 서천점 전지점 정보를 한 번에 비교할 수 있습니다.</span>
-          </div>
-          <div class="stat">
-            <strong>Service</strong>
-            <em>All-in-One</em>
-            <span>아이폰, 갤럭시, 효도폰, 키즈폰, 인터넷·TV 결합까지 브랜드 범위로 정리합니다.</span>
-          </div>
-          <div class="stat">
-            <strong>Feeling</strong>
-            <em>Premium</em>
-            <span>무드만 있는 랜딩이 아니라, 읽을거리와 신뢰 요소가 함께 쌓이는 구성으로 바꿨습니다.</span>
-          </div>
-        </div>
-
-        <div class="hero-actions">
-          <a class="btn primary" href="#stores">전지점 보기</a>
-          <a class="btn" href="#why">브랜드 보기</a>
-        </div>
-      </article>
-
-      <aside class="hero-side">
-        <h2>신뢰는 설명으로 쌓고, 문의는 정보로 설득합니다.</h2>
-        <p>변호사 랜딩처럼 정보가 차곡차곡 쌓이는 흐름으로 바꾸고, 오른쪽 보조영역은 브랜드 이해를 도와주는 역할에 집중시켰습니다.</p>
-        <div class="side-box">
-          <strong>매장 강점</strong>
-          <span>최신 모델 상담, 가족폰 구성, 번호이동·기기변경, 인터넷·TV 결합까지 실제 상담 흐름을 먼저 보여줍니다.</span>
-        </div>
-        <div class="side-box">
-          <strong>대표 모델</strong>
-          <span>갤럭시 S26과 아이폰 17을 첫 화면과 별도 섹션에 모두 배치해, 어떤 모델을 주력으로 보는지 명확하게 전달합니다.</span>
-        </div>
-        <div class="side-box">
-          <strong>전지점 안내</strong>
-          <span>미장점, 미룡점, 나운점, 서천점 각각의 주소, 번호, 특징을 매장 카드 형태로 정리해 실매장 느낌을 살렸습니다.</span>
-        </div>
-        <div class="side-box">
-          <strong>신뢰 요소</strong>
-          <span>리뷰 평점, 브랜드 인상, 지역 운영감, 상담 분야를 따로 분리해 “왜 여기여야 하는지”를 읽게 만듭니다.</span>
-        </div>
-      </aside>
-    </section>
-
-    <section id="why">
-      <div class="section-head" data-aos="fade-up">
-        <h2>왜 휴대폰광장인가</h2>
-        <p>군산·서천 지역 휴대폰 전문점으로 4개 지점을 직접 운영합니다. 통신사 3사 모두 취급하며 현장 재고 보유, 당일 개통 가능합니다.</p>
-      </div>
-      <div class="why-grid" data-aos="fade-up" data-aos-delay="100">
-        <article class="panel why-main">
-          <p>
-            SK·KT·LG 3사 공식 취급점. 번호이동·기기변경·신규가입 모두 가능하며,
-            갤럭시·아이폰 최신 모델 재고를 현장에서 바로 확인할 수 있습니다.
-            효도폰·키즈폰 등 가족폰 구성 상담, 인터넷·TV 결합 상담까지 한 곳에서 해결합니다.
-          </p>
-        </article>
-        <div class="why-list">
-          <div class="why-item">
-            <strong>플래그십</strong>
-            <span>아이폰과 갤럭시 같은 주력 모델을 전면에 두고 비교와 상담이 자연스럽게 이어지도록 구성합니다.</span>
-          </div>
-          <div class="why-item">
-            <strong>Family</strong>
-            <span>효도폰과 키즈폰처럼 실제 사용자가 명확한 경우, 복잡한 정보 대신 쉬운 선택 흐름으로 설명합니다.</span>
-          </div>
-          <div class="why-item">
-            <strong>Bundle</strong>
-            <span>번호이동, 기기변경, 인터넷·TV 결합까지 한 번에 같이 보게 해 상담이 끊기지 않도록 만듭니다.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="models">
-      <div class="section-head" data-aos="fade-up">
-        <h2>대표 모델 안내</h2>
-        <p>첫 화면에서 끝내지 않고, 어떤 모델을 주력으로 보는지 한 번 더 정리해 신뢰와 상담 포인트를 분명하게 보여줍니다.</p>
-      </div>
-      <div class="models">
-        <article class="model-card">
-          <img src="https://img.global.news.samsung.com/global/wp-content/uploads/2026/02/26031312/Samsung-Mobile-Galaxy-Unpacked-2026-Galaxy-S26-Series-Launch_dl1-728x410.jpg" alt="갤럭시 S26 시리즈 공식 이미지">
-          <div class="model-copy">
-            <strong>주력 모델</strong>
-            <h3>Galaxy S26</h3>
-            <p>최신 갤럭시를 먼저 찾는 분들이 가장 편하게 비교해볼 수 있는 대표 모델입니다. 기능 설명보다는 실제 상담 흐름에 맞춰 이해하기 쉽게 보여주는 쪽에 집중했습니다.</p>
-          </div>
-        </article>
-        <article class="model-card apple">
-          <img src="https://www.apple.com/v/iphone-17/f/images/overview/welcome/hero_startframe__e9e7pcnguyqi_xlarge.jpg" alt="아이폰 17 공식 이미지">
-          <div class="model-copy">
-            <strong>주력 모델</strong>
-            <h3>iPhone 17</h3>
-            <p>아이폰 교체를 고민하는 분들이 가장 많이 물어볼 가능성이 높은 모델군입니다. 어렵게 풀기보다, 바로 상담으로 이어질 수 있게 자연스럽게 연결하는 역할을 맡깁니다.</p>
-          </div>
-        </article>
-        <article class="model-card">
-          <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=1200&q=80" alt="휴대폰 상담 이미지">
-          <div class="model-copy">
-            <strong>Family Line</strong>
-            <h3>효도폰 · 키즈폰</h3>
-            <p>부모님폰이나 자녀폰은 스펙보다 실제 사용이 더 중요합니다. 그래서 가족폰 상담도 별도 섹션으로 빼서, 보기 편하고 부담 없이 문의할 수 있도록 정리했습니다.</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="stores">
-      <div class="section-head" data-aos="fade-up">
-        <h2>전지점 정보</h2>
-        <p>지점별 주소와 전화번호만 보여주는 수준이 아니라, 각 지점의 분위기와 역할까지 읽히도록 매장 카드처럼 구성했습니다.</p>
-      </div>
-      <div class="stores">
-        <article class="store-card">
-          <img class="store-photo" src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1200&q=80" alt="매장 내부 이미지">
-          <div class="store-body">
-            <span class="tag">Gunsan Main</span>
-            <h3>미장점</h3>
-            <p class="store-name">군산 휴대폰성지 휴대폰광장 미장점</p>
-            <p class="store-desc">브랜드 무드를 가장 안정적으로 보여주는 메인 성격의 지점입니다. 처음 브랜드를 접하는 사람에게 가장 단정한 인상을 줄 수 있는 매장으로 정리했습니다.</p>
-            <div class="info-row">
-              <div class="info-box">
-                <span>Address</span>
-                <strong>전북특별자치도 군산시 공단대로 131</strong>
-              </div>
-              <div class="phone-list">
-                <div class="phone-chip">0507-1358-4288 <button type="button" data-copy="0507-1358-4288">복사</button></div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="store-card">
-          <img class="store-photo" src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80" alt="상담 공간 이미지">
-          <div class="store-body">
-            <span class="tag">Gunsan Campus</span>
-            <h3>미룡점</h3>
-            <p class="store-name">군산휴대폰성지 휴대폰광장 미룡점</p>
-            <p class="store-desc">군산대학교 인근 생활권 고객에게 자연스럽게 연결되는 지점입니다. 부담 없이 문의하고 빠르게 이어지는 느낌을 살리는 방향으로 구성했습니다.</p>
-            <div class="info-row">
-              <div class="info-box">
-                <span>Address</span>
-                <strong>전북특별자치도 군산시 미제2길 19</strong>
-              </div>
-              <div class="phone-list">
-                <div class="phone-chip">0504-4649-6728 <button type="button" data-copy="0504-4649-6728">복사</button></div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="store-card">
-          <img class="store-photo" src="https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=1200&q=80" alt="휴대폰 전시 이미지">
-          <div class="store-body">
-            <span class="tag">Gunsan Daily</span>
-            <h3>나운점</h3>
-            <p class="store-name">군산휴대폰성지 휴대폰광장 나운점</p>
-            <p class="store-desc">생활권 접근성이 좋아 직접 방문과 재상담 흐름이 좋은 지점입니다. 브랜드 신뢰를 현장감 있게 이어주는 매장 카드로 정리했습니다.</p>
-            <div class="info-row">
-              <div class="info-box">
-                <span>Address</span>
-                <strong>전북특별자치도 군산시 문화로 47 2동 103호</strong>
-              </div>
-              <div class="phone-list">
-                <div class="phone-chip">0507-1344-4288 <button type="button" data-copy="0507-1344-4288">복사</button></div>
-                <div class="phone-chip">063-466-4288 <button type="button" data-copy="063-466-4288">복사</button></div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="store-card">
-          <img class="store-photo" src="https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=1200&q=80" alt="프리미엄 매장 이미지">
-          <div class="store-body">
-            <span class="tag">Seocheon Region</span>
-            <h3>서천점</h3>
-            <p class="store-name">서천휴대폰성지 휴대폰광장서천점</p>
-            <p class="store-desc">서천 생활권 고객을 가장 편안하게 받는 지점입니다. 군산권 브랜드 무드를 유지하면서도 지역 거점처럼 읽히는 방향으로 정리했습니다.</p>
-            <div class="info-row">
-              <div class="info-box">
-                <span>Address</span>
-                <strong>충청남도 서천군 서천읍 서천로 182</strong>
-              </div>
-              <div class="phone-list">
-                <div class="phone-chip">041-951-5288 <button type="button" data-copy="041-951-5288">복사</button></div>
-                <div class="phone-chip">010-3003-4288 <button type="button" data-copy="010-3003-4288">복사</button></div>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="trust">
-      <div class="section-head">
-        <h2>신뢰 요소</h2>
-        <p>네이버 플레이스 리뷰 기반 실제 평가입니다. 군산·서천 4개 지점 모두 4.9점 이상을 유지하고 있습니다.</p>
-      </div>
-      <div class="reviews">
-        <article class="review-card review-score">
-          <strong>Review Score</strong>
-          <em>4.97</em>
-          <p>네이버 플레이스 실제 누적 고객 리뷰 기준. 빠른 상담, 정확한 조건 안내, 친절한 응대가 꾸준히 언급됩니다.</p>
-        </article>
-        <div class="review-grid">
-          <article class="review-item">
-            <strong>군산·서천 4개 지점</strong>
-            <p>나운점·미룡점·미장점·서천점 운영. 가까운 지점에서 바로 방문 상담이 가능합니다.</p>
-          </article>
-          <article class="review-item">
-            <strong>당일 개통 가능</strong>
-            <p>재고 보유 모델은 방문 당일 개통 처리가 가능합니다. 사전 문의 후 방문하시면 더 빠릅니다.</p>
-          </article>
-          <article class="review-item">
-            <strong>가족 전체 상담 가능</strong>
-            <p>본인폰부터 부모님 효도폰, 자녀 키즈폰까지 한 번 방문으로 가족 전체 구성 상담이 가능합니다.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="blog">
-      <div class="section-head">
-        <h2>최신 소식</h2>
-        <p>휴대폰광장 네이버 블로그에서 최신 폰 정보와 매장 소식을 확인하세요.</p>
-      </div>
-      <div class="blog-grid" id="blog-cards">
-        <div class="blog-card" style="opacity:.4">
-          <div class="blog-card-date">불러오는 중...</div>
-          <div class="blog-card-title">최신 포스트를 가져오고 있습니다</div>
-        </div>
-      </div>
-      <div class="blog-more">
-        <a class="btn" href="https://blog.naver.com/sw112_" target="_blank" rel="noopener">블로그 더보기 →</a>
-      </div>
-    </section>
-
-    <!-- 사전승낙서 섹션 -->
-    <section id="approval" style="padding:48px 0 24px">
-      <div class="section-head" data-aos="fade-up" style="grid-template-columns:1fr; margin-bottom:24px">
-        <h2 style="font-size:clamp(22px,2.5vw,34px)">지점별 사전승낙서</h2>
-        <p style="margin-top:8px; color:var(--muted); font-size:14px">통신사 공식 사전승낙서 링크입니다. 개통 전 확인이 필요한 경우 해당 지점·유무선 항목을 클릭하세요.</p>
-      </div>
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px" data-aos="fade-up" data-aos-delay="80">
-        <!-- 나운점 -->
-        <div style="background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px">
-          <p style="font-size:11px; color:#0071e3; letter-spacing:.1em; text-transform:uppercase; margin:0 0 8px; font-weight:500">나운점</p>
-          <p style="font-size:13px; color:var(--muted); margin:0 0 14px">전북 군산시 문화로 47 2동 103호</p>
-          <div style="display:flex; flex-direction:column; gap:8px">
-            <a href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000179608&seq=1&yn=1" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#f5f5f7; border-radius:10px; font-size:13px; color:#1d1d1f; text-decoration:none; font-weight:500">무선 사전승낙서 <span style="color:#0071e3">→</span></a>
-            <a href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000179639&seq=1&yn=1" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#f5f5f7; border-radius:10px; font-size:13px; color:#1d1d1f; text-decoration:none; font-weight:500">유선 사전승낙서 <span style="color:#0071e3">→</span></a>
-          </div>
-        </div>
-        <!-- 미룡점 -->
-        <div style="background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px">
-          <p style="font-size:11px; color:#0071e3; letter-spacing:.1em; text-transform:uppercase; margin:0 0 8px; font-weight:500">미룡점</p>
-          <p style="font-size:13px; color:var(--muted); margin:0 0 14px">전북 군산시 미제2길 19</p>
-          <div style="display:flex; flex-direction:column; gap:8px">
-            <a href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000053595&seq=1&yn=1" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#f5f5f7; border-radius:10px; font-size:13px; color:#1d1d1f; text-decoration:none; font-weight:500">무선 사전승낙서 <span style="color:#0071e3">→</span></a>
-            <a href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000054720&seq=1&yn=1" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#f5f5f7; border-radius:10px; font-size:13px; color:#1d1d1f; text-decoration:none; font-weight:500">유선 사전승낙서 <span style="color:#0071e3">→</span></a>
-          </div>
-        </div>
-        <!-- 미장점 -->
-        <div style="background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px">
-          <p style="font-size:11px; color:#0071e3; letter-spacing:.1em; text-transform:uppercase; margin:0 0 8px; font-weight:500">미장점</p>
-          <p style="font-size:13px; color:var(--muted); margin:0 0 14px">전북 군산시 공단대로 131</p>
-          <div style="display:flex; flex-direction:column; gap:8px">
-            <a href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000165400&seq=1&yn=1" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#f5f5f7; border-radius:10px; font-size:13px; color:#1d1d1f; text-decoration:none; font-weight:500">무선 사전승낙서 <span style="color:#0071e3">→</span></a>
-            <a href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000165401&seq=1&yn=1" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#f5f5f7; border-radius:10px; font-size:13px; color:#1d1d1f; text-decoration:none; font-weight:500">유선 사전승낙서 <span style="color:#0071e3">→</span></a>
-          </div>
-        </div>
-        <!-- 서천점 -->
-        <div style="background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px">
-          <p style="font-size:11px; color:#0071e3; letter-spacing:.1em; text-transform:uppercase; margin:0 0 8px; font-weight:500">서천점</p>
-          <p style="font-size:13px; color:var(--muted); margin:0 0 14px">충남 서천군 서천읍 서천로 182</p>
-          <div style="display:flex; flex-direction:column; gap:8px">
-            <a href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000114646&seq=1&yn=1" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#f5f5f7; border-radius:10px; font-size:13px; color:#1d1d1f; text-decoration:none; font-weight:500">무선 사전승낙서 <span style="color:#0071e3">→</span></a>
-            <a href="https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000114627&seq=1&yn=1" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#f5f5f7; border-radius:10px; font-size:13px; color:#1d1d1f; text-decoration:none; font-weight:500">유선 사전승낙서 <span style="color:#0071e3">→</span></a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="cta" id="contact">
-      <div>
-        <h2>지금 바로 번호 복사하고, 가까운 지점으로 방문하세요.</h2>
-        <p>
-          SK·KT·LG 3사 취급, 갤럭시·아이폰 재고 보유, 당일 개통 가능.
-          군산·서천 4개 지점 중 가장 가까운 곳에서 편하게 상담받으세요.
-        </p>
-        <div class=”notice”>번호를 복사한 뒤 전화 또는 카카오톡으로 문의해 주시면 더 빠르게 안내드릴 수 있습니다.</div>
-      </div>
-      <div class="cta-actions">
-        <a class="btn primary" href="#stores">지점 찾기</a>
-        <a class="btn" href="#models">대표 모델 보기</a>
-      </div>
-    </section>
-  </main>
-
-  <!-- 사업자 정보 footer -->
-  <footer style="background:#f5f5f7; border-top:1px solid #d2d2d7; padding:32px 0 40px; margin-top:0">
-    <div class="page" style="display:flex; flex-wrap:wrap; gap:6px 24px; font-size:12px; color:#86868b; line-height:1.8">
-      <span><strong style="color:#6e6e73; font-weight:500">상호</strong>&nbsp; 휴대폰광장</span>
-      <span>|</span>
-      <span><strong style="color:#6e6e73; font-weight:500">대표자</strong>&nbsp; 이성완</span>
-      <span>|</span>
-      <span><strong style="color:#6e6e73; font-weight:500">사업자등록번호</strong>&nbsp; 176-10-01227</span>
-      <span>|</span>
-      <span><strong style="color:#6e6e73; font-weight:500">사업장 주소</strong>&nbsp; 충청남도 서천군 서천읍 서천로 182</span>
-      <span>|</span>
-      <span><strong style="color:#6e6e73; font-weight:500">대표번호</strong>&nbsp; 041-951-5288</span>
-      <br style="width:100%">
-      <span style="margin-top:4px; color:#adadb8; font-size:11px">© 2026 휴대폰광장. All rights reserved.</span>
+  <!-- Mobile -->
+  <div class="mobile-hub">
+    <div class="mobile-center">
+      <div class="mobile-center-ko">휴대폰광장</div>
+      <div class="mobile-center-en">TechNote</div>
+      <div class="mobile-center-sub">군산·서천 프리미엄 휴대폰 전문점</div>
     </div>
-  </footer>
+    <div class="mobile-grid" id="mobile-grid"></div>
+  </div>
+</main>
 
-  <script>
-    (async () => {
-      const RSS = 'https://rss.blog.naver.com/sw112_.xml';
-      const API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS)}`;
-      const grid = document.getElementById('blog-cards');
-      try {
-        const data = await fetch(API).then(r => r.json());
-        const items = (data.items || []).slice(0, 3);
-        if (!items.length) throw new Error('empty');
-        grid.innerHTML = items.map(item => {
-          const date = (item.pubDate || '').slice(0, 10);
-          const title = item.title || '(제목 없음)';
-          const link = item.link || '#';
-          return `<div class="blog-card">
-            <div class="blog-card-top"></div>
-            <div class="blog-card-body">
-              <div class="blog-card-date">${date}</div>
-              <div class="blog-card-title">${title}</div>
-            </div>
-            <div class="blog-card-footer">
-              <a href="${link}" target="_blank" rel="noopener">포스트 보기</a>
-              <span class="blog-card-arrow">→</span>
-            </div>
-          </div>`;
-        }).join('');
-      } catch (e) {
-        grid.innerHTML = '<p style="color:var(--muted);text-align:center;padding:2rem 0">블로그 포스트를 불러올 수 없습니다. <a href="https://blog.naver.com/sw112_" target="_blank" style="color:var(--gold)">블로그 바로가기 →</a></p>';
-      }
-    })();
+<footer>
+  대표 이성완 &nbsp;|&nbsp; 사업자등록번호 176-10-01227 &nbsp;|&nbsp; 충청남도 서천군 서천읍 서천로 182
+</footer>
 
-    const buttons = document.querySelectorAll("[data-copy]");
-    buttons.forEach((button) => {
-      button.addEventListener("click", async () => {
-        const value = button.getAttribute("data-copy");
-        if (!value) return;
-        try {
-          await navigator.clipboard.writeText(value);
-          const old = button.textContent;
-          button.textContent = "복사됨";
-          setTimeout(() => {
-            button.textContent = old;
-          }, 1200);
-        } catch (error) {
-          button.textContent = "실패";
-          setTimeout(() => {
-            button.textContent = "복사";
-          }, 1200);
-        }
-      });
-    });
+<script>
+const CATS = [
+  { name: '지점 안내',   icon: '📍', desc: '4개 지점 위치·연락처', url: 'branches.html',      angle: -90,  color: '#30d158', bg: 'rgba(48,209,88,0.15)',
+    gradient: 'linear-gradient(150deg, rgba(48,209,88,0.13) 0%, rgba(48,209,88,0.02) 50%, #0d0d10 100%)' },
+  { name: '사전승낙서',  icon: '📋', desc: '무선·유선 승낙서',     url: 'approval.html',      angle: -30,  color: '#a78bfa', bg: 'rgba(167,139,250,0.15)',
+    gradient: 'linear-gradient(150deg, rgba(167,139,250,0.13) 0%, rgba(167,139,250,0.02) 50%, #0d0d10 100%)' },
+  { name: '이달의 혜택', icon: '💎', desc: '최신 단가·특가',        url: 'prices.html',        angle:  30,  color: '#bf5af2', bg: 'rgba(191,90,242,0.15)',
+    gradient: 'linear-gradient(150deg, rgba(191,90,242,0.13) 0%, rgba(191,90,242,0.02) 50%, #0d0d10 100%)' },
+  { name: '최신 소식',  icon: '📰', desc: '블로그 테크노트',        url: 'news.html',          angle:  90,  color: '#ff9f0a', bg: 'rgba(255,159,10,0.15)',
+    gradient: 'linear-gradient(150deg, rgba(255,159,10,0.13) 0%, rgba(255,159,10,0.02) 50%, #0d0d10 100%)' },
+  { name: '테크뉴스',   icon: '📡', desc: '모바일 트렌드',          url: 'technews.html',      angle:  150, color: '#5ac8fa', bg: 'rgba(90,200,250,0.15)',
+    gradient: 'linear-gradient(150deg, rgba(90,200,250,0.13) 0%, rgba(90,200,250,0.02) 50%, #0d0d10 100%)' },
+  { name: '전화 상담',  icon: '📞', desc: '바로 전화 연결',         url: 'tel:0507-1344-4288', angle:  210, color: '#ff453a', bg: 'rgba(255,69,58,0.15)',
+    gradient: 'linear-gradient(150deg, rgba(255,69,58,0.13) 0%, rgba(255,69,58,0.02) 50%, #0d0d10 100%)' },
+];
 
-    // ── AOS 스크롤 페이드인 ── (스크립트 로드 후 초기화)
-    window.addEventListener('load', () => { if (window.AOS) AOS.init({ duration: 700, once: true, offset: 60, easing: 'ease-out-cubic' }); });
+const SIZE = 640, CX = 320, CY = 320, R = 235;
+const hubEl = document.getElementById('hub');
+const svgEl = document.getElementById('hub-svg');
+svgEl.setAttribute('viewBox', `0 0 ${SIZE} ${SIZE}`);
 
-    // ── 스티키 nav ──
-    const header = document.getElementById('site-header');
-    const onScroll = () => {
-      header.classList.toggle('scrolled', window.scrollY > 40);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
+CATS.forEach((cat, i) => {
+  const rad = cat.angle * Math.PI / 180;
+  const nx = CX + Math.cos(rad) * R;
+  const ny = CY + Math.sin(rad) * R;
 
-    // ── 숫자 카운트업 ──
-    const countEls = document.querySelectorAll('.stat em');
-    const countUp = (el) => {
-      const raw = el.textContent.replace(/[^0-9.]/g, '');
-      const suffix = el.textContent.replace(/[0-9.]/g, '');
-      const target = parseFloat(raw);
-      if (!target) return;
-      const dur = 1200;
-      const start = performance.now();
-      const step = (now) => {
-        const p = Math.min((now - start) / dur, 1);
-        const ease = 1 - Math.pow(1 - p, 3);
-        const val = target < 10 ? (target * ease).toFixed(1) : Math.round(target * ease);
-        el.textContent = val + suffix;
-        if (p < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    };
-    const statsObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { countUp(e.target); statsObserver.unobserve(e.target); } });
-    }, { threshold: 0.5 });
-    countEls.forEach(el => statsObserver.observe(el));
+  /* Line */
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('x1', CX); line.setAttribute('y1', CY);
+  line.setAttribute('x2', nx); line.setAttribute('y2', ny);
+  line.setAttribute('stroke', 'rgba(255,255,255,0.08)');
+  line.setAttribute('stroke-width', '1');
+  line.setAttribute('stroke-dasharray', '4 5');
+  svgEl.appendChild(line);
 
-  </script>
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+  /* Endpoint dot */
+  const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  dot.setAttribute('cx', nx); dot.setAttribute('cy', ny);
+  dot.setAttribute('r', '3.5');
+  dot.setAttribute('fill', cat.color);
+  dot.setAttribute('opacity', '0.5');
+  svgEl.appendChild(dot);
+
+  /* Node */
+  const a = document.createElement('a');
+  a.href = cat.url;
+  a.className = 'hub-node';
+  a.style.left = nx + 'px';
+  a.style.top  = ny + 'px';
+  a.innerHTML = `
+    <div class="hub-node-card" style="background:${cat.gradient}">
+      <div class="hub-node-icon-wrap" style="background:${cat.bg}">${cat.icon}</div>
+      <div class="hub-node-name">${cat.name}</div>
+      <div class="hub-node-desc">${cat.desc}</div>
+    </div>`;
+
+  const card = a.querySelector('.hub-node-card');
+  card.style.animation = `card-in .55s cubic-bezier(.34,1.56,.64,1) ${i * 0.07 + 0.15}s both`;
+
+  hubEl.appendChild(a);
+
+  a.addEventListener('mouseenter', () => {
+    line.setAttribute('stroke', cat.color);
+    line.setAttribute('stroke-opacity', '0.6');
+    line.setAttribute('stroke-dasharray', '0');
+    line.setAttribute('stroke-width', '1.5');
+    dot.setAttribute('opacity', '1');
+    dot.setAttribute('r', '4.5');
+    card.style.boxShadow = `0 24px 64px rgba(0,0,0,0.6), 0 0 32px ${cat.color}28`;
+  });
+  a.addEventListener('mouseleave', () => {
+    line.setAttribute('stroke', 'rgba(255,255,255,0.08)');
+    line.setAttribute('stroke-opacity', '1');
+    line.setAttribute('stroke-dasharray', '4 5');
+    line.setAttribute('stroke-width', '1');
+    dot.setAttribute('opacity', '0.5');
+    dot.setAttribute('r', '3.5');
+    card.style.boxShadow = '';
+  });
+});
+
+/* Mobile */
+const mGrid = document.getElementById('mobile-grid');
+CATS.forEach(cat => {
+  const a = document.createElement('a');
+  a.href = cat.url;
+  a.className = 'mobile-card';
+  a.style.background = cat.gradient;
+  a.innerHTML = `
+    <div class="mobile-card-icon-wrap" style="background:${cat.bg}">${cat.icon}</div>
+    <div class="mobile-card-name">${cat.name}</div>
+    <div class="mobile-card-desc">${cat.desc}</div>`;
+  mGrid.appendChild(a);
+});
+</script>
+
 </body>
 </html>

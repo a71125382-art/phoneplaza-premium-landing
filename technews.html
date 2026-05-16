@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>테크뉴스 | 휴대폰광장 TechNote</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #050507; --text: #f5f5f7; --muted: #86868b;
+      --border: rgba(255,255,255,0.07);
+    }
+
+    body {
+      background: var(--bg);
+      font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+      color: var(--text); min-height: 100dvh; display: flex; flex-direction: column;
+      position: relative;
+    }
+
+    /* 상단 화이트 그라데이션 */
+    body::before {
+      content: '';
+      position: fixed; top: 0; left: 0; right: 0; height: 45vh;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 50%, transparent 100%);
+      pointer-events: none; z-index: 0;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    header {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 44px;
+      background: rgba(5,5,7,0.8);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .back {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 14px; color: rgba(255,255,255,0.5); font-weight: 500;
+      transition: color .2s;
+    }
+    .back:hover { color: rgba(255,255,255,0.85); }
+
+    .brand { display: flex; align-items: baseline; gap: 7px; }
+    .brand-ko { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+    .brand-en {
+      font-family: 'Inter', sans-serif; font-weight: 800;
+      font-size: 13px; color: rgba(255,255,255,0.45); letter-spacing: 0.8px;
+    }
+
+    main {
+      position: relative; z-index: 1;
+      flex: 1; max-width: 900px; margin: 0 auto;
+      width: 100%; padding: 52px 24px 60px;
+    }
+
+    .page-title { font-size: 36px; font-weight: 700; letter-spacing: -0.5px; color: #fff; margin-bottom: 8px; }
+    .page-sub { font-size: 15px; color: var(--muted); margin-bottom: 44px; }
+
+    .section-title {
+      font-size: 18px; font-weight: 700; letter-spacing: -0.3px;
+      color: rgba(255,255,255,0.8); margin-bottom: 18px;
+    }
+
+    /* ── 통신사 카드 ── */
+    .carrier-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 14px; margin-bottom: 44px;
+    }
+
+    .carrier-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 50%, rgba(10,10,14,0.9) 100%);
+      border-radius: 24px; padding: 26px 22px;
+      border: none; position: relative;
+      display: flex; flex-direction: column; gap: 10px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.02), 0 8px 32px rgba(0,0,0,0.4);
+      transition: box-shadow .25s, transform .25s;
+    }
+
+    /* 그라데이션 테두리 */
+    .carrier-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: 24px; padding: 1px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.04) 40%, rgba(255,255,255,0.01) 65%, rgba(255,255,255,0.09) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      pointer-events: none; transition: opacity .25s;
+    }
+
+    .carrier-card:hover {
+      box-shadow: 0 0 36px rgba(255,255,255,0.05), 0 16px 48px rgba(0,0,0,0.5);
+      transform: translateY(-3px);
+    }
+
+    .carrier-card:hover::before {
+      background: linear-gradient(135deg, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.07) 40%, rgba(255,255,255,0.02) 65%, rgba(255,255,255,0.14) 100%);
+    }
+
+    /* 공식 브랜드 마크 */
+    .brand-mark {
+      width: 54px; height: 54px;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Inter', sans-serif; font-weight: 900;
+      color: white; flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+
+    .brand-mark.skt {
+      background: linear-gradient(135deg, #ff0038 0%, #c4002c 100%);
+      font-size: 28px; letter-spacing: -1px;
+    }
+    .brand-mark.kt {
+      background: linear-gradient(135deg, #e31c2e 0%, #b01520 100%);
+      font-size: 19px; letter-spacing: -0.5px; text-transform: lowercase;
+    }
+    .brand-mark.lgu {
+      background: linear-gradient(135deg, #e6007e 0%, #b50062 100%);
+      font-size: 18px; letter-spacing: -0.5px;
+    }
+
+    .carrier-name { font-size: 17px; font-weight: 700; color: #fff; }
+    .carrier-sub { font-size: 12px; color: var(--muted); line-height: 1.6; flex: 1; }
+
+    .carrier-link {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px; transition: color .2s;
+    }
+    .carrier-card:hover .carrier-link { color: rgba(255,255,255,0.85); }
+
+    /* ── 트렌드 칩 ── */
+    .topic-wrap { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 44px; }
+
+    .topic-chip {
+      background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%);
+      border-radius: 40px; padding: 10px 18px;
+      font-size: 13px; font-weight: 600;
+      border: none; position: relative;
+      display: flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.7);
+      transition: color .2s;
+    }
+
+    .topic-chip::before {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: 40px; padding: 1px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.04) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .topic-chip:hover { color: rgba(255,255,255,0.95); }
+
+    /* ── 블로그 카드 ── */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 14px;
+    }
+
+    .blog-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 50%, rgba(10,10,14,0.9) 100%);
+      border-radius: 20px; padding: 22px 18px;
+      border: none; position: relative;
+      display: flex; flex-direction: column; gap: 9px;
+      box-shadow: 0 6px 28px rgba(0,0,0,0.35);
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .blog-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: 20px; padding: 1px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 45%, rgba(255,255,255,0.01) 65%, rgba(255,255,255,0.08) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(255,255,255,0.04), 0 14px 40px rgba(0,0,0,0.45);
+    }
+
+    .blog-date { font-size: 11px; color: var(--muted); }
+    .blog-title { font-size: 14px; font-weight: 600; line-height: 1.55; flex: 1; color: rgba(255,255,255,0.85); }
+    .blog-link { font-size: 12px; color: rgba(255,255,255,0.4); font-weight: 600; margin-top: 2px; }
+
+    .loading { color: var(--muted); font-size: 14px; padding: 30px 0; }
+
+    footer {
+      position: relative; z-index: 1;
+      text-align: center; padding: 16px 20px 22px;
+      font-size: 11px; color: rgba(255,255,255,0.18); line-height: 1.8;
+      background: rgba(0,0,0,0.4); border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 16px 20px; }
+      .page-title { font-size: 28px; }
+      .carrier-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="back" href="index.html">← 홈으로</a>
+  <div class="brand">
+    <span class="brand-ko">휴대폰광장</span>
+    <span class="brand-en">TechNote</span>
+  </div>
+</header>
+
+<main>
+  <div class="page-title">📡 테크뉴스</div>
+  <div class="page-sub">통신사 최신 소식과 모바일 트렌드를 모았습니다.</div>
+
+  <div class="section-title">통신사 공식 뉴스룸</div>
+  <div class="carrier-grid">
+
+    <a class="carrier-card" href="https://www.sktelecom.com/index.html" target="_blank">
+      <div class="brand-mark skt">T</div>
+      <div class="carrier-name">SKT 뉴스룸</div>
+      <div class="carrier-sub">SK텔레콤 공식 소식, 요금제·프로모션 안내</div>
+      <div class="carrier-link">바로 가기 →</div>
+    </a>
+
+    <a class="carrier-card" href="https://www.kt.com/main.do" target="_blank">
+      <div class="brand-mark kt">kt</div>
+      <div class="carrier-name">KT 공식</div>
+      <div class="carrier-sub">KT 요금제·결합 상품·최신 기기 안내</div>
+      <div class="carrier-link">바로 가기 →</div>
+    </a>
+
+    <a class="carrier-card" href="https://www.lguplus.com" target="_blank">
+      <div class="brand-mark lgu">U+</div>
+      <div class="carrier-name">LG U+ 공식</div>
+      <div class="carrier-sub">LG유플러스 서비스·프로모션·혜택 안내</div>
+      <div class="carrier-link">바로 가기 →</div>
+    </a>
+
+  </div>
+
+  <div class="section-title">모바일 트렌드</div>
+  <div class="topic-wrap">
+    <a class="topic-chip" href="https://news.samsung.com/kr/" target="_blank">📱 삼성 뉴스룸</a>
+    <a class="topic-chip" href="https://www.apple.com/kr/newsroom/" target="_blank">🍎 애플 뉴스룸</a>
+    <a class="topic-chip" href="https://www.itworld.co.kr" target="_blank">🌐 ITWorld</a>
+    <a class="topic-chip" href="https://zdnet.co.kr" target="_blank">📊 ZDNet Korea</a>
+    <a class="topic-chip" href="https://blog.naver.com/sw112_" target="_blank">✍️ 광장 블로그</a>
+  </div>
+
+  <div class="section-title">휴대폰광장 블로그</div>
+  <div class="blog-grid" id="blog-grid">
+    <div class="loading">포스트를 불러오는 중...</div>
+  </div>
+</main>
+
+<footer>
+  대표 이성완 &nbsp;|&nbsp; 사업자등록번호 176-10-01227 &nbsp;|&nbsp; 충청남도 서천군 서천읍 서천로 182
+</footer>
+
+<script>
+(async () => {
+  const RSS = 'https://rss.blog.naver.com/sw112_.xml';
+  const API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS)}&count=6`;
+  const grid = document.getElementById('blog-grid');
+  try {
+    const data = await fetch(API).then(r => r.json());
+    const items = data.items || [];
+    if (!items.length) throw new Error('empty');
+    grid.innerHTML = items.map(item => `
+      <a class="blog-card" href="${item.link}" target="_blank">
+        <div class="blog-date">${(item.pubDate || '').slice(0,10)}</div>
+        <div class="blog-title">${item.title}</div>
+        <div class="blog-link">포스트 보기 →</div>
+      </a>`).join('');
+  } catch {
+    grid.innerHTML = '<div class="loading">포스트를 불러올 수 없습니다.</div>';
+  }
+})();
+</script>
+
+</body>
+</html>
