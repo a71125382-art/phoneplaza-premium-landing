@@ -379,8 +379,7 @@
     /* ── Responsive ── */
     @media (max-width: 680px) {
       header { padding: 16px 20px; }
-      .hub, .hub-tagline, .bg-glow { display: none; }
-      .mobile-hub { display: block; }
+      .mobile-hub { display: none; }
     }
   </style>
 </head>
@@ -522,6 +521,21 @@ CATS.forEach(cat => {
     <div class="mobile-card-desc">${cat.desc}</div>`;
   mGrid.appendChild(a);
 });
+
+/* Scale hub on mobile */
+function scaleHub() {
+  if (window.innerWidth <= 680) {
+    const scale = window.innerWidth / 680;
+    hubEl.style.transform = `scale(${scale})`;
+    hubEl.style.transformOrigin = 'top center';
+    hubEl.style.marginBottom = `${640 * (scale - 1)}px`;
+  } else {
+    hubEl.style.transform = '';
+    hubEl.style.marginBottom = '';
+  }
+}
+window.addEventListener('resize', scaleHub);
+scaleHub();
 </script>
 
 </body>
