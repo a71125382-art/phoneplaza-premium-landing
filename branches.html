@@ -3,331 +3,292 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>지점 안내 | 휴대폰광장 TechNote</title>
+  <title>지점 안내 | 휴대폰광장</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=bm4WcgjDeQEqj9tNZWbQfT5K2kFqTODicKC8GDvg"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg:#fff; --surface:#f7f7f8; --text:#1a1a1a; --muted:#767676; --soft:#adadad; --border:#e8e8e8; }
+    body { background:var(--bg); font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif; color:var(--text); min-height:100dvh; display:flex; flex-direction:column; }
+    a { text-decoration:none; color:inherit; }
 
-    :root {
-      --bg: #050507;
-      --text: #f5f5f7;
-      --muted: #86868b;
-      --border: rgba(255,255,255,0.07);
-    }
+    .topbar { background:var(--surface); border-bottom:1px solid var(--border); height:36px; display:flex; align-items:center; padding:0 40px; gap:20px; }
+    .topbar a { font-size:12px; color:var(--muted); font-weight:500; transition:color .15s; }
+    .topbar a:hover { color:var(--text); }
 
-    body {
-      background: var(--bg);
-      font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
-      color: var(--text);
-      min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
+    header { position:sticky; top:0; z-index:100; background:rgba(255,255,255,.96); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); height:56px; display:flex; align-items:center; padding:0 40px; gap:32px; }
+    .brand { font-size:18px; font-weight:800; letter-spacing:-.5px; }
+    .header-nav { display:flex; flex:1; }
+    .header-nav a { font-size:14px; font-weight:500; color:var(--muted); padding:0 14px; height:56px; display:flex; align-items:center; border-bottom:2px solid transparent; transition:color .15s,border-color .15s; }
+    .header-nav a:hover { color:var(--text); }
+    .header-nav a.active { color:var(--text); border-bottom-color:var(--text); }
+    .btn-call { height:36px; padding:0 18px; background:var(--text); color:#fff; border-radius:6px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:6px; margin-left:auto; transition:opacity .15s; white-space:nowrap; }
+    .btn-call:hover { opacity:.82; }
 
-    /* 상단 화이트 그라데이션 */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 45vh;
-      background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 50%, transparent 100%);
-      pointer-events: none;
-      z-index: 0;
-    }
+    .content { max-width:980px; margin:0 auto; padding:40px 40px 64px; flex:1; }
+    .page-header { margin-bottom:28px; }
+    .breadcrumb { font-size:12px; color:var(--soft); margin-bottom:10px; }
+    .breadcrumb a { color:var(--soft); }
+    .page-title { font-size:32px; font-weight:700; letter-spacing:-.8px; }
+    .page-sub { font-size:15px; color:var(--muted); margin-top:6px; }
 
-    a { text-decoration: none; color: inherit; }
+    .branch-list { display:flex; flex-direction:column; gap:20px; }
 
-    header {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 44px;
-      background: rgba(5,5,7,0.8);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-    }
+    .branch-row { border:1px solid var(--border); border-radius:16px; overflow:hidden; display:grid; grid-template-columns:280px 1fr; transition:box-shadow .2s; }
+    .branch-row:hover { box-shadow:0 6px 24px rgba(0,0,0,.07); }
 
-    .back {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 14px; color: rgba(255,255,255,0.5); font-weight: 500;
-      transition: color .2s;
-    }
-    .back:hover { color: rgba(255,255,255,0.85); }
+    .branch-info { padding:28px 24px; display:flex; flex-direction:column; border-right:1px solid var(--border); }
+    .branch-tag { display:inline-block; font-size:11px; font-weight:600; color:var(--muted); background:var(--surface); border:1px solid var(--border); padding:3px 10px; border-radius:20px; margin-bottom:10px; width:fit-content; }
+    .branch-name { font-size:22px; font-weight:700; letter-spacing:-.5px; margin-bottom:16px; }
 
-    .brand { display: flex; align-items: baseline; gap: 7px; }
-    .brand-ko { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
-    .brand-en {
-      font-family: 'Inter', sans-serif; font-weight: 800;
-      font-size: 13px; color: rgba(255,255,255,0.45); letter-spacing: 0.8px;
-    }
+    .info-row { display:flex; align-items:flex-start; gap:9px; font-size:14px; line-height:1.5; margin-bottom:10px; }
+    .info-icon { font-size:15px; flex-shrink:0; margin-top:1px; }
+    .info-text { color:var(--text); }
+    .info-sub { font-size:12px; color:var(--muted); margin-top:2px; }
 
-    main {
-      position: relative; z-index: 1;
-      flex: 1; max-width: 880px; margin: 0 auto;
-      width: 100%; padding: 52px 24px 60px;
-    }
+    .branch-actions { display:flex; gap:8px; margin-top:auto; padding-top:18px; }
+    .btn-branch { flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border-radius:10px; padding:10px 0; font-size:13px; font-weight:600; transition:opacity .15s,background .15s,border-color .15s; }
+    .btn-branch.primary { background:var(--text); color:#fff; border:1px solid var(--text); }
+    .btn-branch.primary:hover { opacity:.82; }
+    .btn-branch.secondary { background:var(--bg); color:var(--text); border:1px solid var(--border); }
+    .btn-branch.secondary:hover { background:var(--surface); border-color:#b0b0b0; }
 
-    .page-title {
-      font-size: 36px; font-weight: 700; letter-spacing: -0.5px;
-      color: #fff; margin-bottom: 8px;
-    }
-    .page-sub { font-size: 15px; color: var(--muted); margin-bottom: 44px; }
+    .branch-map { height:380px; background:var(--surface); display:flex; flex-direction:column; }
+    .branch-map .map-canvas { flex:1; min-height:0; }
+    .branch-map .map-canvas > div { width:100%; height:100%; }
+    .map-infobar { background:#fff; border-top:1px solid var(--border); padding:10px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-shrink:0; }
+    .map-infobar-text { display:flex; flex-direction:column; gap:2px; min-width:0; }
+    .map-infobar-name { font-size:13px; font-weight:700; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .map-infobar-addr { font-size:11px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .map-infobar-btn { flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:2px; color:#03c75a; font-size:10px; font-weight:700; text-decoration:none; }
+    .map-infobar-btn svg { display:block; }
 
-    /* ── Branch Grid ── */
-    .branch-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
+    footer { border-top:1px solid var(--border); padding:20px 40px; font-size:12px; color:var(--muted); line-height:1.8; }
 
-    .branch-card {
-      background: linear-gradient(
-        145deg,
-        rgba(255,255,255,0.05) 0%,
-        rgba(255,255,255,0.01) 50%,
-        rgba(10,10,14,0.9) 100%
-      );
-      border-radius: 28px;
-      padding: 28px 24px;
-      border: none;
-      position: relative;
-      box-shadow:
-        0 0 24px rgba(255,255,255,0.02),
-        0 8px 32px rgba(0,0,0,0.4);
-      transition: box-shadow .25s, transform .25s;
-    }
-
-    /* 그라데이션 테두리 */
-    .branch-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 28px;
-      padding: 1px;
-      background: linear-gradient(
-        135deg,
-        rgba(255,255,255,0.22) 0%,
-        rgba(255,255,255,0.05) 40%,
-        rgba(255,255,255,0.01) 65%,
-        rgba(255,255,255,0.10) 100%
-      );
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-      transition: opacity .25s;
-    }
-
-    .branch-card:hover {
-      box-shadow: 0 0 40px rgba(255,255,255,0.05), 0 16px 48px rgba(0,0,0,0.5);
-      transform: translateY(-3px);
-    }
-
-    .branch-card:hover::before {
-      background: linear-gradient(
-        135deg,
-        rgba(255,255,255,0.35) 0%,
-        rgba(255,255,255,0.08) 40%,
-        rgba(255,255,255,0.02) 65%,
-        rgba(255,255,255,0.16) 100%
-      );
-    }
-
-    /* Tag */
-    .branch-tag {
-      display: inline-flex;
-      align-items: center;
-      background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 100%);
-      border: 1px solid rgba(255,255,255,0.10);
-      color: rgba(255,255,255,0.55);
-      font-size: 11px; font-weight: 600;
-      padding: 4px 10px; border-radius: 20px;
-      margin-bottom: 14px; letter-spacing: 0.3px;
-    }
-
-    .branch-name {
-      font-size: 22px; font-weight: 700;
-      letter-spacing: -0.5px; color: #fff;
-      margin-bottom: 18px;
-    }
-
-    .branch-info { display: flex; flex-direction: column; gap: 11px; }
-
-    .branch-row {
-      display: flex; align-items: flex-start;
-      gap: 10px; font-size: 14px; line-height: 1.5;
-    }
-    .branch-row-icon { font-size: 15px; margin-top: 1px; flex-shrink: 0; opacity: 0.7; }
-    .branch-row-text { color: rgba(255,255,255,0.75); }
-    .branch-row-text.muted { color: var(--muted); font-size: 13px; }
-
-    /* Actions */
-    .branch-actions { display: flex; gap: 8px; margin-top: 22px; }
-
-    .btn-call {
-      flex: 1;
-      display: flex; align-items: center; justify-content: center; gap: 5px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 100%);
-      border: none;
-      position: relative;
-      color: rgba(255,255,255,0.85);
-      border-radius: 14px; padding: 12px 0;
-      font-size: 13px; font-weight: 600;
-      transition: box-shadow .2s, transform .15s;
-    }
-
-    /* 버튼 그라데이션 테두리 */
-    .btn-call::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 14px;
-      padding: 1px;
-      background: linear-gradient(
-        135deg,
-        rgba(255,255,255,0.20) 0%,
-        rgba(255,255,255,0.04) 50%,
-        rgba(255,255,255,0.08) 100%
-      );
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-    }
-
-    .btn-call:hover {
-      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.07) 100%);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-      transform: translateY(-1px);
-    }
-
-    .btn-call.secondary {
-      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-      color: rgba(255,255,255,0.4);
-    }
-
-    /* Footer */
-    footer {
-      position: relative; z-index: 1;
-      text-align: center; padding: 16px 20px 22px;
-      font-size: 11px; color: rgba(255,255,255,0.18); line-height: 1.8;
-      background: rgba(0,0,0,0.4);
-      border-top: 1px solid rgba(255,255,255,0.05);
-    }
-
-    @media (max-width: 640px) {
-      header { padding: 16px 20px; }
-      .branch-grid { grid-template-columns: 1fr; }
-      .page-title { font-size: 28px; }
+    @media (max-width:760px) {
+      .topbar { display:none; }
+      header { padding:0 20px; }
+      .header-nav { display:none; }
+      .content { padding:28px 20px 48px; }
+      .branch-row { grid-template-columns:1fr; }
+      .branch-info { border-right:none; border-bottom:1px solid var(--border); padding:20px; }
+      .branch-map { height:300px; }
+      footer { padding:16px 20px; }
     }
   </style>
 </head>
 <body>
 
+<div class="topbar">
+  <a href="branches.html">📍 군산·서천·미룡·미장 4개 지점</a>
+  <a href="approval.html">📄 사전승낙서</a>
+  <a href="tel:0507-1344-4288">📞 0507-1344-4288</a>
+</div>
+
 <header>
-  <a class="back" href="index.html">← 홈으로</a>
-  <div class="brand">
-    <span class="brand-ko">휴대폰광장</span>
-    <span class="brand-en">TechNote</span>
-  </div>
+  <a class="brand" href="index.html">휴대폰광장</a>
+  <nav class="header-nav">
+    <a href="news.html#phone">폰 비교</a>
+    <a href="membership.html">멤버십 혜택</a>
+    <a href="news.html">최신 소식</a>
+    <a href="technews.html">테크뉴스</a>
+    <a href="branches.html" class="active">지점 안내</a>
+  </nav>
+  <a class="btn-call" href="tel:0507-1344-4288">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    전화 상담
+  </a>
 </header>
 
-<main>
-  <div class="page-title">📍 지점 안내</div>
-  <div class="page-sub">휴대폰광장 4개 지점의 위치와 연락처입니다.</div>
+<div class="content">
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">홈</a> › 지점 안내</div>
+    <div class="page-title">지점 안내</div>
+    <div class="page-sub">휴대폰광장 4개 지점의 위치와 연락처입니다.</div>
+  </div>
 
-  <div class="branch-grid">
+  <div class="branch-list">
 
-    <div class="branch-card">
-      <div class="branch-tag">전북 군산</div>
-      <div class="branch-name">나운점</div>
+    <div class="branch-row">
       <div class="branch-info">
-        <div class="branch-row">
-          <span class="branch-row-icon">🏢</span>
-          <span class="branch-row-text">전북특별자치도 군산시 문화로 47 2동 103호</span>
+        <span class="branch-tag">전북 군산</span>
+        <div class="branch-name">나운점</div>
+        <div class="info-row">
+          <span class="info-icon">🏢</span>
+          <div class="info-text">전북특별자치도 군산시 문화로 47 2동 103호</div>
         </div>
-        <div class="branch-row">
-          <span class="branch-row-icon">📞</span>
+        <div class="info-row">
+          <span class="info-icon">📞</span>
           <div>
-            <div class="branch-row-text">0507-1344-4288</div>
-            <div class="branch-row-text muted">063-466-4288</div>
+            <div class="info-text">0507-1344-4288</div>
+            <div class="info-sub">063-466-4288</div>
           </div>
         </div>
+        <div class="branch-actions">
+          <a class="btn-branch primary" href="tel:0507-1344-4288">📞 전화</a>
+          <a class="btn-branch secondary" href="https://place.naver.com/place/1890764536" target="_blank">🗺 네이버</a>
+        </div>
       </div>
-      <div class="branch-actions">
-        <a class="btn-call" href="tel:0507-1344-4288">📞 전화하기</a>
-        <a class="btn-call secondary" href="tel:063-466-4288">063 번호</a>
+      <div class="branch-map">
+        <div class="map-canvas"><div id="map-1"></div></div>
+        <a class="map-infobar" href="https://place.naver.com/place/1890764536" target="_blank">
+          <div class="map-infobar-text">
+            <div class="map-infobar-name">군산휴대폰성지 휴대폰광장 나운점</div>
+            <div class="map-infobar-addr">전북특별자치도 군산시 문화로 47 2동 103호</div>
+          </div>
+          <div class="map-infobar-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#03c75a"/><path d="M12 5C8.686 5 6 7.462 6 10.5c0 1.748 1.004 3.287 2.452 4.386L12 19l3.548-4.114C16.996 13.787 18 12.248 18 10.5 18 7.462 15.314 5 12 5zm0 7a2 2 0 110-4 2 2 0 010 4z" fill="#fff"/></svg>
+            지도
+          </div>
+        </a>
       </div>
     </div>
 
-    <div class="branch-card">
-      <div class="branch-tag">전북 군산</div>
-      <div class="branch-name">미룡점</div>
+    <div class="branch-row">
       <div class="branch-info">
-        <div class="branch-row">
-          <span class="branch-row-icon">🏢</span>
-          <span class="branch-row-text">전북특별자치도 군산시 미제2길 19</span>
+        <span class="branch-tag">전북 군산</span>
+        <div class="branch-name">미룡점</div>
+        <div class="info-row">
+          <span class="info-icon">🏢</span>
+          <div class="info-text">전북특별자치도 군산시 미제2길 19</div>
         </div>
-        <div class="branch-row">
-          <span class="branch-row-icon">📞</span>
-          <span class="branch-row-text">0504-4649-6728</span>
+        <div class="info-row">
+          <span class="info-icon">📞</span>
+          <div class="info-text">0504-4649-6728</div>
+        </div>
+        <div class="branch-actions">
+          <a class="btn-branch primary" href="tel:0504-4649-6728">📞 전화</a>
+          <a class="btn-branch secondary" href="https://place.naver.com/place/37197026" target="_blank">🗺 네이버</a>
         </div>
       </div>
-      <div class="branch-actions">
-        <a class="btn-call" href="tel:0504-4649-6728">📞 전화하기</a>
+      <div class="branch-map">
+        <div class="map-canvas"><div id="map-2"></div></div>
+        <a class="map-infobar" href="https://place.naver.com/place/37197026" target="_blank">
+          <div class="map-infobar-text">
+            <div class="map-infobar-name">군산휴대폰성지 휴대폰광장 미룡점</div>
+            <div class="map-infobar-addr">전북특별자치도 군산시 미제2길 19</div>
+          </div>
+          <div class="map-infobar-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#03c75a"/><path d="M12 5C8.686 5 6 7.462 6 10.5c0 1.748 1.004 3.287 2.452 4.386L12 19l3.548-4.114C16.996 13.787 18 12.248 18 10.5 18 7.462 15.314 5 12 5zm0 7a2 2 0 110-4 2 2 0 010 4z" fill="#fff"/></svg>
+            지도
+          </div>
+        </a>
       </div>
     </div>
 
-    <div class="branch-card">
-      <div class="branch-tag">전북 군산</div>
-      <div class="branch-name">미장점</div>
+    <div class="branch-row">
       <div class="branch-info">
-        <div class="branch-row">
-          <span class="branch-row-icon">🏢</span>
-          <span class="branch-row-text">전북특별자치도 군산시 공단대로 131</span>
+        <span class="branch-tag">전북 군산</span>
+        <div class="branch-name">미장점</div>
+        <div class="info-row">
+          <span class="info-icon">🏢</span>
+          <div class="info-text">전북특별자치도 군산시 공단대로 131</div>
         </div>
-        <div class="branch-row">
-          <span class="branch-row-icon">📞</span>
-          <span class="branch-row-text">0507-1358-4288</span>
+        <div class="info-row">
+          <span class="info-icon">📞</span>
+          <div class="info-text">0507-1358-4288</div>
+        </div>
+        <div class="branch-actions">
+          <a class="btn-branch primary" href="tel:0507-1358-4288">📞 전화</a>
+          <a class="btn-branch secondary" href="https://place.naver.com/place/1018575431" target="_blank">🗺 네이버</a>
         </div>
       </div>
-      <div class="branch-actions">
-        <a class="btn-call" href="tel:0507-1358-4288">📞 전화하기</a>
+      <div class="branch-map">
+        <div class="map-canvas"><div id="map-3"></div></div>
+        <a class="map-infobar" href="https://place.naver.com/place/1018575431" target="_blank">
+          <div class="map-infobar-text">
+            <div class="map-infobar-name">군산휴대폰성지 휴대폰광장 미장점</div>
+            <div class="map-infobar-addr">전북특별자치도 군산시 공단대로 131</div>
+          </div>
+          <div class="map-infobar-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#03c75a"/><path d="M12 5C8.686 5 6 7.462 6 10.5c0 1.748 1.004 3.287 2.452 4.386L12 19l3.548-4.114C16.996 13.787 18 12.248 18 10.5 18 7.462 15.314 5 12 5zm0 7a2 2 0 110-4 2 2 0 010 4z" fill="#fff"/></svg>
+            지도
+          </div>
+        </a>
       </div>
     </div>
 
-    <div class="branch-card">
-      <div class="branch-tag">충남 서천</div>
-      <div class="branch-name">서천점</div>
+    <div class="branch-row">
       <div class="branch-info">
-        <div class="branch-row">
-          <span class="branch-row-icon">🏢</span>
-          <span class="branch-row-text">충청남도 서천군 서천읍 서천로 182</span>
+        <span class="branch-tag">충남 서천</span>
+        <div class="branch-name">서천점</div>
+        <div class="info-row">
+          <span class="info-icon">🏢</span>
+          <div class="info-text">충청남도 서천군 서천읍 서천로 182</div>
         </div>
-        <div class="branch-row">
-          <span class="branch-row-icon">📞</span>
+        <div class="info-row">
+          <span class="info-icon">📞</span>
           <div>
-            <div class="branch-row-text">041-951-5288</div>
-            <div class="branch-row-text muted">010-3003-4288</div>
+            <div class="info-text">041-951-5288</div>
+            <div class="info-sub">010-3003-4288</div>
           </div>
         </div>
+        <div class="branch-actions">
+          <a class="btn-branch primary" href="tel:041-951-5288">📞 전화</a>
+          <a class="btn-branch secondary" href="https://place.naver.com/place/1466557787" target="_blank">🗺 네이버</a>
+        </div>
       </div>
-      <div class="branch-actions">
-        <a class="btn-call" href="tel:041-951-5288">📞 전화하기</a>
-        <a class="btn-call secondary" href="tel:010-3003-4288">휴대폰</a>
+      <div class="branch-map">
+        <div class="map-canvas"><div id="map-4"></div></div>
+        <a class="map-infobar" href="https://place.naver.com/place/1466557787" target="_blank">
+          <div class="map-infobar-text">
+            <div class="map-infobar-name">서천점 휴대폰광장</div>
+            <div class="map-infobar-addr">충청남도 서천군 서천읍 서천로 182</div>
+          </div>
+          <div class="map-infobar-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#03c75a"/><path d="M12 5C8.686 5 6 7.462 6 10.5c0 1.748 1.004 3.287 2.452 4.386L12 19l3.548-4.114C16.996 13.787 18 12.248 18 10.5 18 7.462 15.314 5 12 5zm0 7a2 2 0 110-4 2 2 0 010 4z" fill="#fff"/></svg>
+            지도
+          </div>
+        </a>
       </div>
     </div>
 
   </div>
-</main>
+</div>
 
-<footer>
-  대표 이성완 &nbsp;|&nbsp; 사업자등록번호 176-10-01227 &nbsp;|&nbsp; 충청남도 서천군 서천읍 서천로 182
-</footer>
+<footer>대표 이성완 &nbsp;|&nbsp; 사업자등록번호 176-10-01227 &nbsp;|&nbsp; 충청남도 서천군 서천읍 서천로 182</footer>
+
+<style>
+.kakao-float { position:fixed; bottom:28px; right:24px; z-index:200; background:#FEE500; color:#3C1E1E; border-radius:50px; padding:12px 20px 12px 16px; display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; box-shadow:0 4px 20px rgba(0,0,0,.18); transition:transform .2s,box-shadow .2s; text-decoration:none; font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif; }
+.kakao-float:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,0,0,.22); }
+.mobile-bottom-bar { display:none; position:fixed; bottom:0; left:0; right:0; z-index:200; border-top:1px solid #e8e8e8; box-shadow:0 -4px 16px rgba(0,0,0,.1); }
+.mobile-bottom-bar a { flex:1; display:flex; align-items:center; justify-content:center; gap:7px; height:56px; font-size:15px; font-weight:700; text-decoration:none; }
+.mobile-bottom-bar .mbar-call { background:#1a1a1a; color:#fff; }
+.mobile-bottom-bar .mbar-kakao { background:#FEE500; color:#3C1E1E; }
+@media (max-width:720px) { .kakao-float { display:none; } .mobile-bottom-bar { display:flex; } body { padding-bottom:56px; } }
+</style>
+<script>
+(function() {
+  var branches = [
+    { id:'map-1', lat:35.97826, lng:126.71238, name:'나운점' },
+    { id:'map-2', lat:35.97387, lng:126.72897, name:'미룡점' },
+    { id:'map-3', lat:35.95063, lng:126.72183, name:'미장점' },
+    { id:'map-4', lat:36.07591, lng:126.69163, name:'서천점' },
+  ];
+  branches.forEach(function(b) {
+    var center = new naver.maps.LatLng(b.lat, b.lng);
+    var map = new naver.maps.Map(b.id, { center:center, zoom:16, mapTypeControl:false, scaleControl:false, logoControl:true, mapDataControl:false });
+    new naver.maps.Marker({ position:center, map:map, title:b.name });
+  });
+})();
+</script>
+
+<a class="kakao-float" href="http://pf.kakao.com/_KvIij" target="_blank" aria-label="카카오 채널 상담">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 2C6.486 2 2 5.589 2 10c0 2.908 1.897 5.516 4.761 7.032l-.948 3.405a.5.5 0 00.724.556L10.5 18.85c.487.09.986.15 1.5.15 5.514 0 10-3.589 10-8S17.514 2 12 2z"/></svg>
+  <span>카카오 상담</span>
+</a>
+<div class="mobile-bottom-bar">
+  <a class="mbar-call" href="tel:0507-1344-4288">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    전화 상담
+  </a>
+  <a class="mbar-kakao" href="http://pf.kakao.com/_KvIij" target="_blank">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 2C6.486 2 2 5.589 2 10c0 2.908 1.897 5.516 4.761 7.032l-.948 3.405a.5.5 0 00.724.556L10.5 18.85c.487.09.986.15 1.5.15 5.514 0 10-3.589 10-8S17.514 2 12 2z"/></svg>
+    카카오 상담
+  </a>
+</div>
 
 </body>
 </html>

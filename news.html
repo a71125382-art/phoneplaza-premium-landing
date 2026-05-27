@@ -3,191 +3,201 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>최신 소식 | 휴대폰광장 TechNote</title>
+  <title>최신 소식 | 휴대폰광장</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #050507; --surface: #1c1c1e; --text: #f5f5f7;
-      --blue: #2997ff; --muted: #86868b; --border: rgba(255,255,255,0.08);
-      --shadow: 0 2px 20px rgba(0,0,0,0.07);
-    }
-    body {
-      background: var(--bg); color: #f5f5f7;
-      font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
-      min-height: 100dvh; display: flex; flex-direction: column;
-      position: relative;
-    }
-    body::before {
-      content: '';
-      position: fixed; top: 0; left: 0; right: 0; height: 45vh;
-      background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 50%, transparent 100%);
-      pointer-events: none; z-index: 0;
-    }
-    a { text-decoration: none; color: inherit; }
+    :root { --bg:#fff; --surface:#f7f7f8; --text:#1a1a1a; --muted:#767676; --soft:#adadad; --border:#e8e8e8; }
+    body { background:var(--bg); font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif; color:var(--text); min-height:100dvh; display:flex; flex-direction:column; }
+    a { text-decoration:none; color:inherit; }
 
-    header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 44px;
-      background: rgba(5,5,7,0.8);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      position: sticky; top: 0; z-index: 100;
-    }
-    .back { display: flex; align-items: center; gap: 6px; font-size: 14px; color: rgba(255,255,255,0.5); font-weight: 500; transition: color .2s; }
-    .back:hover { color: rgba(255,255,255,0.85); }
-    .brand { display: flex; align-items: baseline; gap: 7px; }
-    .brand-ko { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
-    .brand-en { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 13px; color: rgba(255,255,255,0.45); letter-spacing: 0.8px; }
+    .topbar { background:var(--surface); border-bottom:1px solid var(--border); height:36px; display:flex; align-items:center; padding:0 40px; gap:20px; }
+    .topbar a { font-size:12px; color:var(--muted); font-weight:500; transition:color .15s; }
+    .topbar a:hover { color:var(--text); }
 
-    main {
-      position: relative; z-index: 1;
-      flex: 1; max-width: 860px; margin: 0 auto;
-      width: 100%; padding: 52px 24px 60px;
-    }
+    header { position:sticky; top:0; z-index:100; background:rgba(255,255,255,.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); height:56px; display:flex; align-items:center; padding:0 40px; gap:32px; }
+    .brand { font-size:18px; font-weight:800; letter-spacing:-.5px; }
+    .header-nav { display:flex; flex:1; }
+    .header-nav a { font-size:14px; font-weight:500; color:var(--muted); padding:0 14px; height:56px; display:flex; align-items:center; border-bottom:2px solid transparent; transition:color .15s,border-color .15s; }
+    .header-nav a:hover { color:var(--text); }
+    .header-nav a.active { color:var(--text); border-bottom-color:var(--text); }
+    .btn-call { height:36px; padding:0 18px; background:var(--text); color:#fff; border-radius:6px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:6px; margin-left:auto; transition:opacity .15s; white-space:nowrap; }
+    .btn-call:hover { opacity:.82; }
 
-    .page-title { font-size: 36px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
-    .page-sub { font-size: 15px; color: #86868b; margin-bottom: 44px; }
+    .content { max-width:960px; margin:0 auto; padding:40px 40px 64px; flex:1; }
+    .page-header { margin-bottom:28px; }
+    .breadcrumb { font-size:12px; color:var(--soft); margin-bottom:10px; }
+    .breadcrumb a { color:var(--soft); }
+    .page-title { font-size:32px; font-weight:700; letter-spacing:-.8px; }
+    .page-sub { font-size:15px; color:var(--muted); margin-top:6px; }
 
-    .blog-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 18px;
-    }
+    .cat-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px; }
+    .cat-tab { padding:7px 16px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; border:1.5px solid var(--border); background:transparent; color:var(--muted); transition:all .15s; font-family:inherit; }
+    .cat-tab:hover { border-color:#b0b0b0; color:var(--text); background:var(--surface); }
+    .cat-tab.active { background:var(--text); border-color:var(--text); color:#fff; }
 
-    .blog-card {
-      background: #1c1c1e;
-      border-radius: 18px;
-      padding: 24px 20px;
-      box-shadow: var(--shadow);
-      border: 1.5px solid transparent;
-      transition: border-color .2s, box-shadow .2s, transform .2s;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    .blog-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .blog-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px; display:flex; flex-direction:column; gap:8px; transition:border-color .15s,transform .15s,box-shadow .15s; }
+    .blog-card:hover { border-color:#c0c0c0; transform:translateY(-2px); box-shadow:0 4px 14px rgba(0,0,0,.06); }
+    .blog-date { font-size:11px; color:var(--soft); font-family:'Inter',sans-serif; }
+    .blog-title { font-size:13px; font-weight:600; line-height:1.55; flex:1; }
+    .blog-link { font-size:12px; color:var(--muted); font-weight:500; }
 
-    .blog-card:hover {
-      border-color: var(--blue);
-      box-shadow: 0 8px 32px rgba(0,113,227,0.12);
-      transform: translateY(-2px);
-    }
+    .loading { grid-column:1/-1; text-align:center; color:var(--muted); padding:40px; font-size:14px; }
+    .empty-msg { grid-column:1/-1; text-align:center; color:var(--muted); padding:40px; font-size:14px; }
 
-    .blog-date { font-size: 11px; color: #86868b; }
+    .blog-more { text-align:center; margin-top:32px; }
+    .btn-more { display:inline-flex; align-items:center; gap:6px; background:var(--surface); color:var(--text); border:1.5px solid var(--border); font-size:14px; font-weight:600; padding:12px 28px; border-radius:40px; transition:border-color .15s; }
+    .btn-more:hover { border-color:#a0a0a0; }
 
-    .blog-title {
-      font-size: 15px;
-      font-weight: 600;
-      line-height: 1.5;
-      color: #f5f5f7;
-      flex: 1;
-    }
+    footer { border-top:1px solid var(--border); padding:20px 40px; font-size:12px; color:var(--muted); line-height:1.8; }
 
-    .blog-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12px;
-      color: var(--blue);
-      font-weight: 600;
-      margin-top: 4px;
-    }
-
-    .loading {
-      grid-column: 1 / -1;
-      text-align: center;
-      color: #86868b;
-      padding: 40px;
-      font-size: 14px;
-    }
-
-    .blog-more {
-      text-align: center;
-      margin-top: 36px;
-    }
-
-    .btn-more {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255,255,255,0.1);
-      color: #f5f5f7;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 13px 28px;
-      border-radius: 40px;
-      transition: opacity .2s;
-    }
-
-    .btn-more:hover { opacity: .8; }
-
-    footer {
-      text-align: center;
-      padding: 18px 20px 24px;
-      font-size: 11px;
-      color: #86868b;
-      line-height: 1.8;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-
-    @media (max-width: 640px) {
-      header { padding: 18px 20px; }
-      .page-title { font-size: 28px; }
-    }
+    @media (max-width:720px) { .topbar{display:none} header{padding:0 20px} .header-nav{display:none} .content{padding:28px 20px 48px} .blog-grid{grid-template-columns:1fr 1fr} footer{padding:16px 20px} }
+    @media (max-width:480px) { .blog-grid{grid-template-columns:1fr} }
   </style>
 </head>
 <body>
 
+<div class="topbar">
+  <a href="branches.html">📍 군산·서천·미룡·미장 4개 지점</a>
+  <a href="approval.html">📄 사전승낙서</a>
+  <a href="tel:0507-1344-4288">📞 0507-1344-4288</a>
+</div>
+
 <header>
-  <a class="back" href="index.html">← 홈으로</a>
-  <div class="brand">
-    <span class="brand-ko">휴대폰광장</span>
-    <span class="brand-en">TechNote</span>
-  </div>
+  <a class="brand" href="index.html">휴대폰광장</a>
+  <nav class="header-nav">
+    <a href="news.html#phone">폰 비교</a>
+    <a href="membership.html">멤버십 혜택</a>
+    <a href="news.html" class="active">최신 소식</a>
+    <a href="technews.html">테크뉴스</a>
+    <a href="branches.html">지점 안내</a>
+  </nav>
+  <a class="btn-call" href="tel:0507-1344-4288">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    전화 상담
+  </a>
 </header>
 
-<main>
-  <div class="page-title">📰 최신 소식</div>
-  <div class="page-sub">휴대폰광장 네이버 블로그 테크노트의 최신 포스트입니다.</div>
+<div class="content">
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">홈</a> › 최신 소식</div>
+    <div class="page-title">최신 소식</div>
+    <div class="page-sub">휴대폰광장 네이버 블로그의 최신 포스트입니다.</div>
+  </div>
+
+  <div class="cat-tabs" id="cat-tabs">
+    <button class="cat-tab active" data-cat="all">전체</button>
+    <button class="cat-tab" data-cat="phone">📱 폰 비교</button>
+    <button class="cat-tab" data-cat="tech">📡 테크뉴스</button>
+    <button class="cat-tab" data-cat="plan">📋 요금제</button>
+    <button class="cat-tab" data-cat="webtoon">🎨 웹툰</button>
+  </div>
 
   <div class="blog-grid" id="blog-grid">
     <div class="loading">포스트를 불러오는 중입니다...</div>
   </div>
 
   <div class="blog-more">
-    <a class="btn-more" href="https://blog.naver.com/sw112_" target="_blank">
-      블로그 전체 보기 →
-    </a>
+    <a class="btn-more" href="https://blog.naver.com/sw112_" target="_blank">블로그 전체 보기 →</a>
   </div>
-</main>
+</div>
 
-<footer>
-  대표 이성완 &nbsp;|&nbsp; 사업자등록번호 176-10-01227<br>
-  충청남도 서천군 서천읍 서천로 182
-</footer>
+<footer>대표 이성완 &nbsp;|&nbsp; 사업자등록번호 176-10-01227 &nbsp;|&nbsp; 충청남도 서천군 서천읍 서천로 182</footer>
 
 <script>
+const CAT_KEYWORDS = {
+  phone:   ['갤럭시', '아이폰', '스펙', '비교', '추천', '후기', '폴드', '플립', '폰비교', '기기'],
+  tech:    ['테크', 'AI', '인공지능', '뉴스', '업데이트', '출시', '발표', '삼성', '애플'],
+  plan:    ['요금제', '통신', 'SKT', 'KT', 'LG', '공시', '약정', '선택약정', '번호이동', '기기변경'],
+  webtoon: ['웹툰', '폰순이', '광장이야기'],
+};
+
+function classify(title) {
+  for (const [cat, kws] of Object.entries(CAT_KEYWORDS)) {
+    if (kws.some(kw => title.includes(kw))) return cat;
+  }
+  return 'other';
+}
+
+function renderItems(items, activeCat) {
+  const grid = document.getElementById('blog-grid');
+  const filtered = activeCat === 'all' ? items : items.filter(it => it._cat === activeCat);
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty-msg">해당 카테고리 포스트가 없습니다.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(item => `
+    <a class="blog-card" href="${item.link}" target="_blank">
+      <div class="blog-date">${(item.pubDate || '').slice(0, 10)}</div>
+      <div class="blog-title">${item.title}</div>
+      <div class="blog-link">포스트 보기 →</div>
+    </a>`).join('');
+}
+
 (async () => {
   const RSS = 'https://rss.blog.naver.com/sw112_.xml';
-  const API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS)}&count=9`;
+  const API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS)}`;
   const grid = document.getElementById('blog-grid');
+
+  const initCat = location.hash === '#phone' ? 'phone' : 'all';
+
+  let allItems = [];
+  let activeCat = initCat;
+
   try {
     const data = await fetch(API).then(r => r.json());
-    const items = data.items || [];
-    if (!items.length) throw new Error('empty');
-    grid.innerHTML = items.map(item => `
-      <a class="blog-card" href="${item.link}" target="_blank">
-        <div class="blog-date">${(item.pubDate || '').slice(0, 10)}</div>
-        <div class="blog-title">${item.title}</div>
-        <div class="blog-link">포스트 보기 →</div>
-      </a>`).join('');
+    allItems = (data.items || []).map(it => ({ ...it, _cat: classify(it.title) }));
+    if (!allItems.length) throw new Error('empty');
   } catch {
     grid.innerHTML = '<div class="loading">포스트를 불러올 수 없습니다. 블로그를 직접 방문해 주세요.</div>';
+    return;
   }
+
+  document.getElementById('cat-tabs').addEventListener('click', e => {
+    const btn = e.target.closest('.cat-tab');
+    if (!btn) return;
+    document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    activeCat = btn.dataset.cat;
+    renderItems(allItems, activeCat);
+  });
+
+  if (initCat !== 'all') {
+    document.querySelectorAll('.cat-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.cat === initCat);
+    });
+  }
+
+  renderItems(allItems, activeCat);
 })();
 </script>
 
+
+<style>
+.kakao-float { position:fixed; bottom:28px; right:24px; z-index:200; background:#FEE500; color:#3C1E1E; border-radius:50px; padding:12px 20px 12px 16px; display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; box-shadow:0 4px 20px rgba(0,0,0,.18); transition:transform .2s,box-shadow .2s; text-decoration:none; font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif; }
+.kakao-float:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,0,0,.22); }
+.mobile-bottom-bar { display:none; position:fixed; bottom:0; left:0; right:0; z-index:200; border-top:1px solid #e8e8e8; box-shadow:0 -4px 16px rgba(0,0,0,.1); }
+.mobile-bottom-bar a { flex:1; display:flex; align-items:center; justify-content:center; gap:7px; height:56px; font-size:15px; font-weight:700; text-decoration:none; }
+.mobile-bottom-bar .mbar-call { background:#1a1a1a; color:#fff; }
+.mobile-bottom-bar .mbar-kakao { background:#FEE500; color:#3C1E1E; }
+@media (max-width:720px) { .kakao-float { display:none; } .mobile-bottom-bar { display:flex; } body { padding-bottom:56px; } }
+</style>
+<a class="kakao-float" href="http://pf.kakao.com/_KvIij" target="_blank" aria-label="카카오 채널 상담">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 2C6.486 2 2 5.589 2 10c0 2.908 1.897 5.516 4.761 7.032l-.948 3.405a.5.5 0 00.724.556L10.5 18.85c.487.09.986.15 1.5.15 5.514 0 10-3.589 10-8S17.514 2 12 2z"/></svg>
+  <span>카카오 상담</span>
+</a>
+<div class="mobile-bottom-bar">
+  <a class="mbar-call" href="tel:0507-1344-4288">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    전화 상담
+  </a>
+  <a class="mbar-kakao" href="http://pf.kakao.com/_KvIij" target="_blank">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 2C6.486 2 2 5.589 2 10c0 2.908 1.897 5.516 4.761 7.032l-.948 3.405a.5.5 0 00.724.556L10.5 18.85c.487.09.986.15 1.5.15 5.514 0 10-3.589 10-8S17.514 2 12 2z"/></svg>
+    카카오 상담
+  </a>
+</div>
 </body>
 </html>

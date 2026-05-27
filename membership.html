@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>통신사 멤버십 혜택 | 휴대폰광장</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg:#fff; --surface:#f7f7f8; --text:#1a1a1a; --muted:#767676; --soft:#adadad; --border:#e8e8e8; }
+    body { background:var(--bg); font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif; color:var(--text); min-height:100dvh; display:flex; flex-direction:column; }
+    a { text-decoration:none; color:inherit; }
+
+    .topbar { background:var(--surface); border-bottom:1px solid var(--border); height:36px; display:flex; align-items:center; padding:0 40px; gap:20px; }
+    .topbar a { font-size:12px; color:var(--muted); font-weight:500; transition:color .15s; }
+    .topbar a:hover { color:var(--text); }
+
+    header { position:sticky; top:0; z-index:100; background:rgba(255,255,255,.96); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); height:56px; display:flex; align-items:center; padding:0 40px; gap:32px; }
+    .brand { font-size:18px; font-weight:800; letter-spacing:-.5px; }
+    .header-nav { display:flex; flex:1; }
+    .header-nav a { font-size:14px; font-weight:500; color:var(--muted); padding:0 14px; height:56px; display:flex; align-items:center; border-bottom:2px solid transparent; transition:color .15s,border-color .15s; }
+    .header-nav a:hover { color:var(--text); }
+    .header-nav a.active { color:var(--text); border-bottom-color:var(--text); }
+    .btn-call { height:36px; padding:0 18px; background:var(--text); color:#fff; border-radius:6px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:6px; margin-left:auto; transition:opacity .15s; white-space:nowrap; }
+    .btn-call:hover { opacity:.82; }
+
+    .content { max-width:980px; margin:0 auto; padding:40px 40px 64px; flex:1; }
+    .page-header { margin-bottom:36px; }
+    .breadcrumb { font-size:12px; color:var(--soft); margin-bottom:10px; }
+    .breadcrumb a { color:var(--soft); }
+    .page-title { font-size:32px; font-weight:700; letter-spacing:-.8px; }
+    .page-sub { font-size:15px; color:var(--muted); margin-top:6px; }
+
+    /* Carrier cards */
+    .carrier-section { margin-bottom:32px; }
+    .carrier-card {
+      border:1px solid var(--border); border-radius:20px; overflow:hidden;
+      transition:box-shadow .2s,transform .2s;
+    }
+    .carrier-card:hover { box-shadow:0 8px 32px rgba(0,0,0,.07); transform:translateY(-2px); }
+
+    .carrier-header { padding:28px 28px 20px; display:flex; align-items:center; gap:18px; }
+    .brand-mark { width:56px; height:56px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-family:'Inter',sans-serif; font-weight:900; color:#fff; flex-shrink:0; font-size:18px; letter-spacing:-.5px; }
+    .bm-skt { background:linear-gradient(135deg,#e00024,#b8001c); }
+    .bm-kt  { background:linear-gradient(135deg,#c8151e,#a00f16); }
+    .bm-lgu { background:linear-gradient(135deg,#c8006e,#9e0056); }
+
+    .carrier-header-info { flex:1; }
+    .carrier-name { font-size:20px; font-weight:700; letter-spacing:-.3px; }
+    .carrier-tagline { font-size:13px; color:var(--muted); margin-top:3px; }
+
+    .carrier-official { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:600; color:var(--muted); border:1.5px solid var(--border); padding:7px 14px; border-radius:8px; transition:border-color .15s,color .15s; white-space:nowrap; }
+    .carrier-official:hover { border-color:#a0a0a0; color:var(--text); }
+
+    .carrier-body { padding:0 28px 28px; }
+
+    /* Grade badges */
+    .grade-row { display:flex; align-items:center; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+    .grade-label { font-size:12px; font-weight:600; color:var(--soft); margin-right:4px; }
+    .grade-chip { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:700; padding:5px 12px; border-radius:20px; }
+    .grade-vip   { background:linear-gradient(135deg,#f7971e,#ffd200); color:#1a1a1a; }
+    .grade-gold  { background:#c8a84b; color:#fff; }
+    .grade-silver{ background:#a0a0a0; color:#fff; }
+    .grade-bronze{ background:#cd7f32; color:#fff; }
+    .grade-arrow { font-size:11px; color:var(--soft); }
+
+    /* Benefits grid */
+    .benefit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+    .benefit-item { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px; display:flex; align-items:flex-start; gap:12px; }
+    .benefit-icon { font-size:22px; flex-shrink:0; line-height:1; }
+    .benefit-info { }
+    .benefit-title { font-size:13px; font-weight:700; line-height:1.3; }
+    .benefit-desc { font-size:12px; color:var(--muted); margin-top:3px; line-height:1.5; }
+
+    /* Grade table */
+    .grade-table { margin-top:20px; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+    .grade-table-title { font-size:12px; font-weight:700; color:var(--muted); padding:12px 16px; background:var(--surface); border-bottom:1px solid var(--border); letter-spacing:.3px; text-transform:uppercase; }
+    .grade-row-table { display:grid; grid-template-columns:100px 1fr 1fr; gap:0; }
+    .grade-row-table:not(:last-child) { border-bottom:1px solid var(--border); }
+    .grade-cell { padding:11px 16px; font-size:13px; }
+    .grade-cell:first-child { font-weight:700; border-right:1px solid var(--border); background:var(--surface); }
+    .grade-cell:nth-child(2) { border-right:1px solid var(--border); color:var(--muted); font-size:12px; }
+    .grade-cell:last-child { color:var(--muted); font-size:12px; }
+    .grade-cell .chip { display:inline-flex; font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; margin-right:4px; }
+
+    /* Notice */
+    .notice { background:#f0f4ff; border:1px solid #d0dcff; border-radius:12px; padding:14px 18px; font-size:13px; color:#3a5ab5; line-height:1.7; margin-top:32px; }
+
+    footer { border-top:1px solid var(--border); padding:20px 40px; font-size:12px; color:var(--muted); line-height:1.8; }
+
+    @media (max-width:720px) {
+      .topbar{display:none} header{padding:0 20px} .header-nav{display:none}
+      .content{padding:28px 20px 48px}
+      .carrier-header{padding:20px 20px 16px}
+      .carrier-body{padding:0 20px 20px}
+      .benefit-grid{grid-template-columns:1fr 1fr}
+      .grade-row-table{grid-template-columns:80px 1fr}
+      .grade-cell:last-child{display:none}
+      footer{padding:16px 20px}
+    }
+    @media (max-width:480px) { .benefit-grid{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="branches.html">📍 군산·서천·미룡·미장 4개 지점</a>
+  <a href="approval.html">📄 사전승낙서</a>
+  <a href="tel:0507-1344-4288">📞 0507-1344-4288</a>
+</div>
+
+<header>
+  <a class="brand" href="index.html">휴대폰광장</a>
+  <nav class="header-nav">
+    <a href="news.html#phone">폰 비교</a>
+    <a href="membership.html" class="active">멤버십 혜택</a>
+    <a href="news.html">최신 소식</a>
+    <a href="technews.html">테크뉴스</a>
+    <a href="branches.html">지점 안내</a>
+  </nav>
+  <a class="btn-call" href="tel:0507-1344-4288">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    전화 상담
+  </a>
+</header>
+
+<div class="content">
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">홈</a> › 멤버십 혜택</div>
+    <div class="page-title">통신사 멤버십 혜택</div>
+    <div class="page-sub">SK·KT·LG 3사 멤버십 등급 기준과 주요 혜택을 정리했습니다.</div>
+  </div>
+
+  <!-- SKT -->
+  <div class="carrier-section">
+    <div class="carrier-card">
+      <div class="carrier-header">
+        <div class="brand-mark bm-skt">T</div>
+        <div class="carrier-header-info">
+          <div class="carrier-name">SKT T멤버십</div>
+          <div class="carrier-tagline">국내 최대 제휴망 — 영화·카페·주유·편의점까지</div>
+        </div>
+        <a class="carrier-official" href="https://www.tworld.co.kr/web/home" target="_blank">T world 멤버십 →</a>
+      </div>
+      <div class="carrier-body">
+        <div class="grade-row">
+          <span class="grade-label">등급</span>
+          <span class="grade-chip grade-vip">✦ VIP</span>
+          <span class="grade-arrow">›</span>
+          <span class="grade-chip grade-gold">Gold</span>
+          <span class="grade-arrow">›</span>
+          <span class="grade-chip grade-silver">Silver</span>
+          <span class="grade-arrow">›</span>
+          <span class="grade-chip grade-bronze">Bronze</span>
+        </div>
+        <div class="benefit-grid">
+          <div class="benefit-item">
+            <div class="benefit-icon">🎬</div>
+            <div class="benefit-info">
+              <div class="benefit-title">영화관</div>
+              <div class="benefit-desc">CGV·롯데시네마<br>VIP 최대 6,000원 할인</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">☕</div>
+            <div class="benefit-info">
+              <div class="benefit-title">카페</div>
+              <div class="benefit-desc">스타벅스·이디야·파리바게뜨<br>음료·빵 등 할인</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">🏪</div>
+            <div class="benefit-info">
+              <div class="benefit-title">편의점</div>
+              <div class="benefit-desc">GS25·CU<br>월 지정 상품 할인·증정</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">⛽</div>
+            <div class="benefit-info">
+              <div class="benefit-title">주유</div>
+              <div class="benefit-desc">GS칼텍스·SK에너지<br>리터당 60~100원 할인</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">🍔</div>
+            <div class="benefit-info">
+              <div class="benefit-title">외식</div>
+              <div class="benefit-desc">BBQ·버거킹·KFC 등<br>할인 쿠폰 제공</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">🏥</div>
+            <div class="benefit-info">
+              <div class="benefit-title">의료·건강</div>
+              <div class="benefit-desc">건강검진·약국·안경원<br>VIP 전용 추가 혜택</div>
+            </div>
+          </div>
+        </div>
+        <div class="grade-table">
+          <div class="grade-table-title">등급 기준 (연간 납부액)</div>
+          <div class="grade-row-table">
+            <div class="grade-cell"><span class="chip grade-vip">VIP</span></div>
+            <div class="grade-cell">360만 원 이상</div>
+            <div class="grade-cell">전 혜택 최대 적용</div>
+          </div>
+          <div class="grade-row-table">
+            <div class="grade-cell"><span class="chip grade-gold">Gold</span></div>
+            <div class="grade-cell">180만 원 이상</div>
+            <div class="grade-cell">주요 혜택 80% 수준</div>
+          </div>
+          <div class="grade-row-table">
+            <div class="grade-cell"><span class="chip grade-silver">Silver</span></div>
+            <div class="grade-cell">60만 원 이상</div>
+            <div class="grade-cell">기본 할인 제공</div>
+          </div>
+          <div class="grade-row-table">
+            <div class="grade-cell"><span class="chip grade-bronze">Bronze</span></div>
+            <div class="grade-cell">60만 원 미만</div>
+            <div class="grade-cell">일부 혜택 이용 가능</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KT -->
+  <div class="carrier-section">
+    <div class="carrier-card">
+      <div class="carrier-header">
+        <div class="brand-mark bm-kt">KT</div>
+        <div class="carrier-header-info">
+          <div class="carrier-name">KT 멤버십</div>
+          <div class="carrier-tagline">영화·쇼핑·외식·공연까지 폭넓은 생활 혜택</div>
+        </div>
+        <a class="carrier-official" href="https://membership.kt.com/main/MainInfo.do" target="_blank">KT 멤버십 →</a>
+      </div>
+      <div class="carrier-body">
+        <div class="grade-row">
+          <span class="grade-label">등급</span>
+          <span class="grade-chip grade-vip">✦ VIP</span>
+          <span class="grade-arrow">›</span>
+          <span class="grade-chip grade-gold">Gold</span>
+          <span class="grade-arrow">›</span>
+          <span class="grade-chip grade-silver">Silver</span>
+          <span class="grade-arrow">›</span>
+          <span class="grade-chip grade-bronze">Bronze</span>
+        </div>
+        <div class="benefit-grid">
+          <div class="benefit-item">
+            <div class="benefit-icon">🎬</div>
+            <div class="benefit-info">
+              <div class="benefit-title">영화관</div>
+              <div class="benefit-desc">CGV·메가박스·롯데시네마<br>VIP 최대 6,000원 할인</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">🛒</div>
+            <div class="benefit-info">
+              <div class="benefit-title">대형마트</div>
+              <div class="benefit-desc">이마트·롯데마트·홈플러스<br>월 1회 5~10% 할인</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">☕</div>
+            <div class="benefit-info">
+              <div class="benefit-title">카페</div>
+              <div class="benefit-desc">스타벅스·할리스·이디야<br>음료 할인 쿠폰</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">🍽️</div>
+            <div class="benefit-info">
+              <div class="benefit-title">외식</div>
+              <div class="benefit-desc">패밀리레스토랑·패스트푸드<br>10~20% 할인</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">🎭</div>
+            <div class="benefit-info">
+              <div class="benefit-title">공연·문화</div>
+              <div class="benefit-desc">뮤지컬·콘서트·전시<br>VIP 전용 사전 예매</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">✈️</div>
+            <div class="benefit-info">
+              <div class="benefit-title">여행·숙박</div>
+              <div class="benefit-desc">호텔·리조트·항공권<br>제휴 할인 제공</div>
+            </div>
+          </div>
+        </div>
+        <div class="grade-table">
+          <div class="grade-table-title">등급 기준 (연간 납부액)</div>
+          <div class="grade-row-table">
+            <div class="grade-cell"><span class="chip grade-vip">VIP</span></div>
+            <div class="grade-cell">300만 원 이상</div>
+            <div class="grade-cell">전 혜택 최고 등급 적용</div>
+          </div>
+          <div class="grade-row-table">
+            <div class="grade-cell"><span class="chip grade-gold">Gold</span></div>
+            <div class="grade-cell">150만 원 이상</div>
+            <div class="grade-cell">주요 혜택 제공</div>
+          </div>
+          <div class="grade-row-table">
+            <div class="grade-cell"><span class="chip grade-silver">Silver</span></div>
+            <div class="grade-cell">60만 원 이상</div>
+            <div class="grade-cell">기본 할인 제공</div>
+          </div>
+          <div class="grade-row-table">
+            <div class="grade-cell"><span class="chip grade-bronze">Bronze</span></div>
+            <div class="grade-cell">60만 원 미만</div>
+            <div class="grade-cell">일부 혜택 이용 가능</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LGU+ -->
+  <div class="carrier-section">
+    <div class="carrier-card">
+      <div class="carrier-header">
+        <div class="brand-mark bm-lgu">U+</div>
+        <div class="carrier-header-info">
+          <div class="carrier-name">LG U+ 멤버십</div>
+          <div class="carrier-tagline">놀이공원·OTT·카페·음식점 — U+ 구독 서비스 연동</div>
+        </div>
+        <a class="carrier-official" href="https://www.lguplus.com/" target="_blank">U+ 공식 사이트 →</a>
+      </div>
+      <div class="carrier-body">
+        <div class="grade-row">
+          <span class="grade-label">등급</span>
+          <span class="grade-chip grade-vip">✦ VIP</span>
+          <span class="grade-arrow">›</span>
+          <span class="grade-chip grade-gold">Gold</span>
+          <span class="grade-arrow">›</span>
+          <span class="grade-chip grade-silver">Silver</span>
+          <span class="grade-arrow">›</span>
+          <span class="grade-chip grade-bronze">Bronze</span>
+        </div>
+        <div class="benefit-grid">
+          <div class="benefit-item">
+            <div class="benefit-icon">🎢</div>
+            <div class="benefit-info">
+              <div class="benefit-title">놀이공원</div>
+              <div class="benefit-desc">에버랜드·롯데월드<br>VIP 최대 50% 할인</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">🎬</div>
+            <div class="benefit-info">
+              <div class="benefit-title">영화관</div>
+              <div class="benefit-desc">CGV·롯데시네마·메가박스<br>최대 6,000원 할인</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">📺</div>
+            <div class="benefit-info">
+              <div class="benefit-title">OTT·콘텐츠</div>
+              <div class="benefit-desc">유플릭스·아이돌라이브<br>무료 or 할인 이용</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">☕</div>
+            <div class="benefit-info">
+              <div class="benefit-title">카페</div>
+              <div class="benefit-desc">스타벅스·투썸·이디야<br>음료 할인 쿠폰</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">🏪</div>
+            <div class="benefit-info">
+              <div class="benefit-title">편의점·쇼핑</div>
+              <div class="benefit-desc">GS25·이마트24<br>월 지정 상품 할인</div>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">🍔</div>
+            <div class="benefit-info">
+              <div class="benefit-title">외식·배달</div>
+              <div class="benefit-desc">버거킹·파파이스·롯데리아<br>10~20% 할인</div>
+            </div>
+          </div>
+        </div>
+        <div class="grade-table">
+          <div class="grade-table-title">등급 기준 (연간 납부액)</div>
+          <div class="grade-row-table">
+            <div class="grade-cell"><span class="chip grade-vip">VIP</span></div>
+            <div class="grade-cell">300만 원 이상</div>
+            <div class="grade-cell">놀이공원 등 최고 혜택</div>
+          </div>
+          <div class="grade-row-table">
+            <div class="grade-cell"><span class="chip grade-gold">Gold</span></div>
+            <div class="grade-cell">150만 원 이상</div>
+            <div class="grade-cell">주요 혜택 제공</div>
+          </div>
+          <div class="grade-row-table">
+            <div class="grade-cell"><span class="chip grade-silver">Silver</span></div>
+            <div class="grade-cell">60만 원 이상</div>
+            <div class="grade-cell">기본 할인 제공</div>
+          </div>
+          <div class="grade-row-table">
+            <div class="grade-cell"><span class="chip grade-bronze">Bronze</span></div>
+            <div class="grade-cell">60만 원 미만</div>
+            <div class="grade-cell">일부 혜택 이용 가능</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice">
+    ℹ️ 멤버십 혜택 및 등급 기준은 통신사 정책에 따라 변경될 수 있습니다. 가입 전 각 통신사 공식 페이지에서 최신 혜택을 반드시 확인하세요.<br>
+    번호이동 시 멤버십 등급이 초기화될 수 있으며, 자세한 내용은 <a href="tel:0507-1344-4288" style="color:#3a5ab5;font-weight:700;">전화 상담</a>으로 문의 주세요.
+  </div>
+</div>
+
+<footer>대표 이성완 &nbsp;|&nbsp; 사업자등록번호 176-10-01227 &nbsp;|&nbsp; 충청남도 서천군 서천읍 서천로 182</footer>
+
+<style>
+.kakao-float { position:fixed; bottom:28px; right:24px; z-index:200; background:#FEE500; color:#3C1E1E; border-radius:50px; padding:12px 20px 12px 16px; display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; box-shadow:0 4px 20px rgba(0,0,0,.18); transition:transform .2s,box-shadow .2s; text-decoration:none; font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif; }
+.kakao-float:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,0,0,.22); }
+.mobile-bottom-bar { display:none; position:fixed; bottom:0; left:0; right:0; z-index:200; border-top:1px solid #e8e8e8; box-shadow:0 -4px 16px rgba(0,0,0,.1); }
+.mobile-bottom-bar a { flex:1; display:flex; align-items:center; justify-content:center; gap:7px; height:56px; font-size:15px; font-weight:700; text-decoration:none; }
+.mobile-bottom-bar .mbar-call { background:#1a1a1a; color:#fff; }
+.mobile-bottom-bar .mbar-kakao { background:#FEE500; color:#3C1E1E; }
+@media (max-width:720px) { .kakao-float { display:none; } .mobile-bottom-bar { display:flex; } body { padding-bottom:56px; } }
+</style>
+<a class="kakao-float" href="http://pf.kakao.com/_KvIij" target="_blank" aria-label="카카오 채널 상담">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 2C6.486 2 2 5.589 2 10c0 2.908 1.897 5.516 4.761 7.032l-.948 3.405a.5.5 0 00.724.556L10.5 18.85c.487.09.986.15 1.5.15 5.514 0 10-3.589 10-8S17.514 2 12 2z"/></svg>
+  <span>카카오 상담</span>
+</a>
+<div class="mobile-bottom-bar">
+  <a class="mbar-call" href="tel:0507-1344-4288">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    전화 상담
+  </a>
+  <a class="mbar-kakao" href="http://pf.kakao.com/_KvIij" target="_blank">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 2C6.486 2 2 5.589 2 10c0 2.908 1.897 5.516 4.761 7.032l-.948 3.405a.5.5 0 00.724.556L10.5 18.85c.487.09.986.15 1.5.15 5.514 0 10-3.589 10-8S17.514 2 12 2z"/></svg>
+    카카오 상담
+  </a>
+</div>
+</body>
+</html>
