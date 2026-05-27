@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://techpick-kr.vercel.app/sitemap.xml
