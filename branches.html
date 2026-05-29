@@ -16,8 +16,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --bg:#fff; --surface:#f7f7f8; --text:#1a1a1a; --muted:#767676; --soft:#adadad; --border:#e8e8e8; }
@@ -271,23 +269,15 @@
 </style>
 <script>
 (function() {
-  var branches = [
-    { id:'map-1', lat:35.9700855, lng:126.7110235, name:'나운점' },
-    { id:'map-2', lat:35.9467643, lng:126.6855434, name:'미룡점' },
-    { id:'map-3', lat:35.9595389, lng:126.7271209, name:'미장점' },
-    { id:'map-4', lat:36.0838305, lng:126.6874655, name:'서천점' },
-  ];
-  branches.forEach(function(b) {
-    var el = document.getElementById(b.id);
+  var placeIds = { 'map-1':'1890764536', 'map-2':'37197026', 'map-3':'1018575431', 'map-4':'1466557787' };
+  Object.keys(placeIds).forEach(function(id) {
+    var el = document.getElementById(id);
     if (!el) return;
-    el.style.width = '100%';
-    el.style.height = '100%';
-    var map = L.map(b.id, { zoomControl:true, attributionControl:false }).setView([b.lat, b.lng], 17);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19
-    }).addTo(map);
-    var marker = L.marker([b.lat, b.lng]).addTo(map).bindPopup('<b>휴대폰광장 ' + b.name + '</b>');
-    marker.openPopup();
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://map.naver.com/p/entry/place/' + placeIds[id];
+    iframe.style.cssText = 'width:100%;height:100%;border:0;';
+    iframe.setAttribute('allowfullscreen', '');
+    el.appendChild(iframe);
   });
 })();
 </script>
