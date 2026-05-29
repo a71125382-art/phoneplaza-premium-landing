@@ -16,7 +16,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
-  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=bm4WcgjDeQEqj9tNZWbQfT5K2kFqTODicKC8GDvg"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --bg:#fff; --surface:#f7f7f8; --text:#1a1a1a; --muted:#767676; --soft:#adadad; --border:#e8e8e8; }
@@ -277,9 +278,15 @@
     { id:'map-4', lat:36.07591, lng:126.69163, name:'서천점' },
   ];
   branches.forEach(function(b) {
-    var center = new naver.maps.LatLng(b.lat, b.lng);
-    var map = new naver.maps.Map(b.id, { center:center, zoom:16, mapTypeControl:false, scaleControl:false, logoControl:true, mapDataControl:false });
-    new naver.maps.Marker({ position:center, map:map, title:b.name });
+    var el = document.getElementById(b.id);
+    if (!el) return;
+    el.style.width = '100%';
+    el.style.height = '100%';
+    var map = L.map(b.id, { zoomControl:true, attributionControl:false }).setView([b.lat, b.lng], 16);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19
+    }).addTo(map);
+    L.marker([b.lat, b.lng]).addTo(map).bindPopup('<b>휴대폰광장 ' + b.name + '</b>');
   });
 })();
 </script>
