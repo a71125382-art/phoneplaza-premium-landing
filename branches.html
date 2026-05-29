@@ -282,11 +282,12 @@
     if (!el) return;
     el.style.width = '100%';
     el.style.height = '100%';
-    var map = L.map(b.id, { zoomControl:true, attributionControl:false }).setView([b.lat, b.lng], 16);
+    var map = L.map(b.id, { zoomControl:true, attributionControl:false }).setView([b.lat, b.lng], 17);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19
     }).addTo(map);
-    L.marker([b.lat, b.lng]).addTo(map).bindPopup('<b>휴대폰광장 ' + b.name + '</b>');
+    var marker = L.marker([b.lat, b.lng]).addTo(map).bindPopup('<b>휴대폰광장 ' + b.name + '</b>');
+    marker.openPopup();
   });
 })();
 </script>
