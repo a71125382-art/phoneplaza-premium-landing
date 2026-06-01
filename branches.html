@@ -10,13 +10,12 @@
   <meta property="og:locale" content="ko_KR">
   <meta property="og:title" content="지점 안내 | 휴대폰광장">
   <meta property="og:description" content="군산·서천·미룡·미장 4개 지점 위치 안내. 가까운 휴대폰광장을 찾아보세요.">
-  <meta property="og:url" content="https://phoneplaza-gunsan.netlify.app/branches">
+  <meta property="og:url" content="https://phoneplaza-gunsan.pages.dev/branches">
   <meta property="og:site_name" content="휴대폰광장">
-  <link rel="canonical" href="https://phoneplaza-gunsan.netlify.app/branches">
+  <link rel="canonical" href="https://phoneplaza-gunsan.pages.dev/branches">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
-  <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=r4aefnm7ii"></script>
 <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --bg:#fff; --surface:#f7f7f8; --text:#1a1a1a; --muted:#767676; --soft:#adadad; --border:#e8e8e8; }
@@ -45,26 +44,28 @@
 
     .branch-list { display:flex; flex-direction:column; gap:20px; }
 
-    .branch-row { border:1px solid var(--border); border-radius:16px; overflow:hidden; display:grid; grid-template-columns:280px 1fr; transition:box-shadow .2s; }
+    .branch-row { border:1px solid var(--border); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; transition:box-shadow .2s; }
     .branch-row:hover { box-shadow:0 6px 24px rgba(0,0,0,.07); }
 
-    .branch-info { padding:28px 24px; display:flex; flex-direction:column; border-right:1px solid var(--border); }
-    .branch-tag { display:inline-block; font-size:11px; font-weight:600; color:var(--muted); background:var(--surface); border:1px solid var(--border); padding:3px 10px; border-radius:20px; margin-bottom:10px; width:fit-content; }
-    .branch-name { font-size:22px; font-weight:700; letter-spacing:-.5px; margin-bottom:16px; }
+    .branch-info { padding:20px 28px; display:flex; flex-direction:row; align-items:center; gap:20px; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+    .branch-tag { display:inline-block; font-size:11px; font-weight:600; color:var(--muted); background:var(--surface); border:1px solid var(--border); padding:3px 10px; border-radius:20px; width:fit-content; }
+    .branch-name { font-size:20px; font-weight:700; letter-spacing:-.5px; }
+    .branch-title-group { display:flex; flex-direction:column; gap:4px; min-width:90px; }
 
-    .info-row { display:flex; align-items:flex-start; gap:9px; font-size:14px; line-height:1.5; margin-bottom:10px; }
-    .info-icon { font-size:15px; flex-shrink:0; margin-top:1px; }
+    .info-row { display:flex; align-items:flex-start; gap:8px; font-size:13px; line-height:1.5; }
+    .info-icon { font-size:14px; flex-shrink:0; }
     .info-text { color:var(--text); }
-    .info-sub { font-size:12px; color:var(--muted); margin-top:2px; }
+    .info-sub { font-size:12px; color:var(--muted); }
+    .branch-details { display:flex; flex-direction:column; gap:4px; flex:1; }
 
-    .branch-actions { display:flex; gap:8px; margin-top:auto; padding-top:18px; }
-    .btn-branch { flex:1; display:flex; align-items:center; justify-content:center; gap:5px; border-radius:10px; padding:10px 0; font-size:13px; font-weight:600; transition:opacity .15s,background .15s,border-color .15s; }
+    .branch-actions { display:flex; gap:8px; margin-left:auto; flex-shrink:0; align-items:center; }
+    .btn-branch { flex:none; display:flex; align-items:center; justify-content:center; gap:5px; border-radius:10px; padding:9px 18px; font-size:13px; font-weight:600; white-space:nowrap; transition:opacity .15s,background .15s,border-color .15s; }
     .btn-branch.primary { background:var(--text); color:#fff; border:1px solid var(--text); }
     .btn-branch.primary:hover { opacity:.82; }
     .btn-branch.secondary { background:var(--bg); color:var(--text); border:1px solid var(--border); }
     .btn-branch.secondary:hover { background:var(--surface); border-color:#b0b0b0; }
 
-    .branch-map { height:380px; background:var(--surface); display:flex; flex-direction:column; }
+    .branch-map { height:340px; background:var(--surface); display:flex; flex-direction:column; }
     .branch-map .map-canvas { flex:1; min-height:0; }
     .branch-map .map-canvas > div { width:100%; height:100%; }
     .map-infobar { background:#fff; border-top:1px solid var(--border); padding:10px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-shrink:0; }
@@ -81,9 +82,11 @@
       header { padding:0 20px; }
       .header-nav { display:none; }
       .content { padding:28px 20px 48px; }
-      .branch-row { grid-template-columns:1fr; }
-      .branch-info { border-right:none; border-bottom:1px solid var(--border); padding:20px; }
-      .branch-map { height:300px; }
+      .branch-info { padding:16px 20px; flex-wrap:wrap; gap:12px; }
+      .branch-title-group { min-width:80px; }
+      .branch-details { min-width:160px; }
+      .branch-actions { margin-left:0; }
+      .branch-map { height:260px; }
       footer { padding:16px 20px; }
     }
   </style>
@@ -122,18 +125,13 @@
 
     <div class="branch-row">
       <div class="branch-info">
-        <span class="branch-tag">전북 군산</span>
-        <div class="branch-name">나운점</div>
-        <div class="info-row">
-          <span class="info-icon">🏢</span>
-          <div class="info-text">전북특별자치도 군산시 문화로 47 2동 103호</div>
+        <div class="branch-title-group">
+          <span class="branch-tag">전북 군산</span>
+          <div class="branch-name">나운점</div>
         </div>
-        <div class="info-row">
-          <span class="info-icon">📞</span>
-          <div>
-            <div class="info-text">0507-1344-4288</div>
-            <div class="info-sub">063-466-4288</div>
-          </div>
+        <div class="branch-details">
+          <div class="info-row"><span class="info-icon">🏢</span><div class="info-text">전북특별자치도 군산시 문화로 47 2동 103호</div></div>
+          <div class="info-row"><span class="info-icon">📞</span><div><div class="info-text">0507-1344-4288</div><div class="info-sub">063-466-4288</div></div></div>
         </div>
         <div class="branch-actions">
           <a class="btn-branch primary" href="tel:0507-1344-4288">📞 전화</a>
@@ -157,15 +155,13 @@
 
     <div class="branch-row">
       <div class="branch-info">
-        <span class="branch-tag">전북 군산</span>
-        <div class="branch-name">미룡점</div>
-        <div class="info-row">
-          <span class="info-icon">🏢</span>
-          <div class="info-text">전북특별자치도 군산시 미제2길 19</div>
+        <div class="branch-title-group">
+          <span class="branch-tag">전북 군산</span>
+          <div class="branch-name">미룡점</div>
         </div>
-        <div class="info-row">
-          <span class="info-icon">📞</span>
-          <div class="info-text">0504-4649-6728</div>
+        <div class="branch-details">
+          <div class="info-row"><span class="info-icon">🏢</span><div class="info-text">전북특별자치도 군산시 미제2길 19</div></div>
+          <div class="info-row"><span class="info-icon">📞</span><div class="info-text">0504-4649-6728</div></div>
         </div>
         <div class="branch-actions">
           <a class="btn-branch primary" href="tel:0504-4649-6728">📞 전화</a>
@@ -189,15 +185,13 @@
 
     <div class="branch-row">
       <div class="branch-info">
-        <span class="branch-tag">전북 군산</span>
-        <div class="branch-name">미장점</div>
-        <div class="info-row">
-          <span class="info-icon">🏢</span>
-          <div class="info-text">전북특별자치도 군산시 공단대로 131</div>
+        <div class="branch-title-group">
+          <span class="branch-tag">전북 군산</span>
+          <div class="branch-name">미장점</div>
         </div>
-        <div class="info-row">
-          <span class="info-icon">📞</span>
-          <div class="info-text">0507-1358-4288</div>
+        <div class="branch-details">
+          <div class="info-row"><span class="info-icon">🏢</span><div class="info-text">전북특별자치도 군산시 공단대로 131</div></div>
+          <div class="info-row"><span class="info-icon">📞</span><div class="info-text">0507-1358-4288</div></div>
         </div>
         <div class="branch-actions">
           <a class="btn-branch primary" href="tel:0507-1358-4288">📞 전화</a>
@@ -221,18 +215,13 @@
 
     <div class="branch-row">
       <div class="branch-info">
-        <span class="branch-tag">충남 서천</span>
-        <div class="branch-name">서천점</div>
-        <div class="info-row">
-          <span class="info-icon">🏢</span>
-          <div class="info-text">충청남도 서천군 서천읍 서천로 182</div>
+        <div class="branch-title-group">
+          <span class="branch-tag">충남 서천</span>
+          <div class="branch-name">서천점</div>
         </div>
-        <div class="info-row">
-          <span class="info-icon">📞</span>
-          <div>
-            <div class="info-text">041-951-5288</div>
-            <div class="info-sub">010-3003-4288</div>
-          </div>
+        <div class="branch-details">
+          <div class="info-row"><span class="info-icon">🏢</span><div class="info-text">충청남도 서천군 서천읍 서천로 182</div></div>
+          <div class="info-row"><span class="info-icon">📞</span><div><div class="info-text">041-951-5288</div><div class="info-sub">010-3003-4288</div></div></div>
         </div>
         <div class="branch-actions">
           <a class="btn-branch primary" href="tel:041-951-5288">📞 전화</a>
@@ -268,31 +257,31 @@
 .mobile-bottom-bar .mbar-kakao { background:#FEE500; color:#3C1E1E; }
 @media (max-width:720px) { .kakao-float { display:none; } .mobile-bottom-bar { display:flex; } body { padding-bottom:56px; } }
 </style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-(function() {
+window.addEventListener('DOMContentLoaded', function() {
   var branches = [
-    { id:'map-1', lat:35.9700855, lng:126.7110235, name:'나운점' },
-    { id:'map-2', lat:35.9467643, lng:126.6855434, name:'미룡점' },
-    { id:'map-3', lat:35.9595389, lng:126.7271209, name:'미장점' },
-    { id:'map-4', lat:36.0838305, lng:126.6874655, name:'서천점' },
+    { id:'map-1', lat:35.9700855, lng:126.7110235, name:'휴대폰광장 나운점' },
+    { id:'map-2', lat:35.9467643, lng:126.6855434, name:'휴대폰광장 미룡점' },
+    { id:'map-3', lat:35.9595389, lng:126.7271209, name:'휴대폰광장 미장점' },
+    { id:'map-4', lat:36.0838305, lng:126.6874655, name:'휴대폰광장 서천점' },
   ];
   branches.forEach(function(b) {
     var el = document.getElementById(b.id);
     if (!el) return;
     el.style.width = '100%';
     el.style.height = '100%';
-    var center = new naver.maps.LatLng(b.lat, b.lng);
-    var map = new naver.maps.Map(el, {
-      center: center,
-      zoom: 17,
-      mapTypeControl: false,
-      scaleControl: false,
-      logoControl: true,
-      mapDataControl: false
-    });
-    new naver.maps.Marker({ position: center, map: map, title: b.name });
+    var map = L.map(el, { zoomControl:true, scrollWheelZoom:false }).setView([b.lat, b.lng], 17);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+    var marker = L.marker([b.lat, b.lng]).addTo(map);
+    marker.bindPopup('<b>' + b.name + '</b>').openPopup();
   });
-})();
+});
 </script>
 
 <a class="kakao-float" href="http://pf.kakao.com/_KvIij" target="_blank" aria-label="카카오 채널 상담">
