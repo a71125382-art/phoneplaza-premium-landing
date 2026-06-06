@@ -646,20 +646,24 @@ tabBtns.forEach(btn => {
 });
 
 // URL 파라미터로 탭 초기화
+function activateTab(name) {
+  tabBtns.forEach(b => b.classList.remove('active'));
+  tabPanels.forEach(p => p.classList.remove('active'));
+  const btn = document.querySelector(`[data-tab="${name}"]`);
+  const panel = document.getElementById(`tab-${name}`);
+  if (btn) btn.classList.add('active');
+  if (panel) panel.classList.add('active');
+}
+
 const params = new URLSearchParams(location.search);
 if (params.get('submitted') === '1') {
-  tabBtns.forEach(b => b.classList.remove('active'));
-  tabPanels.forEach(p => p.classList.remove('active'));
-  document.querySelector('[data-tab="consult"]').classList.add('active');
-  document.getElementById('tab-consult').classList.add('active');
+  activateTab('consult');
   document.getElementById('consult-form').style.display = 'none';
   document.getElementById('submit-success').classList.add('show');
-}
-if (params.get('board') === '1') {
-  tabBtns.forEach(b => b.classList.remove('active'));
-  tabPanels.forEach(p => p.classList.remove('active'));
-  document.querySelector('[data-tab="board"]').classList.add('active');
-  document.getElementById('tab-board').classList.add('active');
+} else if (params.get('tab')) {
+  activateTab(params.get('tab'));
+} else if (params.get('board') === '1') {
+  activateTab('board');
 }
 
 // ── FAQ 아코디언 ──

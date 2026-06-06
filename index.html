@@ -517,7 +517,7 @@
         </div>
         <div class="consult-cta-btns">
           <a class="cta-btn-kakao" href="http://pf.kakao.com/_KvIij" target="_blank">💬 카카오로 바로 문의</a>
-          <a class="cta-btn-form" href="community.html">📩 온라인 문의 작성하기</a>
+          <a class="cta-btn-form" href="community.html?tab=consult">📩 온라인 문의 작성하기</a>
         </div>
         <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:4px;">평일·토 10:00~19:00 · 일요일 휴무</div>
       </div>
@@ -560,40 +560,53 @@
 </div>
 
 <script>
-// ── YouTube (RSS 자동 업데이트) ──
+// ── YouTube (RSS XML 직접 파싱, allorigins CORS 프록시) ──
 (async () => {
   const CH = 'UCrLKQ081hfU1Sbp2_uycotQ';
-  const CACHE = 'yt_feed_v1';
+  const CACHE = 'yt_feed_v3';
   const row = document.getElementById('yt-row');
 
-  let items;
+  function parseXML(xml) {
+    const entries = xml.match(/<entry>([\s\S]*?)<\/entry>/g) || [];
+    return entries.slice(0, 6).map(e => {
+      const videoId = (e.match(/<yt:videoId>([^<]+)/) || [])[1] || '';
+      const title   = (e.match(/<title>([^<]+)/)      || [])[1] || '';
+      const date    = (e.match(/<published>([^T]+)/)   || [])[1] || '';
+      const thumb   = (e.match(/media:thumbnail url="([^"]+)"/) || [])[1]
+                      || `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+      return {
+        videoId,
+        title: title.replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>'),
+        date,
+        thumb,
+      };
+    }).filter(v => v.videoId);
+  }
+
+  let videos = [];
   try {
     const cached = JSON.parse(sessionStorage.getItem(CACHE) || 'null');
     if (cached && Date.now() - cached.ts < 3600000) {
-      items = cached.items;
+      videos = cached.videos;
     } else {
-      const api = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https://www.youtube.com/feeds/videos.xml?channel_id=' + CH)}&count=6`;
-      const d = await fetch(api).then(r => r.json());
-      items = (d.items || []).slice(0, 5);
-      sessionStorage.setItem(CACHE, JSON.stringify({ts: Date.now(), items}));
+      const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${CH}`;
+      // allorigins 프록시로 YouTube RSS XML 직접 fetch
+      const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`, {signal: AbortSignal.timeout(8000)});
+      const data = await res.json();
+      videos = parseXML(data.contents || '');
+      if (videos.length) sessionStorage.setItem(CACHE, JSON.stringify({ts: Date.now(), videos}));
     }
-  } catch(e) { items = []; }
+  } catch(e) { videos = []; }
 
-  if (!items.length) {
+  if (!videos.length) {
     row.innerHTML = '<div style="color:#555;font-size:13px;padding:20px 0;">영상을 불러올 수 없습니다.</div>';
     return;
   }
 
-  row.innerHTML = items.map(v => {
-    let id = '';
-    try { id = new URL(v.link).searchParams.get('v') || ''; } catch(e) {}
-    if (!id) id = (v.guid || '').split('=').pop();
-    const thumb = v.thumbnail || `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
-    const date = (v.pubDate || '').slice(0, 10);
-    const shortLink = `https://www.youtube.com/shorts/${id}`;
-    return `<a href="${shortLink}" target="_blank" style="min-width:150px;max-width:162px;flex-shrink:0;text-decoration:none;">
+  row.innerHTML = videos.map(v => `
+    <a href="https://www.youtube.com/shorts/${v.videoId}" target="_blank" style="min-width:150px;max-width:162px;flex-shrink:0;text-decoration:none;">
       <div style="position:relative;border-radius:10px;overflow:hidden;aspect-ratio:9/16;background:#1e1e1e;">
-        <img src="${thumb}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="this.style.opacity='.2'">
+        <img src="${v.thumb}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="this.src='https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg'">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 45%,rgba(0,0,0,.65));pointer-events:none;"></div>
         <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;background:rgba(255,0,0,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;">
           <svg width="13" height="15" viewBox="0 0 10 12" fill="#fff"><polygon points="1,0 9,6 1,12"/></svg>
@@ -601,50 +614,66 @@
         <div style="position:absolute;bottom:8px;right:8px;background:rgba(255,0,0,.85);border-radius:4px;padding:1px 5px;font-size:10px;font-weight:700;color:#fff;font-family:'Inter',sans-serif;">Shorts</div>
       </div>
       <div style="color:#ccc;font-size:12px;font-weight:500;margin-top:8px;line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">${v.title}</div>
-      <div style="color:#555;font-size:11px;margin-top:3px;font-family:'Inter',sans-serif;">${date}</div>
-    </a>`;
-  }).join('');
+      <div style="color:#555;font-size:11px;margin-top:3px;font-family:'Inter',sans-serif;">${v.date}</div>
+    </a>`).join('');
 })();
 
-// ── TikTok (새 영상 업로드 시 ID 추가) ──
-(function() {
+// ── TikTok (최신 영상 ID 목록 → 썸네일 카드 + 팔로우 CTA) ──
+(async () => {
   const TT_USER = 'phoneplaza_kr';
+  // 새 영상 업로드 시 맨 앞에 추가 { id, title }
   const TT_VIDEOS = [
     { id: '7648154098449124628', title: '삼성 갤럭시 교체 타이밍? 휴대폰광장' },
   ];
 
   const row = document.getElementById('tt-row');
-  const embeds = TT_VIDEOS.map(v => `
-    <div style="min-width:325px;flex-shrink:0;">
-      <blockquote class="tiktok-embed"
-        cite="https://www.tiktok.com/@${TT_USER}/video/${v.id}"
-        data-video-id="${v.id}"
-        style="max-width:325px;min-width:325px;border:none;margin:0;">
-        <section></section>
-      </blockquote>
-    </div>`).join('');
+
+  // oEmbed로 썸네일 가져오기 (CORS 프록시 경유)
+  async function getThumb(id) {
+    try {
+      const url = `https://www.tiktok.com/@${TT_USER}/video/${id}`;
+      const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.tiktok.com/oembed?url=' + url)}`, {signal: AbortSignal.timeout(6000)});
+      const data = await res.json();
+      const oe = JSON.parse(data.contents || '{}');
+      return oe.thumbnail_url || '';
+    } catch(e) { return ''; }
+  }
+
+  const cards = await Promise.all(TT_VIDEOS.map(async v => {
+    const thumb = await getThumb(v.id);
+    const link = `https://www.tiktok.com/@${TT_USER}/video/${v.id}`;
+    return `<a href="${link}" target="_blank" style="min-width:150px;max-width:162px;flex-shrink:0;text-decoration:none;">
+      <div style="position:relative;border-radius:10px;overflow:hidden;aspect-ratio:9/16;background:#1e1e1e;border:1px solid #2a2a2a;">
+        ${thumb
+          ? `<img src="${thumb}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">`
+          : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><svg width="32" height="36" viewBox="0 0 18 20" fill="#555"><path d="M17 4.5a4.5 4.5 0 01-4.5-4.5h-3.3v13.7a2.2 2.2 0 11-2.2-2.1c.2 0 .4 0 .6.1V8.3A5.5 5.5 0 109 15.7V4.5H17z"/></svg></div>`}
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 45%,rgba(0,0,0,.65));pointer-events:none;"></div>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;background:rgba(0,0,0,.6);border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+          <svg width="13" height="15" viewBox="0 0 10 12" fill="#fff"><polygon points="1,0 9,6 1,12"/></svg>
+        </div>
+        <div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.6);border-radius:4px;padding:1px 6px;display:flex;align-items:center;gap:3px;">
+          <svg width="10" height="12" viewBox="0 0 18 20" fill="#fff"><path d="M17 4.5a4.5 4.5 0 01-4.5-4.5h-3.3v13.7a2.2 2.2 0 11-2.2-2.1c.2 0 .4 0 .6.1V8.3A5.5 5.5 0 109 15.7V4.5H17z"/></svg>
+          <span style="color:#fff;font-size:10px;font-weight:700;">TikTok</span>
+        </div>
+      </div>
+      <div style="color:#ccc;font-size:12px;font-weight:500;margin-top:8px;line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">${v.title}</div>
+    </a>`;
+  }));
 
   const followCard = `
     <a href="https://www.tiktok.com/@${TT_USER}" target="_blank"
-       style="min-width:140px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;padding:28px 20px;text-decoration:none;min-height:280px;">
-      <div style="width:52px;height:52px;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;">
-        <svg width="26" height="30" viewBox="0 0 18 20" fill="#000"><path d="M17 4.5a4.5 4.5 0 01-4.5-4.5h-3.3v13.7a2.2 2.2 0 11-2.2-2.1c.2 0 .4 0 .6.1V8.3A5.5 5.5 0 109 15.7V4.5H17z"/></svg>
+       style="min-width:140px;max-width:160px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;padding:24px 18px;text-decoration:none;">
+      <div style="width:50px;height:50px;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;">
+        <svg width="24" height="28" viewBox="0 0 18 20" fill="#000"><path d="M17 4.5a4.5 4.5 0 01-4.5-4.5h-3.3v13.7a2.2 2.2 0 11-2.2-2.1c.2 0 .4 0 .6.1V8.3A5.5 5.5 0 109 15.7V4.5H17z"/></svg>
       </div>
-      <div>
-        <div style="color:#fff;font-size:13px;font-weight:700;text-align:center;margin-bottom:4px;">@${TT_USER}</div>
-        <div style="color:#666;font-size:11px;text-align:center;">휴대폰광장</div>
+      <div style="text-align:center;">
+        <div style="color:#fff;font-size:13px;font-weight:700;margin-bottom:3px;">@${TT_USER}</div>
+        <div style="color:#555;font-size:11px;">휴대폰광장</div>
       </div>
-      <div style="background:#fe2c55;color:#fff;border-radius:20px;padding:9px 18px;font-size:13px;font-weight:700;">팔로우하기</div>
+      <div style="background:#fe2c55;color:#fff;border-radius:20px;padding:8px 16px;font-size:12px;font-weight:700;">팔로우하기</div>
     </a>`;
 
-  row.innerHTML = embeds + followCard;
-
-  if (!document.querySelector('script[src*="tiktok.com/embed"]')) {
-    const s = document.createElement('script');
-    s.src = 'https://www.tiktok.com/embed.js';
-    s.async = true;
-    document.body.appendChild(s);
-  }
+  row.innerHTML = cards.join('') + followCard;
 })();
 </script>
 
