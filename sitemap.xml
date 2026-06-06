@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://phoneplaza-gunsan.pages.dev/</loc><priority>1.0</priority><changefreq>daily</changefreq></url>
-  <url><loc>https://phoneplaza-gunsan.pages.dev/news.html</loc><priority>0.9</priority><changefreq>daily</changefreq></url>
-  <url><loc>https://phoneplaza-gunsan.pages.dev/technews.html</loc><priority>0.8</priority><changefreq>daily</changefreq></url>
-  <url><loc>https://phoneplaza-gunsan.pages.dev/prices.html</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
-  <url><loc>https://phoneplaza-gunsan.pages.dev/branches.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://phoneplaza-gunsan.pages.dev/membership.html</loc><priority>0.6</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://phoneplaza.co.kr/</loc><priority>1.0</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://phoneplaza.co.kr/news.html</loc><priority>0.9</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://phoneplaza.co.kr/technews.html</loc><priority>0.8</priority><changefreq>daily</changefreq></url>
+  <url><loc>https://phoneplaza.co.kr/prices.html</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://phoneplaza.co.kr/branches.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://phoneplaza.co.kr/membership.html</loc><priority>0.6</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://phoneplaza.co.kr/community.html</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
 </urlset>
