@@ -598,7 +598,7 @@
       videos = cached.videos;
     } else {
       // Netlify Function 서버사이드 프록시 (CORS 없음, 안정적)
-      const res = await fetch('/.netlify/functions/youtube-feed');
+      const res = await fetch('/api/youtube-feed');
       const xml = await res.text();
       videos = parseXML(xml);
       if (videos.length) sessionStorage.setItem(CACHE, JSON.stringify({ts: Date.now(), videos}));
@@ -638,7 +638,7 @@
   // oEmbed 썸네일 (Netlify Function 서버사이드 프록시)
   async function getThumb(id) {
     try {
-      const res = await fetch(`/.netlify/functions/tiktok-thumb?id=${id}&user=${TT_USER}`);
+      const res = await fetch(`/api/tiktok-thumb?id=${id}&user=${TT_USER}`);
       const oe = await res.json();
       return oe.thumbnail_url || '';
     } catch(e) { return ''; }
