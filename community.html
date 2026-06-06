@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>커뮤니티 | 휴대폰광장</title>
+  <meta name="description" content="휴대폰광장 커뮤니티 — 공지사항, 자유게시판, 자주 묻는 질문, 상담 문의">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root { --bg:#fff; --surface:#f7f7f8; --text:#1a1a1a; --muted:#767676; --soft:#adadad; --border:#e8e8e8; --blue:#0071e3; --green:#34c759; }
+    body { background:var(--bg); font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif; color:var(--text); }
+    a { text-decoration:none; color:inherit; }
+
+    /* ── Topbar ── */
+    .topbar { background:var(--surface); border-bottom:1px solid var(--border); height:36px; display:flex; align-items:center; padding:0 40px; gap:20px; }
+    .topbar a { font-size:12px; color:var(--muted); font-weight:500; transition:color .15s; }
+    .topbar a:hover { color:var(--text); }
+
+    /* ── Header ── */
+    header { position:sticky; top:0; z-index:100; background:rgba(255,255,255,.96); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); height:56px; display:flex; align-items:center; padding:0 40px; gap:32px; }
+    .brand { font-size:18px; font-weight:800; letter-spacing:-.5px; white-space:nowrap; }
+    .header-nav { display:flex; flex:1; }
+    .header-nav a { font-size:14px; font-weight:500; color:var(--muted); padding:0 14px; height:56px; display:flex; align-items:center; border-bottom:2px solid transparent; transition:color .15s,border-color .15s; }
+    .header-nav a:hover { color:var(--text); }
+    .header-nav a.active { color:var(--text); border-bottom-color:var(--text); }
+    .btn-call { height:36px; padding:0 18px; background:var(--text); color:#fff; border-radius:6px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:6px; margin-left:auto; transition:opacity .15s; white-space:nowrap; }
+    .btn-call:hover { opacity:.82; }
+
+    /* ── Content ── */
+    .content { max-width:860px; margin:0 auto; padding:36px 40px 80px; }
+
+    /* ── Page header ── */
+    .page-header { margin-bottom:28px; }
+    .page-header h1 { font-size:28px; font-weight:800; letter-spacing:-.6px; }
+    .page-header p { font-size:14px; color:var(--muted); margin-top:5px; }
+
+    /* ── Tab bar ── */
+    .tab-bar { display:flex; border-bottom:2px solid var(--border); margin-bottom:28px; overflow-x:auto; scrollbar-width:none; }
+    .tab-bar::-webkit-scrollbar { display:none; }
+    .tab-btn { flex-shrink:0; padding:12px 20px; font-size:14px; font-weight:600; color:var(--muted); background:none; border:none; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; font-family:inherit; transition:color .15s,border-color .15s; }
+    .tab-btn:hover { color:var(--text); }
+    .tab-btn.active { color:var(--text); border-bottom-color:var(--text); }
+
+    /* ── Tab content ── */
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+
+    /* ─────────────────────────────── 공지사항 ─────────────────────────────── */
+    .notice-list { border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+    .notice-item { display:flex; align-items:center; gap:12px; padding:16px 20px; border-bottom:1px solid var(--border); transition:background .12s; }
+    .notice-item:last-child { border-bottom:none; }
+    .notice-item:hover { background:var(--surface); }
+    .notice-pin { font-size:11px; font-weight:700; color:#fff; background:#1a1a1a; padding:2px 7px; border-radius:4px; white-space:nowrap; flex-shrink:0; }
+    .notice-new { font-size:11px; font-weight:700; color:#fff; background:#ff3b30; padding:2px 7px; border-radius:4px; white-space:nowrap; flex-shrink:0; }
+    .notice-cat { font-size:11px; font-weight:600; color:var(--muted); flex-shrink:0; min-width:60px; }
+    .notice-title { flex:1; font-size:14px; font-weight:600; }
+    .notice-date { font-size:12px; color:var(--soft); font-family:'Inter',sans-serif; flex-shrink:0; }
+
+    /* ─────────────────────────────── 자유게시판 ─────────────────────────────── */
+    .board-toolbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+    .board-count { font-size:13px; color:var(--muted); }
+    .btn-write { display:inline-flex; align-items:center; gap:6px; height:36px; padding:0 18px; background:var(--text); color:#fff; border-radius:6px; font-size:13px; font-weight:600; border:none; cursor:pointer; font-family:inherit; transition:opacity .15s; }
+    .btn-write:hover { opacity:.82; }
+
+    .board-list { border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:20px; }
+    .board-item { display:grid; grid-template-columns:1fr auto; align-items:center; gap:12px; padding:16px 20px; border-bottom:1px solid var(--border); transition:background .12s; cursor:pointer; }
+    .board-item:last-child { border-bottom:none; }
+    .board-item:hover { background:var(--surface); }
+    .board-item-left { min-width:0; }
+    .board-item-meta { display:flex; align-items:center; gap:8px; margin-bottom:5px; }
+    .board-cat-badge { font-size:11px; font-weight:600; background:var(--surface); border:1px solid var(--border); color:var(--muted); padding:2px 7px; border-radius:4px; }
+    .board-item-title { font-size:14px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .board-item-right { text-align:right; flex-shrink:0; }
+    .board-item-author { font-size:12px; color:var(--muted); }
+    .board-item-date { font-size:11px; color:var(--soft); font-family:'Inter',sans-serif; margin-top:2px; }
+    .board-comments { display:flex; align-items:center; gap:3px; font-size:12px; color:var(--soft); margin-top:3px; justify-content:flex-end; }
+
+    .board-empty { text-align:center; padding:48px 20px; color:var(--muted); }
+    .board-empty-icon { font-size:36px; margin-bottom:12px; }
+    .board-empty-text { font-size:14px; }
+
+    /* 글쓰기 모달 */
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:500; align-items:center; justify-content:center; padding:20px; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:#fff; border-radius:16px; padding:28px; width:100%; max-width:520px; }
+    .modal-title { font-size:18px; font-weight:700; margin-bottom:20px; }
+    .modal label { display:block; font-size:13px; font-weight:600; margin-bottom:6px; }
+    .modal input, .modal textarea, .modal select { width:100%; border:1.5px solid var(--border); border-radius:8px; padding:10px 14px; font-size:14px; font-family:inherit; color:var(--text); background:var(--bg); transition:border-color .15s; outline:none; }
+    .modal input:focus, .modal textarea:focus, .modal select:focus { border-color:#1a1a1a; }
+    .modal .field { margin-bottom:14px; }
+    .modal textarea { resize:vertical; min-height:120px; }
+    .modal-actions { display:flex; gap:10px; margin-top:20px; }
+    .btn-cancel { flex:1; height:42px; border:1.5px solid var(--border); border-radius:8px; background:none; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; transition:background .12s; }
+    .btn-cancel:hover { background:var(--surface); }
+    .btn-submit { flex:2; height:42px; background:var(--text); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; transition:opacity .15s; }
+    .btn-submit:hover { opacity:.82; }
+
+    .form-notice { font-size:12px; color:var(--muted); margin-top:8px; line-height:1.6; }
+
+    /* ─────────────────────────────── Q&A ─────────────────────────────── */
+    .faq-list { display:flex; flex-direction:column; gap:8px; }
+    .faq-item { border:1px solid var(--border); border-radius:12px; overflow:hidden; transition:border-color .15s; }
+    .faq-item.open { border-color:#c0c0c0; }
+    .faq-q { display:flex; align-items:center; gap:12px; padding:18px 20px; cursor:pointer; user-select:none; }
+    .faq-q-icon { width:24px; height:24px; background:var(--text); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; flex-shrink:0; font-family:'Inter',sans-serif; }
+    .faq-q-text { flex:1; font-size:14px; font-weight:600; }
+    .faq-chevron { color:var(--soft); font-size:18px; transition:transform .2s; flex-shrink:0; }
+    .faq-item.open .faq-chevron { transform:rotate(180deg); }
+    .faq-a { display:none; padding:0 20px 18px 56px; font-size:14px; color:var(--muted); line-height:1.7; }
+    .faq-item.open .faq-a { display:block; }
+    .faq-a strong { color:var(--text); }
+
+    /* ─────────────────────────────── 상담 문의 ─────────────────────────────── */
+    .consult-wrap { display:grid; grid-template-columns:1fr 280px; gap:28px; align-items:start; }
+    .consult-form-wrap { border:1px solid var(--border); border-radius:16px; padding:28px; }
+    .consult-form-title { font-size:17px; font-weight:700; margin-bottom:6px; }
+    .consult-form-sub { font-size:13px; color:var(--muted); margin-bottom:22px; }
+    .c-field { margin-bottom:14px; }
+    .c-field label { display:block; font-size:13px; font-weight:600; margin-bottom:6px; }
+    .c-field input, .c-field textarea, .c-field select { width:100%; border:1.5px solid var(--border); border-radius:8px; padding:10px 14px; font-size:14px; font-family:inherit; color:var(--text); background:var(--bg); transition:border-color .15s; outline:none; }
+    .c-field input:focus, .c-field textarea:focus, .c-field select:focus { border-color:#1a1a1a; }
+    .c-field textarea { resize:vertical; min-height:110px; }
+    .c-field .field-hint { font-size:11.5px; color:var(--soft); margin-top:4px; }
+    .btn-consult { width:100%; height:46px; background:var(--text); color:#fff; border:none; border-radius:10px; font-size:15px; font-weight:700; cursor:pointer; font-family:inherit; transition:opacity .15s; margin-top:6px; }
+    .btn-consult:hover { opacity:.82; }
+    .consult-agree { font-size:12px; color:var(--muted); margin-top:10px; line-height:1.6; }
+    .consult-side { display:flex; flex-direction:column; gap:12px; }
+    .contact-card { border:1px solid var(--border); border-radius:14px; padding:20px; }
+    .contact-card-icon { font-size:26px; margin-bottom:8px; }
+    .contact-card-title { font-size:14px; font-weight:700; margin-bottom:4px; }
+    .contact-card-desc { font-size:12px; color:var(--muted); margin-bottom:12px; line-height:1.6; }
+    .contact-card-btn { display:flex; align-items:center; justify-content:center; height:38px; border-radius:8px; font-size:13px; font-weight:700; transition:opacity .15s; }
+    .contact-card-btn:hover { opacity:.82; }
+    .btn-kakao { background:#FEE500; color:#3C1E1E; }
+    .btn-tel { background:var(--text); color:#fff; }
+    .response-time { background:var(--surface); border-radius:12px; padding:16px; }
+    .response-time-title { font-size:12px; font-weight:700; margin-bottom:8px; }
+    .response-time-row { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); padding:3px 0; }
+    .response-time-row span:last-child { font-weight:600; color:var(--text); }
+
+    /* ── Footer ── */
+    footer { border-top:1px solid var(--border); padding:24px 40px; font-size:12px; color:var(--muted); line-height:1.8; max-width:860px; margin:0 auto; }
+
+    /* ── Responsive ── */
+    @media (max-width:800px) {
+      .consult-wrap { grid-template-columns:1fr; }
+      .consult-side { display:grid; grid-template-columns:1fr 1fr; }
+    }
+    @media (max-width:680px) {
+      .topbar { display:none; }
+      header { padding:0 20px; }
+      .header-nav { display:none; }
+      .content { padding:24px 20px 64px; }
+      .consult-side { grid-template-columns:1fr; }
+      footer { padding:20px; }
+    }
+    @media (max-width:480px) {
+      .notice-cat { display:none; }
+      .notice-date { display:none; }
+    }
+
+    /* ── Floating / mobile bar (same as index.html) ── */
+    .kakao-float { position:fixed; bottom:28px; right:24px; z-index:200; background:#FEE500; color:#3C1E1E; border-radius:50px; padding:12px 20px 12px 16px; display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; box-shadow:0 4px 20px rgba(0,0,0,.18); transition:transform .2s,box-shadow .2s; text-decoration:none; font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif; }
+    .kakao-float:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,0,0,.22); }
+    .mobile-bottom-bar { display:none; position:fixed; bottom:0; left:0; right:0; z-index:200; border-top:1px solid #e8e8e8; box-shadow:0 -4px 16px rgba(0,0,0,.1); }
+    .mobile-bottom-bar a { flex:1; display:flex; align-items:center; justify-content:center; gap:7px; height:56px; font-size:15px; font-weight:700; text-decoration:none; }
+    .mobile-bottom-bar .mbar-call { background:#1a1a1a; color:#fff; }
+    .mobile-bottom-bar .mbar-kakao { background:#FEE500; color:#3C1E1E; }
+    @media (max-width:720px) { .kakao-float { display:none; } .mobile-bottom-bar { display:flex; } body { padding-bottom:56px; } }
+
+    /* 성공 메시지 */
+    .submit-success { display:none; text-align:center; padding:32px 20px; }
+    .submit-success.show { display:block; }
+    .submit-success-icon { font-size:48px; margin-bottom:12px; }
+    .submit-success-title { font-size:18px; font-weight:700; margin-bottom:6px; }
+    .submit-success-desc { font-size:14px; color:var(--muted); }
+  </style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <a href="branches.html">📍 군산·서천·미룡·미장 4개 지점</a>
+  <a href="approval.html">📄 사전승낙서</a>
+  <a href="tel:0507-1344-4288">📞 0507-1344-4288</a>
+</div>
+
+<!-- Header -->
+<header>
+  <a class="brand" href="index.html">휴대폰광장</a>
+  <nav class="header-nav">
+    <a href="news.html#phone">폰 비교</a>
+    <a href="membership.html">멤버십 혜택</a>
+    <a href="news.html">최신 소식</a>
+    <a href="technews.html">테크뉴스</a>
+    <a href="branches.html">지점 안내</a>
+    <a href="community.html" class="active">커뮤니티</a>
+  </nav>
+  <a class="btn-call" href="tel:0507-1344-4288">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    전화 상담
+  </a>
+</header>
+
+<div class="content">
+  <div class="page-header">
+    <h1>커뮤니티</h1>
+    <p>궁금한 점은 무엇이든 물어보세요 — 공지사항부터 상담 문의까지</p>
+  </div>
+
+  <!-- Tab bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="notice">📢 공지사항</button>
+    <button class="tab-btn" data-tab="board">💬 자유게시판</button>
+    <button class="tab-btn" data-tab="faq">❓ 자주 묻는 질문</button>
+    <button class="tab-btn" data-tab="consult">📩 상담 문의</button>
+  </div>
+
+  <!-- ══════════════ 공지사항 ══════════════ -->
+  <div class="tab-panel active" id="tab-notice">
+    <div class="notice-list">
+
+      <div class="notice-item">
+        <span class="notice-pin">공지</span>
+        <span class="notice-cat">안내</span>
+        <span class="notice-title">삼성전자 감사 페스티벌 — 6/8~7/5 온누리상품권 최대 20% 혜택</span>
+        <span class="notice-date">2026-06-06</span>
+      </div>
+
+      <div class="notice-item">
+        <span class="notice-pin">공지</span>
+        <span class="notice-cat">안내</span>
+        <span class="notice-title">Galaxy S26 · iPhone 17 정식 입고 — 번호이동 추가 혜택 문의 환영</span>
+        <span class="notice-date">2026-06-01</span>
+      </div>
+
+      <div class="notice-item">
+        <span class="notice-new">NEW</span>
+        <span class="notice-cat">이벤트</span>
+        <span class="notice-title">서천점 리뉴얼 오픈 — 방문 고객 전원 사은품 증정 (소진 시 종료)</span>
+        <span class="notice-date">2026-06-03</span>
+      </div>
+
+      <div class="notice-item">
+        <span class="notice-cat" style="min-width:60px">운영</span>
+        <span class="notice-title">휴대폰광장 운영 시간 안내 — 평일 10:00~20:00 / 주말 11:00~18:00</span>
+        <span class="notice-date">2026-05-20</span>
+      </div>
+
+      <div class="notice-item">
+        <span class="notice-cat" style="min-width:60px">안내</span>
+        <span class="notice-title">상담 전 사전승낙서 안내 — 통신 판매 법령에 따른 의무 공시 확인</span>
+        <span class="notice-date">2026-04-10</span>
+      </div>
+
+    </div>
+
+    <p style="font-size:12px;color:var(--soft);margin-top:12px;text-align:right;">
+      공지사항 문의는 전화 또는 카카오 채널로 연락해 주세요.
+    </p>
+  </div>
+
+  <!-- ══════════════ 자유게시판 ══════════════ -->
+  <div class="tab-panel" id="tab-board">
+    <div class="board-toolbar">
+      <span class="board-count">총 <strong>7</strong>개의 글</span>
+      <button class="btn-write" id="open-write-modal">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        글쓰기
+      </button>
+    </div>
+
+    <div class="board-list">
+
+      <div class="board-item">
+        <div class="board-item-left">
+          <div class="board-item-meta">
+            <span class="board-cat-badge">후기</span>
+          </div>
+          <div class="board-item-title">나운점에서 갤럭시 S26 개통했어요 — 상담이 너무 친절해서 놀랐습니다</div>
+        </div>
+        <div class="board-item-right">
+          <div class="board-item-author">김*현</div>
+          <div class="board-item-date">2026-06-05</div>
+        </div>
+      </div>
+
+      <div class="board-item">
+        <div class="board-item-left">
+          <div class="board-item-meta">
+            <span class="board-cat-badge">질문</span>
+          </div>
+          <div class="board-item-title">번호이동 시 위약금은 어떻게 계산되나요?</div>
+        </div>
+        <div class="board-item-right">
+          <div class="board-item-author">이*진</div>
+          <div class="board-item-date">2026-06-04</div>
+        </div>
+      </div>
+
+      <div class="board-item">
+        <div class="board-item-left">
+          <div class="board-item-meta">
+            <span class="board-cat-badge">후기</span>
+          </div>
+          <div class="board-item-title">서천점에서 가족 3명 동시 번호이동 완료 — 빠르고 꼼꼼하게 설명해 줬어요</div>
+        </div>
+        <div class="board-item-right">
+          <div class="board-item-author">박*수</div>
+          <div class="board-item-date">2026-06-02</div>
+        </div>
+      </div>
+
+      <div class="board-item">
+        <div class="board-item-left">
+          <div class="board-item-meta">
+            <span class="board-cat-badge">질문</span>
+          </div>
+          <div class="board-item-title">갤럭시 S26 vs 아이폰 17, 어떤 걸 추천하세요?</div>
+        </div>
+        <div class="board-item-right">
+          <div class="board-item-author">최*우</div>
+          <div class="board-item-date">2026-05-31</div>
+        </div>
+      </div>
+
+      <div class="board-item">
+        <div class="board-item-left">
+          <div class="board-item-meta">
+            <span class="board-cat-badge">질문</span>
+          </div>
+          <div class="board-item-title">미룡점 방문 전에 미리 예약할 수 있나요?</div>
+        </div>
+        <div class="board-item-right">
+          <div class="board-item-author">정*아</div>
+          <div class="board-item-date">2026-05-29</div>
+        </div>
+      </div>
+
+      <div class="board-item">
+        <div class="board-item-left">
+          <div class="board-item-meta">
+            <span class="board-cat-badge">후기</span>
+          </div>
+          <div class="board-item-title">요금제 비교 상담 너무 도움 됐어요 — 군산에 이런 곳이 있었다니</div>
+        </div>
+        <div class="board-item-right">
+          <div class="board-item-author">윤*미</div>
+          <div class="board-item-date">2026-05-26</div>
+        </div>
+      </div>
+
+      <div class="board-item">
+        <div class="board-item-left">
+          <div class="board-item-meta">
+            <span class="board-cat-badge">질문</span>
+          </div>
+          <div class="board-item-title">할부 없이 일시불로 사면 더 싸지나요?</div>
+        </div>
+        <div class="board-item-right">
+          <div class="board-item-author">강*호</div>
+          <div class="board-item-date">2026-05-22</div>
+        </div>
+      </div>
+
+    </div>
+    <p style="font-size:12px;color:var(--soft);">글을 작성하면 담당자가 검토 후 이메일로 답변드립니다.</p>
+  </div>
+
+  <!-- ══════════════ Q&A ══════════════ -->
+  <div class="tab-panel" id="tab-faq">
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">번호이동을 하면 어떤 혜택이 있나요?</div>
+          <div class="faq-chevron">⌄</div>
+        </div>
+        <div class="faq-a">
+          번호이동은 현재 가입된 통신사에서 다른 통신사로 이동하는 것으로, 신규 가입에 준하는 단말기 지원 혜택을 받을 수 있습니다. 기기변경보다 지원 폭이 큰 경우가 많지만, 이전 통신사의 약정 위약금이 발생할 수 있으니 <strong>잔여 약정 기간과 위약금을 먼저 확인</strong>하는 것이 중요합니다. 방문 또는 전화 상담 시 조건을 함께 검토해 드립니다.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">기기변경과 번호이동, 어떤 게 유리한가요?</div>
+          <div class="faq-chevron">⌄</div>
+        </div>
+        <div class="faq-a">
+          어떤 방식이 유리한지는 <strong>현재 통신사·약정 잔여 기간·희망 요금제</strong>에 따라 달라집니다. 일반적으로 번호이동 지원금이 기기변경보다 크지만, 위약금이 있으면 순이익이 줄어들 수 있습니다. 개인 상황에 맞는 비교를 무료로 도와드리니 편하게 연락해 주세요.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">공시지원금과 선택약정(25% 할인)의 차이가 뭔가요?</div>
+          <div class="faq-chevron">⌄</div>
+        </div>
+        <div class="faq-a">
+          <strong>공시지원금</strong>은 개통 시점에 단말기 가격에서 바로 할인받는 방식이고, <strong>선택약정(25% 요금할인)</strong>은 매달 요금을 25% 깎아주는 방식입니다. 단말기 가격이 높고 요금제 금액이 낮을수록 공시지원금이 유리한 경우가 많고, 반대 상황에선 선택약정이 유리할 수 있습니다. 두 방식의 총 부담금을 비교해서 안내해 드립니다.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">개통하는 데 얼마나 걸리나요?</div>
+          <div class="faq-chevron">⌄</div>
+        </div>
+        <div class="faq-a">
+          준비 서류(신분증)가 갖춰진 경우 <strong>보통 30~60분</strong> 이내에 개통이 완료됩니다. 번호이동의 경우 이전 통신사 해지 확인 절차가 포함되어 약간 더 걸릴 수 있습니다. 바쁜 시간대는 미리 전화로 방문 시간을 조율하시면 대기 없이 바로 진행할 수 있습니다.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">방문 없이 전화 상담만으로 조건을 알 수 있나요?</div>
+          <div class="faq-chevron">⌄</div>
+        </div>
+        <div class="faq-a">
+          네, 가능합니다. 현재 통신사·요금제·약정 만료일 등 기본 정보를 알려주시면 전화로 예상 조건을 안내해 드립니다. 다만 <strong>최종 개통은 신분증 지참 후 직접 방문</strong>이 필요합니다. 방문 전 충분히 상담하신 뒤 결정하셔도 됩니다.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">신용카드 없이 단말기 할부가 되나요?</div>
+          <div class="faq-chevron">⌄</div>
+        </div>
+        <div class="faq-a">
+          통신사 할부(통신사 자체 여신)는 신용카드 없이도 가능합니다. 단, 개인 신용 상태에 따라 심사 결과가 다를 수 있습니다. 체크카드 또는 현금 일시불로도 구매 가능하므로, 개인 상황에 맞는 방법을 함께 확인해 드립니다.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">군산·서천 외 지역에서도 개통 가능한가요?</div>
+          <div class="faq-chevron">⌄</div>
+        </div>
+        <div class="faq-a">
+          네, 거주지에 상관없이 <strong>신분증만 지참하면 어디서든 개통</strong> 가능합니다. 타 지역에 거주하시더라도 군산·서천 방문 시 자유롭게 이용하실 수 있습니다.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-icon">Q</div>
+          <div class="faq-q-text">갤럭시와 아이폰 중 어떤 걸 추천하나요?</div>
+          <div class="faq-chevron">⌄</div>
+        </div>
+        <div class="faq-a">
+          사용 패턴과 선호도에 따라 다릅니다. <strong>갤럭시</strong>는 Android 생태계, 더 다양한 요금제·지원금 적용, 삼성페이 등이 강점이고, <strong>아이폰</strong>은 iOS 생태계, 오랜 소프트웨어 지원 기간, 높은 중고 가격이 특징입니다. 두 기종을 직접 비교해 드리니 방문 또는 전화로 편하게 문의하세요.
+        </div>
+      </div>
+
+    </div>
+
+    <div style="background:var(--surface);border-radius:12px;padding:20px;margin-top:20px;display:flex;align-items:center;gap:14px;">
+      <div style="font-size:28px;">💬</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:3px;">더 궁금한 점이 있으신가요?</div>
+        <div style="font-size:13px;color:var(--muted);">카카오 채널 또는 전화로 바로 물어보세요 — 즉시 답변드립니다.</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-left:auto;flex-shrink:0;">
+        <a href="http://pf.kakao.com/_KvIij" target="_blank" style="display:flex;align-items:center;height:36px;padding:0 16px;background:#FEE500;color:#3C1E1E;border-radius:8px;font-size:13px;font-weight:700;">카카오 문의</a>
+        <a href="tel:0507-1344-4288" style="display:flex;align-items:center;height:36px;padding:0 16px;background:var(--text);color:#fff;border-radius:8px;font-size:13px;font-weight:700;">전화 상담</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ 상담 문의 ══════════════ -->
+  <div class="tab-panel" id="tab-consult">
+    <div class="consult-wrap">
+      <div class="consult-form-wrap">
+        <div class="consult-form-title">온라인 상담 문의</div>
+        <div class="consult-form-sub">남겨주신 연락처로 영업일 기준 24시간 이내 연락드립니다.</div>
+
+        <form id="consult-form" action="https://formsubmit.co/a71125382@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="[휴대폰광장] 온라인 상담 문의">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://phoneplaza-gunsan.netlify.app/community.html?submitted=1">
+
+          <div class="c-field">
+            <label for="c-name">이름 <span style="color:#ff3b30">*</span></label>
+            <input type="text" id="c-name" name="이름" placeholder="홍길동" required>
+          </div>
+
+          <div class="c-field">
+            <label for="c-phone">연락처 <span style="color:#ff3b30">*</span></label>
+            <input type="tel" id="c-phone" name="연락처" placeholder="010-0000-0000" required>
+            <div class="field-hint">답변 연락을 드릴 번호를 입력해 주세요.</div>
+          </div>
+
+          <div class="c-field">
+            <label for="c-branch">방문 희망 지점</label>
+            <select id="c-branch" name="방문희망지점">
+              <option value="">미정 / 전화 상담</option>
+              <option value="나운점">나운점 (군산시 나운동)</option>
+              <option value="미룡점">미룡점 (군산시 미룡동)</option>
+              <option value="미장점">미장점 (군산시 미장동)</option>
+              <option value="서천점">서천점 (충남 서천군)</option>
+            </select>
+          </div>
+
+          <div class="c-field">
+            <label for="c-type">문의 유형</label>
+            <select id="c-type" name="문의유형">
+              <option value="번호이동">번호이동</option>
+              <option value="기기변경">기기변경</option>
+              <option value="신규가입">신규가입</option>
+              <option value="요금제">요금제 문의</option>
+              <option value="기타">기타</option>
+            </select>
+          </div>
+
+          <div class="c-field">
+            <label for="c-msg">문의 내용 <span style="color:#ff3b30">*</span></label>
+            <textarea id="c-msg" name="문의내용" placeholder="현재 사용 중인 통신사, 기기, 원하시는 조건 등을 자유롭게 적어주세요." required></textarea>
+          </div>
+
+          <button class="btn-consult" type="submit">상담 문의 보내기 →</button>
+          <div class="consult-agree">제출한 개인정보(이름·연락처)는 상담 답변 목적으로만 사용되며, 답변 완료 후 즉시 폐기됩니다.</div>
+        </form>
+
+        <div class="submit-success" id="submit-success">
+          <div class="submit-success-icon">✅</div>
+          <div class="submit-success-title">문의가 접수되었습니다!</div>
+          <div class="submit-success-desc">영업일 기준 24시간 이내에 연락드리겠습니다.<br>급하신 경우 전화 또는 카카오 채널을 이용해 주세요.</div>
+        </div>
+      </div>
+
+      <div class="consult-side">
+        <div class="contact-card">
+          <div class="contact-card-icon">💬</div>
+          <div class="contact-card-title">카카오 채널</div>
+          <div class="contact-card-desc">가장 빠른 답변.<br>텍스트·사진으로 편하게 문의</div>
+          <a class="contact-card-btn btn-kakao" href="http://pf.kakao.com/_KvIij" target="_blank">카카오로 문의하기</a>
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-card-icon">📞</div>
+          <div class="contact-card-title">전화 상담</div>
+          <div class="contact-card-desc">즉시 연결, 대기 없음.<br>0507-1344-4288</div>
+          <a class="contact-card-btn btn-tel" href="tel:0507-1344-4288">지금 전화하기</a>
+        </div>
+
+        <div class="response-time">
+          <div class="response-time-title">⏰ 운영 시간</div>
+          <div class="response-time-row"><span>평일</span><span>10:00 ~ 20:00</span></div>
+          <div class="response-time-row"><span>토요일</span><span>11:00 ~ 18:00</span></div>
+          <div class="response-time-row"><span>일요일·공휴일</span><span>휴무</span></div>
+          <div style="font-size:11px;color:var(--soft);margin-top:8px;">온라인 문의는 운영 시간 외에도 접수 가능합니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  대표 이성완 &nbsp;|&nbsp; 사업자등록번호 176-10-01227 &nbsp;|&nbsp; 충청남도 서천군 서천읍 서천로 182
+  &nbsp;|&nbsp; <a href="approval.html" style="color:var(--muted);text-decoration:underline;">사전승낙서 확인</a>
+</footer>
+
+<!-- 글쓰기 모달 -->
+<div class="modal-overlay" id="write-modal">
+  <div class="modal">
+    <div class="modal-title">게시글 작성</div>
+    <form action="https://formsubmit.co/a71125382@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="[휴대폰광장] 자유게시판 글">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="https://phoneplaza-gunsan.netlify.app/community.html?board=1">
+
+      <div class="field">
+        <label>카테고리</label>
+        <select name="카테고리">
+          <option value="질문">질문</option>
+          <option value="후기">후기</option>
+          <option value="정보">정보</option>
+          <option value="기타">기타</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>닉네임 *</label>
+        <input type="text" name="닉네임" placeholder="홍*동" required>
+      </div>
+      <div class="field">
+        <label>연락처 (선택 — 답변 필요 시)</label>
+        <input type="tel" name="연락처" placeholder="010-0000-0000">
+      </div>
+      <div class="field">
+        <label>제목 *</label>
+        <input type="text" name="제목" placeholder="궁금한 점을 간략히 적어주세요" required>
+      </div>
+      <div class="field">
+        <label>내용 *</label>
+        <textarea name="내용" placeholder="자유롭게 작성해 주세요." required></textarea>
+      </div>
+      <p class="form-notice">작성하신 내용은 담당자 검토 후 게시판에 노출될 수 있습니다.</p>
+      <div class="modal-actions">
+        <button class="btn-cancel" type="button" id="close-write-modal">취소</button>
+        <button class="btn-submit" type="submit">게시글 등록</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<a class="kakao-float" href="http://pf.kakao.com/_KvIij" target="_blank" aria-label="카카오 채널 상담">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 2C6.486 2 2 5.589 2 10c0 2.908 1.897 5.516 4.761 7.032l-.948 3.405a.5.5 0 00.724.556L10.5 18.85c.487.09.986.15 1.5.15 5.514 0 10-3.589 10-8S17.514 2 12 2z"/></svg>
+  <span>카카오 상담</span>
+</a>
+<div class="mobile-bottom-bar">
+  <a class="mbar-call" href="tel:0507-1344-4288">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    전화 상담
+  </a>
+  <a class="mbar-kakao" href="http://pf.kakao.com/_KvIij" target="_blank">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 2C6.486 2 2 5.589 2 10c0 2.908 1.897 5.516 4.761 7.032l-.948 3.405a.5.5 0 00.724.556L10.5 18.85c.487.09.986.15 1.5.15 5.514 0 10-3.589 10-8S17.514 2 12 2z"/></svg>
+    카카오 상담
+  </a>
+</div>
+
+<script>
+// ── 탭 전환 ──
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabPanels = document.querySelectorAll('.tab-panel');
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.tab;
+    tabBtns.forEach(b => b.classList.remove('active'));
+    tabPanels.forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + target).classList.add('active');
+  });
+});
+
+// URL 파라미터로 탭 초기화
+const params = new URLSearchParams(location.search);
+if (params.get('submitted') === '1') {
+  tabBtns.forEach(b => b.classList.remove('active'));
+  tabPanels.forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-tab="consult"]').classList.add('active');
+  document.getElementById('tab-consult').classList.add('active');
+  document.getElementById('consult-form').style.display = 'none';
+  document.getElementById('submit-success').classList.add('show');
+}
+if (params.get('board') === '1') {
+  tabBtns.forEach(b => b.classList.remove('active'));
+  tabPanels.forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-tab="board"]').classList.add('active');
+  document.getElementById('tab-board').classList.add('active');
+}
+
+// ── FAQ 아코디언 ──
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+
+// ── 글쓰기 모달 ──
+document.getElementById('open-write-modal').addEventListener('click', () => {
+  document.getElementById('write-modal').classList.add('open');
+});
+document.getElementById('close-write-modal').addEventListener('click', () => {
+  document.getElementById('write-modal').classList.remove('open');
+});
+document.getElementById('write-modal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+});
+</script>
+</body>
+</html>
