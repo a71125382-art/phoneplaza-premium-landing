@@ -586,14 +586,13 @@
   let videos = [];
   try {
     const cached = JSON.parse(sessionStorage.getItem(CACHE) || 'null');
-    if (cached && Date.now() - cached.ts < 3600000) {
+    if (cached && Date.now() - cached.ts < 1800000) {
       videos = cached.videos;
     } else {
-      const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${CH}`;
-      // allorigins 프록시로 YouTube RSS XML 직접 fetch
-      const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`, {signal: AbortSignal.timeout(8000)});
-      const data = await res.json();
-      videos = parseXML(data.contents || '');
+      // Netlify Function 서버사이드 프록시 (CORS 없음, 안정적)
+      const res = await fetch('/.netlify/functions/youtube-feed');
+      const xml = await res.text();
+      videos = parseXML(xml);
       if (videos.length) sessionStorage.setItem(CACHE, JSON.stringify({ts: Date.now(), videos}));
     }
   } catch(e) { videos = []; }
@@ -628,13 +627,11 @@
 
   const row = document.getElementById('tt-row');
 
-  // oEmbed로 썸네일 가져오기 (CORS 프록시 경유)
+  // oEmbed 썸네일 (Netlify Function 서버사이드 프록시)
   async function getThumb(id) {
     try {
-      const url = `https://www.tiktok.com/@${TT_USER}/video/${id}`;
-      const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.tiktok.com/oembed?url=' + url)}`, {signal: AbortSignal.timeout(6000)});
-      const data = await res.json();
-      const oe = JSON.parse(data.contents || '{}');
+      const res = await fetch(`/.netlify/functions/tiktok-thumb?id=${id}&user=${TT_USER}`);
+      const oe = await res.json();
       return oe.thumbnail_url || '';
     } catch(e) { return ''; }
   }
