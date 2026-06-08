@@ -698,6 +698,16 @@ document.getElementById('announce-close').addEventListener('click', () => {
   const popularGrid = document.getElementById('popular-grid');
   const blogGrid = document.getElementById('blog-grid');
 
+  function trackBlogClick(grid, area) {
+    grid.addEventListener('click', e => {
+      const a = e.target.closest('a');
+      if (!a || typeof gtag !== 'function') return;
+      gtag('event', 'blog_outbound_click', { link_area: area, link_url: a.href });
+    });
+  }
+  trackBlogClick(popularGrid, 'popular');
+  trackBlogClick(blogGrid, 'grid');
+
   const CATS = {
     phone:   ['갤럭시','아이폰','스펙','비교','추천','후기','폴드','플립'],
     tech:    ['테크','AI','뉴스','업데이트','출시','발표'],
