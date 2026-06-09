@@ -1,2 +1,26 @@
 [build]
   functions = "netlify/functions"
+
+[[redirects]]
+  from = "/s/naunjeom"
+  to = "https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000179608&seq=1&yn=1"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/s/miryongjeom"
+  to = "https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000053595&seq=1&yn=1"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/s/mijeongjeom"
+  to = "https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000165400&seq=1&yn=1"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/s/seocheonjeom"
+  to = "https://www.ictmarket.or.kr:8443/ajax/ajax3.do?id=PRE0000114646&seq=1&yn=1"
+  status = 302
+  force = true
