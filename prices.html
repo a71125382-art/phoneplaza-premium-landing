@@ -20,7 +20,7 @@
   <meta property="og:description" content="SK·KT·LG 요금제 한눈에 비교. 번호이동·기기변경 최적 요금제 추천.">
   <meta property="og:url" content="https://phoneplaza-gunsan.pages.dev/prices">
   <meta property="og:site_name" content="휴대폰광장">
-  <link rel="canonical" href="https://phoneplaza-gunsan.pages.dev/prices">
+  <link rel="canonical" href="https://phoneplaza.co.kr/prices.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
@@ -103,6 +103,27 @@
     .btn-secondary { display:inline-flex; align-items:center; gap:6px; background:transparent; color:var(--text); border:1.5px solid var(--border); font-size:14px; font-weight:600; padding:12px 24px; border-radius:40px; transition:border-color .15s; }
     .btn-secondary:hover { border-color:#a0a0a0; }
 
+    /* 온라인 상담 신청 */
+    .consult-section { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:32px 40px; margin-bottom:32px; }
+    .consult-heading { font-size:20px; font-weight:700; letter-spacing:-.4px; margin-bottom:6px; }
+    .consult-sub { font-size:13px; color:var(--muted); margin-bottom:20px; }
+    .consult-form { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .consult-form .full { grid-column:1 / -1; }
+    .consult-form label { display:block; font-size:12px; font-weight:600; color:var(--muted); margin-bottom:6px; }
+    .consult-form input, .consult-form select, .consult-form textarea {
+      width:100%; border:1.5px solid var(--border); border-radius:10px; padding:11px 14px;
+      font-size:14px; font-family:inherit; color:var(--text); background:#fff; transition:border-color .15s;
+    }
+    .consult-form input:focus, .consult-form select:focus, .consult-form textarea:focus { outline:none; border-color:#a0a0a0; }
+    .consult-form textarea { resize:vertical; min-height:72px; }
+    .consult-submit { grid-column:1 / -1; display:flex; align-items:center; gap:14px; margin-top:4px; }
+    .consult-submit button { background:var(--text); color:#fff; border:none; font-size:14px; font-weight:600; padding:13px 28px; border-radius:40px; cursor:pointer; font-family:inherit; transition:opacity .15s; }
+    .consult-submit button:hover { opacity:.82; }
+    .consult-submit button:disabled { opacity:.5; cursor:default; }
+    .consult-msg { font-size:13px; color:var(--muted); }
+    .consult-msg.ok { color:#27ae60; font-weight:600; }
+    .consult-msg.err { color:#c0392b; font-weight:600; }
+
     footer { border-top:1px solid var(--border); padding:20px 40px; font-size:12px; color:var(--muted); line-height:1.8; }
 
     @media (max-width:720px) {
@@ -111,6 +132,8 @@
       .guide-grid{grid-template-columns:1fr}
       .plan-grid{grid-template-columns:1fr 1fr}
       .cta-section{padding:28px 20px}
+      .consult-section{padding:24px 20px}
+      .consult-form{grid-template-columns:1fr}
       footer{padding:16px 20px}
     }
     @media (max-width:480px) { .plan-grid{grid-template-columns:1fr} }
@@ -332,6 +355,39 @@
       <a class="btn-secondary" href="branches.html">📍 지점 찾기</a>
     </div>
   </div>
+
+  <!-- 온라인 상담 신청 -->
+  <div class="consult-section">
+    <div class="consult-heading">📝 온라인 상담 신청</div>
+    <div class="consult-sub">전화가 어려우시면 아래에 연락처만 남겨주세요. 영업시간 내 직접 연락드립니다.</div>
+    <form class="consult-form" id="consult-form">
+      <div class="full">
+        <label for="c-name">이름</label>
+        <input type="text" id="c-name" name="name" required maxlength="30" placeholder="홍길동">
+      </div>
+      <div>
+        <label for="c-phone">연락처</label>
+        <input type="tel" id="c-phone" name="phone" required maxlength="20" placeholder="010-1234-5678">
+      </div>
+      <div>
+        <label for="c-time">희망 연락 시간</label>
+        <select id="c-time" name="contact_time">
+          <option value="무관">무관</option>
+          <option value="오전">오전 (10시~12시)</option>
+          <option value="오후">오후 (12시~18시)</option>
+          <option value="저녁">저녁 (18시~20시)</option>
+        </select>
+      </div>
+      <div class="full">
+        <label for="c-message">문의 내용 (관심 기종·요금제·통신사 등)</label>
+        <textarea id="c-message" name="message" maxlength="500" placeholder="예) 갤럭시 S26으로 SK 번호이동 알아보고 있어요"></textarea>
+      </div>
+      <div class="consult-submit">
+        <button type="submit">상담 신청하기</button>
+        <span class="consult-msg" id="consult-msg"></span>
+      </div>
+    </form>
+  </div>
 </div>
 
 <footer>대표 이성완 &nbsp;|&nbsp; 사업자등록번호 176-10-01227 &nbsp;|&nbsp; 충청남도 서천군 서천읍 서천로 182</footer>
@@ -344,6 +400,44 @@ function switchCarrier(carrier, btn) {
       'carrier-tab' + (c === carrier ? ' active-' + c : '');
   });
 }
+
+document.getElementById('consult-form').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('button[type="submit"]');
+  const msg = document.getElementById('consult-msg');
+  const data = {
+    name: form.name.value.trim(),
+    phone: form.phone.value.trim(),
+    contact_time: form.contact_time.value,
+    message: form.message.value.trim(),
+    page: location.pathname,
+  };
+  if (!data.name || !data.phone) {
+    msg.textContent = '이름과 연락처를 입력해주세요.';
+    msg.className = 'consult-msg err';
+    return;
+  }
+  btn.disabled = true;
+  msg.textContent = '전송 중...';
+  msg.className = 'consult-msg';
+  try {
+    const res = await fetch('/api/consult-request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error('failed');
+    msg.textContent = '신청 완료! 빠른 시간 내 연락드릴게요.';
+    msg.className = 'consult-msg ok';
+    form.reset();
+  } catch (err) {
+    msg.textContent = '전송 실패했어요. 전화(0507-1344-4288)로 문의해주세요.';
+    msg.className = 'consult-msg err';
+  } finally {
+    btn.disabled = false;
+  }
+});
 </script>
 </body>
 </html>

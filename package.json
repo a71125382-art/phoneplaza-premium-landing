@@ -1,0 +1,7 @@
+{
+  "name": "phoneplaza-premium-landing",
+  "private": true,
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4"
+  }
+}
