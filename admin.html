@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>상담 신청 관리 | 휴대폰광장</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg:#fff; --surface:#f7f7f8; --text:#1a1a1a; --muted:#767676; --soft:#adadad; --border:#e8e8e8; }
+    body { background:var(--bg); font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif; color:var(--text); min-height:100dvh; }
+    .wrap { max-width:1000px; margin:0 auto; padding:40px 24px; }
+    h1 { font-size:24px; font-weight:700; letter-spacing:-.4px; margin-bottom:24px; }
+
+    .gate { max-width:320px; margin:80px auto; text-align:center; }
+    .gate input { width:100%; border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; font-size:14px; font-family:inherit; margin-bottom:10px; }
+    .gate input:focus { outline:none; border-color:#a0a0a0; }
+    .gate button { width:100%; background:var(--text); color:#fff; border:none; font-size:14px; font-weight:600; padding:12px; border-radius:10px; cursor:pointer; font-family:inherit; }
+    .gate .err { color:#c0392b; font-size:13px; margin-top:8px; }
+
+    .toolbar { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+    .toolbar button { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 16px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; }
+    .toolbar button:hover { background:var(--border); }
+    .count { font-size:13px; color:var(--muted); }
+
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+    th { color:var(--muted); font-weight:600; font-size:12px; white-space:nowrap; }
+    td.msg { max-width:280px; white-space:pre-wrap; word-break:break-word; }
+    td.nowrap { white-space:nowrap; }
+    .empty { color:var(--muted); font-size:13px; padding:24px 0; text-align:center; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="gate" class="gate" hidden>
+      <h1 style="margin-bottom:16px;">관리자 로그인</h1>
+      <input type="password" id="token-input" placeholder="비밀번호" autocomplete="off">
+      <button id="login-btn">입장</button>
+      <div class="err" id="gate-err"></div>
+    </div>
+
+    <div id="main" hidden>
+      <h1>📋 상담 신청 내역</h1>
+      <div class="toolbar">
+        <button id="refresh-btn">새로고침</button>
+        <span class="count" id="count"></span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>신청일시</th>
+            <th>이름</th>
+            <th>연락처</th>
+            <th>희망시간</th>
+            <th>문의내용</th>
+            <th>페이지</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" hidden>아직 신청 내역이 없습니다.</div>
+    </div>
+  </div>
+
+  <script>
+    const gate = document.getElementById('gate');
+    const main = document.getElementById('main');
+    const tokenInput = document.getElementById('token-input');
+    const gateErr = document.getElementById('gate-err');
+
+    function fmt(iso) {
+      const d = new Date(iso);
+      return d.toLocaleString('ko-KR', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' });
+    }
+
+    async function load() {
+      const token = localStorage.getItem('admin_token');
+      const res = await fetch('/api/consultations', {
+        headers: { Authorization: 'Bearer ' + token },
+      });
+      if (res.status === 401) {
+        localStorage.removeItem('admin_token');
+        showGate('비밀번호가 올바르지 않습니다.');
+        return;
+      }
+      const data = await res.json();
+      render(data.items || []);
+    }
+
+    function render(items) {
+      const rows = document.getElementById('rows');
+      const empty = document.getElementById('empty');
+      const count = document.getElementById('count');
+      rows.innerHTML = '';
+      count.textContent = `총 ${items.length}건`;
+      empty.hidden = items.length > 0;
+      for (const item of items) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="nowrap">${fmt(item.created_at)}</td>
+          <td class="nowrap">${escapeHtml(item.name)}</td>
+          <td class="nowrap">${escapeHtml(item.phone)}</td>
+          <td class="nowrap">${escapeHtml(item.contact_time || '')}</td>
+          <td class="msg">${escapeHtml(item.message || '')}</td>
+          <td class="nowrap">${escapeHtml(item.page || '')}</td>
+        `;
+        rows.appendChild(tr);
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+    }
+
+    function showGate(err) {
+      gate.hidden = false;
+      main.hidden = true;
+      gateErr.textContent = err || '';
+      tokenInput.value = '';
+      tokenInput.focus();
+    }
+
+    document.getElementById('login-btn').addEventListener('click', async () => {
+      localStorage.setItem('admin_token', tokenInput.value.trim());
+      gate.hidden = true;
+      main.hidden = false;
+      try {
+        await load();
+      } catch (e) {
+        showGate('오류가 발생했습니다.');
+      }
+    });
+
+    tokenInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('login-btn').click();
+    });
+
+    document.getElementById('refresh-btn').addEventListener('click', load);
+
+    (async () => {
+      if (localStorage.getItem('admin_token')) {
+        main.hidden = false;
+        try {
+          await load();
+        } catch (e) {
+          showGate();
+        }
+      } else {
+        showGate();
+      }
+    })();
+  </script>
+</body>
+</html>
