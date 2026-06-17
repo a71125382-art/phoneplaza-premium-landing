@@ -20,7 +20,7 @@
   <meta property="og:description" content="군산·서천·미룡·미장 4개 지점 위치 안내. 가까운 휴대폰광장을 찾아보세요.">
   <meta property="og:url" content="https://phoneplaza-gunsan.pages.dev/branches">
   <meta property="og:site_name" content="휴대폰광장">
-  <link rel="canonical" href="https://phoneplaza-gunsan.pages.dev/branches">
+  <link rel="canonical" href="https://phoneplaza.co.kr/branches.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css">
@@ -265,8 +265,7 @@
 .mobile-bottom-bar .mbar-kakao { background:#FEE500; color:#3C1E1E; }
 @media (max-width:720px) { .kakao-float { display:none; } .mobile-bottom-bar { display:flex; } body { padding-bottom:56px; } }
 </style>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=r4aefnm7ii"></script>
 <script>
 window.addEventListener('DOMContentLoaded', function() {
   var branches = [
@@ -280,14 +279,20 @@ window.addEventListener('DOMContentLoaded', function() {
     if (!el) return;
     el.style.width = '100%';
     el.style.height = '100%';
-    var map = L.map(el, { zoomControl:true, scrollWheelZoom:false }).setView([b.lat, b.lng], 17);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
-      subdomains: 'abcd',
-      maxZoom: 19
-    }).addTo(map);
-    var marker = L.marker([b.lat, b.lng]).addTo(map);
-    marker.bindPopup('<b>' + b.name + '</b>').openPopup();
+    var map = new naver.maps.Map(el, {
+      center: new naver.maps.LatLng(b.lat, b.lng),
+      zoom: 17,
+      mapTypeId: naver.maps.MapTypeId.NORMAL,
+      scaleControl: false,
+      logoControl: false,
+      mapDataControl: false,
+      zoomControl: true,
+      zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT }
+    });
+    new naver.maps.Marker({
+      position: new naver.maps.LatLng(b.lat, b.lng),
+      map: map
+    });
   });
 });
 </script>
